@@ -87,7 +87,7 @@ fun MindSpeakTheme(
 @Composable
 fun MyApp(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $name!",
+        text = "Hello $name! prueba",
         color = LocalCustomColors.current.textWhite,
         modifier = modifier
     )
