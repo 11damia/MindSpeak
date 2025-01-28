@@ -9,11 +9,18 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 //White theme
-
+val BackgroundLight = Color(0xFFFFFFFF)
+val SecondaryColor = Color(0xFF0C99FF)
+val thirdColor = Color(0xFFD8EEFF)
+val DarkGray = Color(0xFF434343)
 //Dark theme
+val BackgroundDark = Color(0xFF272727)
+val BottomBarDark = Color(0xFF1B1B1B)
+val DarkThirdColor = Color(0xFF23394A)
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
