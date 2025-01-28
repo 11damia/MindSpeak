@@ -1,4 +1,4 @@
-    package cat.dam.mindspeak
+package cat.dam.mindspeak
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,6 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import cat.dam.mindspeak.ui.theme.MindSpeakTheme
 
@@ -29,6 +30,16 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+data class CustomColors(
+    val background: Color,
+    val backgroundBottomBar: Color,
+    val secondary: Color,
+    val third: Color,
+    val textWhite: Color,
+    val textDark: Color,
+    val textExtra: Color,
+)
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
