@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "cat.dam.mindspeak"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "cat.dam.mindspeak"
