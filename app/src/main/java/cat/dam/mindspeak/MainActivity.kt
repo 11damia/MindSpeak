@@ -5,16 +5,38 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import cat.dam.mindspeak.ui.theme.BackgroundDark
 import cat.dam.mindspeak.ui.theme.White
 import cat.dam.mindspeak.ui.theme.Black
@@ -30,39 +52,42 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MindSpeakTheme {
-                MyApp("Hola")
+            cat.dam.mindspeak.MindSpeakTheme {
+                MyApp()
+
             }
         }
     }
 }
+
 
 data class CustomColors(
     val background: Color,
     val backgroundBottomBar: Color,
     val secondary: Color,
     val third: Color,
-    val textWhite: Color,
-    val textDark: Color,
-    val textExtra: Color,
+    val text1: Color,
+    val text2: Color,
+    val text3: Color,
 )
+
 val LightCustomColors = CustomColors(
     background = White,
     backgroundBottomBar = White,
-    secondary =  SecondaryColor,
+    secondary = SecondaryColor,
     third = ThirdColorLight,
-    textWhite = White,
-    textDark = Black,
-    textExtra = DarkGray
+    text1 = Black,
+    text2 = DarkGray,
+    text3 = Black
 )
 val DarkCustomColors = CustomColors(
     background = BackgroundDark,
     backgroundBottomBar = BottomBarDark,
-    secondary =  SecondaryColor,
+    secondary = SecondaryColor,
     third = DarkThirdColor,
-    textWhite = White,
-    textDark = Black,
-    textExtra = DarkGray
+    text1 = White,
+    text2 = White,
+    text3 = Black
 )
 
 val LocalCustomColors = staticCompositionLocalOf { LightCustomColors }
@@ -85,18 +110,106 @@ fun MindSpeakTheme(
 
 
 @Composable
-fun MyApp(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name! prueba",
-        color = LocalCustomColors.current.textWhite,
-        modifier = modifier
+fun MyApp() {
+    val navController = rememberNavController()
+    val selectedButton = rememberSaveable { mutableIntStateOf(0) }
+    var showBottomBar by remember { mutableStateOf(true) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .systemBarsPadding()
+    ) {
+        NavigationHost(
+            navController = navController,
+        )
+        if (showBottomBar) {
+            BottomBar(
+                navController,
+                selectedButton,
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
+        }
+    }
+}
+
+
+
+@Composable
+fun BottomBar(
+    navController: NavHostController,
+    selectedButton: MutableState<Int>,
+    modifier: Modifier = Modifier
+) {
+    val items = listOf("home", "How I feel","Exercice","Settings")
+
+    val icons = listOf(
+        painterResource(id = R.drawable.home),
+        painterResource(id = R.drawable.heartplus),
+        painterResource(id = R.drawable.heartwind),
+        painterResource(id = R.drawable.settings),
     )
+    BottomAppBar(
+        containerColor = LocalCustomColors.current.backgroundBottomBar,
+        modifier = modifier
+    ) {
+        items.forEachIndexed { index, item ->
+            NavigationBarItem(
+                icon = {
+                    Box(
+                        modifier = Modifier
+                            .padding(horizontal = 24.dp, vertical = 8.dp)
+                    ) {
+                        val icon = icons[index]
+                        Icon(painter = icon, contentDescription = item, modifier = Modifier.size(30.dp))
+                    }
+                },
+                selected = selectedButton.value == index,
+                onClick = {
+                    selectedButton.value = index
+                    val route = when (index) {
+                        0 -> "inicio"  // Ítem de "Inicio"
+                        1 -> "Info"
+                        else -> return@NavigationBarItem
+                    }
+                    navController.navigate(route) {
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = LocalCustomColors.current.secondary,
+                    unselectedIconColor = LocalCustomColors.current.text1,
+                    selectedTextColor = LocalCustomColors.current.secondary,
+                    unselectedTextColor = LocalCustomColors.current.text1,
+                    indicatorColor = Color.Transparent
+                )
+            )
+        }
+    }
+}
+@Composable
+fun NavigationHost(
+    navController: NavHostController,
+) {
+    NavHost(navController = navController, startDestination = "inicio") {
+        composable("inicio") { Inicio(navController) }
+        composable("Info") { Inicio(navController) }
+
+    }
+}
+@Composable
+fun Inicio(navController: NavHostController){
+
+}
+@Composable
+fun Info(navController: NavHostController){
+
 }
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     MindSpeakTheme {
-        MyApp("Android")
     }
 }
