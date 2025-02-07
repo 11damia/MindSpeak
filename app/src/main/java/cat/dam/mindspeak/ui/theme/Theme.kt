@@ -1,13 +1,19 @@
 package cat.dam.mindspeak.ui.theme
 
 import android.os.Build
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
@@ -43,27 +49,49 @@ private val LightColorScheme = lightColorScheme(
     onSurface = Color(0xFF1C1B1F),
     */
 )
+data class CustomColors(
+    val background: Color,
+    val backgroundBottomBar: Color,
+    val secondary: Color,
+    val third: Color,
+    val text1: Color,
+    val text2: Color,
+    val text3: Color,
+)
+
+val LightCustomColors = CustomColors(
+    background = White,
+    backgroundBottomBar = White,
+    secondary = SecondaryColor,
+    third = ThirdColorLight,
+    text1 = Black,
+    text2 = DarkGray,
+    text3 = Black
+)
+val DarkCustomColors = CustomColors(
+    background = BackgroundDark,
+    backgroundBottomBar = BottomBarDark,
+    secondary = SecondaryColor,
+    third = DarkThirdColor,
+    text1 = White,
+    text2 = White,
+    text3 = Black
+)
+
+val LocalCustomColors = staticCompositionLocalOf { LightCustomColors }
+
 
 @Composable
 fun MindSpeakTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+    val customColors = if (darkTheme) DarkCustomColors else LightCustomColors
+    CompositionLocalProvider(LocalCustomColors provides customColors) {
+        Box(modifier = Modifier.background(LocalCustomColors.current.background).fillMaxSize())
+        MaterialTheme(
+            colorScheme = if (darkTheme) darkColorScheme() else lightColorScheme(),
+            content = content
+        )
     }
-
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
 }
