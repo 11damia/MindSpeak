@@ -68,11 +68,6 @@ fun MyApp() {
 
 
 
-@Composable
-fun Info(){
-
-}
-
 @Preview(showBackground = true)
 @Composable
 fun MyAppPreview() {

@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import cat.dam.mindspeak.Info
 
 import cat.dam.mindspeak.ui.screens.Inicio
 import cat.dam.mindspeak.ui.screens.SettingsUser
@@ -16,7 +15,7 @@ fun NavigationHost(
 ) {
     NavHost(navController = navController, startDestination = "inicio") {
         composable("inicio") { Inicio(LocalCustomColors) }
-        composable("Info") { SettingsUser() }
+        composable("settings") { SettingsUser() }
 
     }
 }
