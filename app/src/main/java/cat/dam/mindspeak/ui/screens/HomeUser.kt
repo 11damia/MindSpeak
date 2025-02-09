@@ -1,5 +1,6 @@
 package cat.dam.mindspeak.ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,9 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
+import cat.dam.mindspeak.R
 import cat.dam.mindspeak.ui.theme.CustomColors
 import cat.dam.mindspeak.ui.theme.White
 
@@ -47,13 +51,20 @@ fun Inicio(localCustomColors: ProvidableCompositionLocal<CustomColors>) {
 
         item {
             Box(
-                modifier = Modifier.fillMaxWidth().background(localCustomColors.current.third),
+                modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp).background(localCustomColors.current.third),
             ) {
+                Image(
+                painter = painterResource(id = R.drawable.helloperson),
+                contentDescription = "Feeling",
+                modifier = Modifier
+                    .zIndex(1f)
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 6.dp, bottom = 0.dp)
+                )
                 Column(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(top = 16.dp, end = 16.dp, start = 16.dp).zIndex(2f),
                     horizontalAlignment = Alignment.Start
                 ) {
-                    //Image(painter = painterResource(id = R.drawable.ic_user_feeling), contentDescription = "Feeling")
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = "Como me siento",
@@ -68,7 +79,7 @@ fun Inicio(localCustomColors: ProvidableCompositionLocal<CustomColors>) {
                         fontWeight = FontWeight.Bold,
                         fontSize = 12.sp
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(70.dp))
                     Button(
                         onClick = { /* Acción al hacer clic */ },
                         colors = ButtonDefaults.buttonColors(
@@ -80,11 +91,10 @@ fun Inicio(localCustomColors: ProvidableCompositionLocal<CustomColors>) {
                             color = White
                         )
                     }
+                    Spacer(modifier = Modifier.height(24.dp))
                 }
             }
-            Spacer(modifier = Modifier.height(24.dp))
         }
-
         item {
             Box(
                 modifier = Modifier.fillMaxWidth().background(localCustomColors.current.third),
