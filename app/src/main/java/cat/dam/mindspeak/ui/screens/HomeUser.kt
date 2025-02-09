@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -59,7 +60,6 @@ fun Inicio(localCustomColors: ProvidableCompositionLocal<CustomColors>) {
                 modifier = Modifier
                     .zIndex(1f)
                     .align(Alignment.BottomEnd)
-                    .padding(end = 6.dp, bottom = 0.dp)
                 )
                 Column(
                     modifier = Modifier.padding(top = 16.dp, end = 16.dp, start = 16.dp).zIndex(2f),
@@ -70,16 +70,16 @@ fun Inicio(localCustomColors: ProvidableCompositionLocal<CustomColors>) {
                         text = "Como me siento",
                         color = localCustomColors.current.text2,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp
+                        fontSize = 30.sp
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = "Espacio para que niños y adultos elijan imágenes que representen cómo se sienten.",
                         color = localCustomColors.current.text2,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.Normal,
                         fontSize = 12.sp
                     )
-                    Spacer(modifier = Modifier.height(70.dp))
+                    Spacer(modifier = Modifier.height(90.dp))
                     Button(
                         onClick = { /* Acción al hacer clic */ },
                         colors = ButtonDefaults.buttonColors(
@@ -99,26 +99,34 @@ fun Inicio(localCustomColors: ProvidableCompositionLocal<CustomColors>) {
             Box(
                 modifier = Modifier.fillMaxWidth().background(localCustomColors.current.third),
             ) {
+                Image(
+                    painter = painterResource(id = R.drawable.tablet),
+                    contentDescription = "Feeling",
+                    modifier = Modifier
+                        .width(181.dp)
+                        .height(161.dp)
+                        .zIndex(1f)
+                        .align(Alignment.BottomEnd)
+                )
                 Column(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(top = 16.dp, end = 16.dp, start = 16.dp),
                     horizontalAlignment = Alignment.Start
                 ) {
-                    //Image(painter = painterResource(id = R.drawable.ic_exercise), contentDescription = "Exercise")
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = "Ejercicios",
                         fontWeight = FontWeight.Bold,
                         color = localCustomColors.current.text2,
-                        fontSize = 20.sp
+                        fontSize = 30.sp
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = "Recursos y actividades para apoyar su desarrollo, comunicación y autonomía de forma inclusiva.",
                         color = localCustomColors.current.text2,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.Normal,
                         fontSize = 12.sp
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(90.dp))
                     Button(
                         onClick = { /* Acción al hacer clic */ },
                         colors = ButtonDefaults.buttonColors(
@@ -130,6 +138,7 @@ fun Inicio(localCustomColors: ProvidableCompositionLocal<CustomColors>) {
                             color = White
                         )
                     }
+                    Spacer(modifier = Modifier.height(24.dp))
                 }
             }
         }
