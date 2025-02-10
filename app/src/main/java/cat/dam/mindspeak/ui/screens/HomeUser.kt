@@ -20,15 +20,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavHostController
 import cat.dam.mindspeak.R
 import cat.dam.mindspeak.ui.theme.CustomColors
 import cat.dam.mindspeak.ui.theme.White
 
 @Composable
-fun Inicio(localCustomColors: ProvidableCompositionLocal<CustomColors>) {
+fun Inicio(navController: NavHostController,localCustomColors: ProvidableCompositionLocal<CustomColors>) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -128,7 +130,9 @@ fun Inicio(localCustomColors: ProvidableCompositionLocal<CustomColors>) {
                     )
                     Spacer(modifier = Modifier.height(90.dp))
                     Button(
-                        onClick = { /* Acción al hacer clic */ },
+                        onClick = {
+                            navController.navigate("exercise")
+                        },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = localCustomColors.current.secondary
                         )
@@ -141,6 +145,12 @@ fun Inicio(localCustomColors: ProvidableCompositionLocal<CustomColors>) {
                     Spacer(modifier = Modifier.height(24.dp))
                 }
             }
+            Spacer(modifier = Modifier.height(80.dp))
         }
     }
+}
+@Preview(showBackground = true)
+@Composable
+fun InicioPreview() {
+    //Inicio(n,LocalCustomColors)
 }
