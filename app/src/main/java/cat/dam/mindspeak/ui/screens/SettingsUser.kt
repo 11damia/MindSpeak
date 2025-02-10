@@ -16,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
@@ -29,81 +28,115 @@ import androidx.compose.ui.unit.sp
 
 @Preview(showBackground = true)
 @Composable
-fun SettingsUser(){
-    //Variable de ancho de la pantalla
-    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
-    Column (
+fun SettingsUser() {
+    Box(
         modifier = Modifier
             .fillMaxSize()
-    ){
-        Row (
+            .padding(top = 80.dp, bottom = 25.dp) // Padding superior e inferior
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            // Fila para el lápiz de editar foto de perfil
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp) // Mismo padding horizontal que los settingItem
+            ) {
+                Box(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    // Imagen de lápiz de editar foto de perfil
+                    Image(
+                        painter = painterResource(id = R.drawable.lapiz_icon),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(30.dp)
+                            .align(Alignment.TopEnd), // Alinea el lápiz a la derecha
+                        contentScale = ContentScale.Fit
+                    )
+                }
+            }
+
+            // Fila para la imagen de perfil
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                // Imagen de foto de perfil
+                Image(
+                    painter = painterResource(id = R.drawable.user_icon),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(150.dp),
+                    contentScale = ContentScale.Fit
+                )
+            }
+
+            // Columnas para los elementos de configuración
+            Column(
+                modifier = Modifier.padding(horizontal = 20.dp) // Mismo padding horizontal
+            ) {
+                Spacer(modifier = Modifier.height(40.dp))
+                settingItem("Nombre", "Nombre del usuario")
+                Spacer(modifier = Modifier.height(5.dp))
+                settingItem("Apellido", "Apellido del usuario")
+                Spacer(modifier = Modifier.height(5.dp))
+                settingItem("Correo Electrónico", "Correo del usuario")
+                Spacer(modifier = Modifier.height(5.dp))
+                settingItem("Fecha Nacimiento", "22/01/2002")
+            }
+        }
+
+        // Imagen superpuesta (persona_settings_user)
+        Image(
+            painter = painterResource(id = R.drawable.persona_settings_user),
+            contentDescription = null,
+            modifier = Modifier
+                .size(150.dp)
+                .align(Alignment.BottomEnd) // Alinea la imagen en la esquina inferior derecha
+                .offset(x = (-20).dp, y = (-20).dp), // Ajusta la posición para que no quede pegada al borde
+            contentScale = ContentScale.Crop
+        )
+    }
+}
+
+@Composable
+fun settingItem(
+    txt1: String,
+    txt2: String
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 15.dp), // Solo padding vertical
+    ) {
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-        ){
-            //Imagen de lapiz de editar foto perfil
+        ) {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    txt1,
+                    style = TextStyle(fontSize = 25.sp, fontWeight = FontWeight.Bold, color = Color.Black)
+                )
+                Text(
+                    txt2,
+                    style = TextStyle(color = Color.Black, fontSize = 25.sp),
+                    modifier = Modifier.padding(top = 10.dp)
+                )
+            }
+            // Imagen del lápiz alineada a la derecha
             Image(
                 painter = painterResource(id = R.drawable.lapiz_icon),
                 contentDescription = null,
                 modifier = Modifier
-                    .offset(x = screenWidth * 0.85f)
-                    .size(30.dp),
+                    .size(30.dp)
+                    .align(Alignment.TopEnd), // Alinea la imagen a la derecha
                 contentScale = ContentScale.Fit
             )
-        }
-        Row (
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ){
-            //Imagen de foto de perfil
-            Image(
-                painter = painterResource(id = R.drawable.user_icon),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(150.dp),
-                contentScale = ContentScale.Fit
-            )
-        }
-
-        Column {
-            settingItem("Nombre", "Nombre del usuario")
-            Spacer(modifier = Modifier.height(5.dp))
-            settingItem("Apellido", "Apellido del usuario")
-            Spacer(modifier = Modifier.height(5.dp))
-            settingItem("Correo Electrónico", "Correo del usuario")
-            Spacer(modifier = Modifier.height(5.dp))
-            settingItem("Fecha Nacimiento", "22/01/2002")
-        }
-    }
-}
-
-//Clase para cada item
-@Composable
-fun settingItem(
-    txt1 : String,
-    txt2 : String
-){
-    //Variable de ancho de la pantalla
-    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
-
-    Row (
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(15.dp),
-    ){
-        Column(modifier = Modifier.weight(1f)) {
-            Row {
-                Text(txt1, style = TextStyle(fontSize = 25.sp, fontWeight = FontWeight.Bold, color = Color.Black))
-                Image(
-                    painter = painterResource(id = R.drawable.lapiz_icon),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .offset(x = screenWidth * 0.59f)
-                        .size(30.dp),
-                    contentScale = ContentScale.Fit
-                )
-            }
-            Text(txt2, style = TextStyle(color = Color.Black, fontSize = 25.sp), modifier = Modifier.padding(top = 10.dp))
         }
     }
 }
