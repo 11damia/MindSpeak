@@ -4,99 +4,74 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import cat.dam.mindspeak.ui.theme.BackgroundDark
-import cat.dam.mindspeak.ui.theme.White
-import cat.dam.mindspeak.ui.theme.Black
-import cat.dam.mindspeak.ui.theme.BottomBarDark
-import cat.dam.mindspeak.ui.theme.DarkGray
-import cat.dam.mindspeak.ui.theme.DarkThirdColor
+import androidx.navigation.compose.rememberNavController
+import cat.dam.mindspeak.ui.navigation.NavigationHost
+import cat.dam.mindspeak.ui.screens.shared.BottomBar
+import cat.dam.mindspeak.ui.screens.shared.TopBar
+import cat.dam.mindspeak.ui.theme.LocalCustomColors
 import cat.dam.mindspeak.ui.theme.MindSpeakTheme
-import cat.dam.mindspeak.ui.theme.SecondaryColor
-import cat.dam.mindspeak.ui.theme.ThirdColorLight
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MindSpeakTheme {
-                MyApp("Hola")
+           MindSpeakTheme {
+                MyApp()
             }
         }
     }
 }
 
-data class CustomColors(
-    val background: Color,
-    val backgroundBottomBar: Color,
-    val secondary: Color,
-    val third: Color,
-    val textWhite: Color,
-    val textDark: Color,
-    val textExtra: Color,
-)
-val LightCustomColors = CustomColors(
-    background = White,
-    backgroundBottomBar = White,
-    secondary =  SecondaryColor,
-    third = ThirdColorLight,
-    textWhite = White,
-    textDark = Black,
-    textExtra = DarkGray
-)
-val DarkCustomColors = CustomColors(
-    background = BackgroundDark,
-    backgroundBottomBar = BottomBarDark,
-    secondary =  SecondaryColor,
-    third = DarkThirdColor,
-    textWhite = White,
-    textDark = Black,
-    textExtra = DarkGray
-)
 
-val LocalCustomColors = staticCompositionLocalOf { LightCustomColors }
 
 
 @Composable
-fun MindSpeakTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
-) {
-    val customColors = if (darkTheme) DarkCustomColors else LightCustomColors
+fun MyApp() {
+    val navController = rememberNavController()
+    val selectedButton = rememberSaveable { mutableIntStateOf(0) }
+    val showBottomBar by remember { mutableStateOf(true) }
 
-    CompositionLocalProvider(LocalCustomColors provides customColors) {
-        MaterialTheme(
-            colorScheme = if (darkTheme) darkColorScheme() else lightColorScheme(),
-            content = content
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .systemBarsPadding()
+            .background(LocalCustomColors.current.background)
+    ) {
+        TopBar(modifier = Modifier.align(Alignment.TopCenter))
+        NavigationHost(
+            navController = navController,
         )
+        if (showBottomBar) {
+            BottomBar(
+                navController,
+                selectedButton,
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
+        }
     }
 }
 
 
-@Composable
-fun MyApp(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        color = LocalCustomColors.current.textWhite,
-        modifier = modifier
-    )
-}
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun MyAppPreview() {
     MindSpeakTheme {
-        MyApp("Android")
+        MyApp()
     }
 }
