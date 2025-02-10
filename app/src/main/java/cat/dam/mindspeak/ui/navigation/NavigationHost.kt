@@ -4,9 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import cat.dam.mindspeak.SettingsUser
 
 import cat.dam.mindspeak.ui.screens.Inicio
-import cat.dam.mindspeak.ui.screens.SettingsUser
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
 @Composable
