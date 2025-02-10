@@ -14,9 +14,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -25,10 +27,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cat.dam.mindspeak.ui.theme.CustomColors
 
-@Preview(showBackground = true)
 @Composable
-fun SettingsUser() {
+fun SettingsUser(localCustomColors: ProvidableCompositionLocal<CustomColors>) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -51,6 +53,7 @@ fun SettingsUser() {
                     Image(
                         painter = painterResource(id = R.drawable.lapiz_icon),
                         contentDescription = null,
+                        colorFilter = ColorFilter.tint(localCustomColors.current.text1),
                         modifier = Modifier
                             .size(30.dp)
                             .align(Alignment.TopEnd), // Alinea el lápiz a la derecha
@@ -80,13 +83,13 @@ fun SettingsUser() {
                 modifier = Modifier.padding(horizontal = 20.dp) // Mismo padding horizontal
             ) {
                 Spacer(modifier = Modifier.height(40.dp))
-                settingItem("Nombre", "Nombre del usuario")
+                settingItem("Nombre", "Nombre del usuario",localCustomColors)
                 Spacer(modifier = Modifier.height(5.dp))
-                settingItem("Apellido", "Apellido del usuario")
+                settingItem("Apellido", "Apellido del usuario",localCustomColors)
                 Spacer(modifier = Modifier.height(5.dp))
-                settingItem("Correo Electrónico", "Correo del usuario")
+                settingItem("Correo Electrónico", "Correo del usuario",localCustomColors)
                 Spacer(modifier = Modifier.height(5.dp))
-                settingItem("Fecha Nacimiento", "22/01/2002")
+                settingItem("Fecha Nacimiento", "22/01/2002",localCustomColors)
             }
         }
 
@@ -106,7 +109,8 @@ fun SettingsUser() {
 @Composable
 fun settingItem(
     txt1: String,
-    txt2: String
+    txt2: String,
+    localCustomColors: ProvidableCompositionLocal<CustomColors>
 ) {
     Row(
         modifier = Modifier
@@ -120,11 +124,11 @@ fun settingItem(
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     txt1,
-                    style = TextStyle(fontSize = 25.sp, fontWeight = FontWeight.Bold, color = Color.Black)
+                    style = TextStyle(fontSize = 25.sp, fontWeight = FontWeight.Bold, color = localCustomColors.current.text1)
                 )
                 Text(
                     txt2,
-                    style = TextStyle(color = Color.Black, fontSize = 25.sp),
+                    style = TextStyle(color = localCustomColors.current.text1, fontSize = 25.sp),
                     modifier = Modifier.padding(top = 10.dp)
                 )
             }
@@ -132,6 +136,7 @@ fun settingItem(
             Image(
                 painter = painterResource(id = R.drawable.lapiz_icon),
                 contentDescription = null,
+                colorFilter = ColorFilter.tint(localCustomColors.current.text1),
                 modifier = Modifier
                     .size(30.dp)
                     .align(Alignment.TopEnd), // Alinea la imagen a la derecha

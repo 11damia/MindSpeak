@@ -16,7 +16,7 @@ fun NavigationHost(
 ) {
     NavHost(navController = navController, startDestination = "inicio") {
         composable("inicio") { Inicio(navController,LocalCustomColors) }
-        composable("settings") { SettingsUser() }
+        composable("settings") { SettingsUser(LocalCustomColors) }
         composable("exercise") { Exercises(LocalCustomColors) }
 
     }

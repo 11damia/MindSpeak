@@ -57,7 +57,7 @@ fun Inicio(navController: NavHostController,localCustomColors: ProvidableComposi
                 modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp).background(localCustomColors.current.third),
             ) {
                 Image(
-                painter = painterResource(id = R.drawable.helloperson),
+                painter = painterResource(id = R.drawable.persona_settings_user),
                 contentDescription = "Feeling",
                 modifier = Modifier
                     .zIndex(1f)
