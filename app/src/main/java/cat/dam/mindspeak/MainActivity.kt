@@ -52,7 +52,7 @@ fun MyApp() {
             .systemBarsPadding()
             .background(LocalCustomColors.current.background)
     ) {
-        TopBar(modifier = Modifier.align(Alignment.TopCenter))
+        TopBar(modifier = Modifier.align(Alignment.TopCenter), navController = navController)
         NavigationHost(
             navController = navController,
         )
