@@ -25,12 +25,14 @@ fun EmotionHistoryScreen(viewModel: EmotionViewModel = viewModel()) {
         Text(
             text = "Historial de emociones",
             style = MaterialTheme.typography.headlineMedium,
+            color = LocalCustomColors.current.text1,
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
         if (emotionRecords.isEmpty()) {
             Text(
                 text = "No hay emociones registradas.",
+                color = LocalCustomColors.current.text1,
                 style = MaterialTheme.typography.bodyMedium
             )
         } else {
