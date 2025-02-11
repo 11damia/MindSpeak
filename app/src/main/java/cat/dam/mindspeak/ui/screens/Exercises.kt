@@ -6,7 +6,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -16,27 +15,30 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cat.dam.mindspeak.ui.theme.CustomColors
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 import cat.dam.mindspeak.R
 
 @Composable
-fun Exercises(localCustomColors: ProvidableCompositionLocal<CustomColors>) {
+fun Exercises(navController: NavHostController) {
     val exercises = listOf(
         "Inhala\n3 segundos" to R.drawable.inspirar,
         "Aguanta\n7 segundos" to R.drawable.aguantar,
         "Exhala\n8 segundos" to R.drawable.expirar
     )
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(top = 80.dp, start = 20.dp, end = 20.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 20.dp, end = 20.dp)
+    ) {
         Text(
             text = "Relájemos juntos",
             style = TextStyle(
                 fontWeight = FontWeight.Bold,
                 fontSize = 30.sp,
-                color = localCustomColors.current.text1,
+                color = LocalCustomColors.current.text1,
                 textAlign = TextAlign.Center
             ),
             modifier = Modifier.fillMaxWidth()
@@ -46,18 +48,18 @@ fun Exercises(localCustomColors: ProvidableCompositionLocal<CustomColors>) {
 
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(exercises) { (text, imageRes) ->
-                ExerciseStep(text, imageRes, localCustomColors)
+                ExerciseStep(text, imageRes)
             }
         }
     }
 }
-
 @Composable
 fun ExerciseStep(
     text: String,
-    imageRes: Int,
-    localCustomColors: ProvidableCompositionLocal<CustomColors>
+    imageRes: Int
 ) {
+    val localCustomColors = LocalCustomColors.current  // Use the current value of LocalCustomColors
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
@@ -67,7 +69,7 @@ fun ExerciseStep(
             style = TextStyle(
                 fontWeight = FontWeight.Bold,
                 fontSize = 25.sp,
-                color = localCustomColors.current.text1
+                color = localCustomColors.text1  // Use the current text color
             ),
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.Start
@@ -87,5 +89,5 @@ fun ExerciseStep(
 @Preview(showBackground = true)
 @Composable
 fun BottomBarPreview() {
-    Exercises(LocalCustomColors)
+    Exercises(navController = rememberNavController())
 }

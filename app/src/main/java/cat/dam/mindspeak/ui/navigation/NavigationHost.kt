@@ -1,23 +1,41 @@
 package cat.dam.mindspeak.ui.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import cat.dam.mindspeak.SettingsUser
+import cat.dam.mindspeak.model.EmotionViewModel
+import cat.dam.mindspeak.ui.screens.EmotionRatingScreen
+import cat.dam.mindspeak.ui.screens.Emotions
 import cat.dam.mindspeak.ui.screens.Exercises
-
 import cat.dam.mindspeak.ui.screens.Inicio
+import cat.dam.mindspeak.ui.screens.EmotionHistoryScreen
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
 @Composable
-fun NavigationHost(
-    navController: NavHostController,
-) {
+fun NavigationHost(navController: NavHostController, viewModel: EmotionViewModel) {
     NavHost(navController = navController, startDestination = "inicio") {
-        composable("inicio") { Inicio(navController,LocalCustomColors) }
+        composable("inicio") { Inicio(navController) }
+        composable("emotions") { Emotions(navController) }
+        composable("exercise") { Exercises(navController) }
         composable("settings") { SettingsUser(LocalCustomColors) }
-        composable("exercise") { Exercises(LocalCustomColors) }
-
+        composable("history") { // Routa para el historial
+            EmotionHistoryScreen(viewModel = viewModel)
+        }
+        composable("emotionRating/{emotionType}") { backStackEntry ->
+            val emotionType = backStackEntry.arguments?.getString("emotionType") ?: "UNKNOWN"
+            if (emotionType == "UNKNOWN") {
+                Log.e("EmotionRatingScreen", "Argument 'emotionType' is missing or invalid")
+                navController.popBackStack()
+                return@composable
+            }
+            EmotionRatingScreen(
+                navController = navController,
+                backStackEntry = backStackEntry,
+                viewModel = viewModel
+            )
+        }
     }
 }

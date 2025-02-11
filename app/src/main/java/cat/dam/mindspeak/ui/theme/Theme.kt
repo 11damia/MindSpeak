@@ -57,6 +57,7 @@ data class CustomColors(
     val text1: Color,
     val text2: Color,
     val text3: Color,
+    val text4: Color,
 )
 
 val LightCustomColors = CustomColors(
@@ -66,7 +67,8 @@ val LightCustomColors = CustomColors(
     third = ThirdColorLight,
     text1 = Black,
     text2 = DarkGray,
-    text3 = Black
+    text3 = Black,
+    text4 = White
 )
 val DarkCustomColors = CustomColors(
     background = BackgroundDark,
@@ -75,7 +77,8 @@ val DarkCustomColors = CustomColors(
     third = DarkThirdColor,
     text1 = White,
     text2 = White,
-    text3 = Black
+    text3 = Black,
+    text4 = White
 )
 
 val LocalCustomColors = staticCompositionLocalOf { LightCustomColors }

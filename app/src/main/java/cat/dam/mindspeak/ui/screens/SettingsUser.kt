@@ -17,14 +17,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cat.dam.mindspeak.ui.theme.CustomColors
@@ -34,7 +31,7 @@ fun SettingsUser(localCustomColors: ProvidableCompositionLocal<CustomColors>) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 80.dp, bottom = 25.dp) // Padding superior e inferior
+            .padding( bottom = 25.dp) // Padding superior e inferior
     ) {
         Column(
             modifier = Modifier
