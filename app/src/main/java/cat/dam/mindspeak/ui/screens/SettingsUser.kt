@@ -1,4 +1,4 @@
-package cat.dam.mindspeak
+package cat.dam.mindspeak.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -29,6 +30,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
+import cat.dam.mindspeak.R
 import cat.dam.mindspeak.ui.theme.CustomColors
 
 @Composable
@@ -37,78 +40,85 @@ fun SettingsUser(localCustomColors: ProvidableCompositionLocal<CustomColors>) {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            // Fila para el lápiz de editar foto de perfil
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp) // Mismo padding horizontal que los settingItem
-            ){
-                        Box(
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            // Imagen de lápiz de editar foto de perfil
-                            Image(
-                                painter = painterResource(id = R.drawable.lapiz_icon),
-                                contentDescription = null,
-                                colorFilter = ColorFilter.tint(localCustomColors.current.text1),
-                                modifier = Modifier
-                                    .size(30.dp)
-                                    .align(Alignment.TopEnd) // Alinea el lápiz a la derecha
-                                    .clickable { /* Aquí puedes agregar lógica para editar la foto de perfil */ },
-                                contentScale = ContentScale.Fit
-                            )
-                        }
+            item {
+                // Fila para el lápiz de editar foto de perfil
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp) // Mismo padding horizontal que los settingItem
+                ) {
+                    Box(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        // Imagen de lápiz de editar foto de perfil
+                        Image(
+                            painter = painterResource(id = R.drawable.lapiz_icon),
+                            contentDescription = null,
+                            colorFilter = ColorFilter.tint(localCustomColors.current.text1),
+                            modifier = Modifier
+                                .size(30.dp)
+                                .align(Alignment.TopEnd) // Alinea el lápiz a la derecha
+                                .clickable { /* Aquí puedes agregar lógica para editar la foto de perfil */ },
+                            contentScale = ContentScale.Fit
+                        )
                     }
-
-                        // Fila para la imagen de perfil
-                        Row(
+                }
+            }
+            item {
+                // Fila para la imagen de perfil
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    // Imagen de foto de perfil
+                    Image(
+                        painter = painterResource(id = R.drawable.user_icon),
+                        contentDescription = null,
                         modifier = Modifier
-                            .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                // Imagen de foto de perfil
+                            .size(150.dp),
+                        contentScale = ContentScale.Fit
+                    )
+                }
+            }
+            item {
+
+                // Columnas para los elementos de configuración
+                Column(
+                    modifier = Modifier.padding(horizontal = 20.dp).zIndex(1f)
+                ) // Mismo padding horizontal
+                {
+                    Spacer(modifier = Modifier.height(40.dp))
+                    SettingItem("Nombre", "Nombre del usuario", localCustomColors)
+                    Spacer(modifier = Modifier.height(5.dp))
+                    SettingItem("Apellido", "Apellido del usuario", localCustomColors)
+                    Spacer(modifier = Modifier.height(5.dp))
+                    SettingItem("Correo Electrónico", "Correo del usuario", localCustomColors)
+                    Spacer(modifier = Modifier.height(5.dp))
+                    SettingItem("Fecha Nacimiento", "22/01/2002", localCustomColors)
+                }
                 Image(
-                    painter = painterResource(id = R.drawable.user_icon),
+                    painter = painterResource(id = R.drawable.persona_settings_user),
                     contentDescription = null,
                     modifier = Modifier
-                        .size(150.dp),
-                    contentScale = ContentScale.Fit
+                        .zIndex(0f)
+                        .size(150.dp)
+                        .align(Alignment.BottomEnd), // Alinea la imagen en la esquina inferior derecha
+                    contentScale = ContentScale.Crop
                 )
             }
 
-            // Columnas para los elementos de configuración
-            Column(
-                modifier = Modifier.padding(horizontal = 20.dp)) // Mismo padding horizontal
-                {
-                    Spacer(modifier = Modifier.height(40.dp))
-                    settingItem("Nombre", "Nombre del usuario", localCustomColors)
-                    Spacer(modifier = Modifier.height(5.dp))
-                    settingItem("Apellido", "Apellido del usuario", localCustomColors)
-                    Spacer(modifier = Modifier.height(5.dp))
-                    settingItem("Correo Electrónico", "Correo del usuario", localCustomColors)
-                    Spacer(modifier = Modifier.height(5.dp))
-                    settingItem("Fecha Nacimiento", "22/01/2002", localCustomColors)
-                }
-        }
 
-        // Imagen persona_settings_user en la parte inferior
-        Image(
-            painter = painterResource(id = R.drawable.persona_settings_user),
-            contentDescription = null,
-            modifier = Modifier
-                .size(150.dp)
-                .align(Alignment.BottomEnd), // Alinea la imagen en la esquina inferior derecha
-            contentScale = ContentScale.Crop
-        )
+        }
     }
 }
 
 @Composable
-fun settingItem(
+fun SettingItem(
     txt1: String,
     txt2: String,
     localCustomColors: ProvidableCompositionLocal<CustomColors>
@@ -130,7 +140,11 @@ fun settingItem(
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     txt1,
-                    style = TextStyle(fontSize = 25.sp, fontWeight = FontWeight.Bold, color = localCustomColors.current.text1)
+                    style = TextStyle(
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = localCustomColors.current.text1
+                    )
                 )
 
                 if (isEditing.value) {
@@ -147,7 +161,10 @@ fun settingItem(
                     // Texto no editable
                     Text(
                         editableText.value,
-                        style = TextStyle(color = localCustomColors.current.text1, fontSize = 25.sp),
+                        style = TextStyle(
+                            color = localCustomColors.current.text1,
+                            fontSize = 25.sp
+                        ),
                         modifier = Modifier.padding(top = 10.dp)
                     )
                 }
@@ -161,7 +178,9 @@ fun settingItem(
                 modifier = Modifier
                     .size(30.dp)
                     .align(Alignment.TopEnd) // Alinea la imagen a la derecha
-                    .clickable { isEditing.value = !isEditing.value }, // Cambia el estado de edición
+                    .clickable {
+                        isEditing.value = !isEditing.value
+                    }, // Cambia el estado de edición
                 contentScale = ContentScale.Fit
             )
         }

@@ -33,20 +33,20 @@ fun Exercises(navController: NavHostController) {
             .fillMaxSize()
             .padding(start = 20.dp, end = 20.dp)
     ) {
-        Text(
-            text = "Relájemos juntos",
-            style = TextStyle(
-                fontWeight = FontWeight.Bold,
-                fontSize = 30.sp,
-                color = LocalCustomColors.current.text1,
-                textAlign = TextAlign.Center
-            ),
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
         LazyColumn(modifier = Modifier.fillMaxSize()) {
+            item {
+                Text(
+                    text = "Relájemos juntos",
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 30.sp,
+                        color = LocalCustomColors.current.text1,
+                        textAlign = TextAlign.Center
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+            }
             items(exercises) { (text, imageRes) ->
                 ExerciseStep(text, imageRes)
             }
@@ -58,23 +58,24 @@ fun ExerciseStep(
     text: String,
     imageRes: Int
 ) {
-    val localCustomColors = LocalCustomColors.current  // Use the current value of LocalCustomColors
+    val localCustomColors = LocalCustomColors.current
 
     Row(
         modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
+        Spacer(Modifier.weight(0.1f))
         Text(
             text = text,
             style = TextStyle(
                 fontWeight = FontWeight.Bold,
                 fontSize = 25.sp,
-                color = localCustomColors.text1  // Use the current text color
+                color = localCustomColors.text1
             ),
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.Start
         )
-        Spacer(modifier = Modifier.width(16.dp))
         Image(
             painter = painterResource(id = imageRes),
             contentDescription = text,
@@ -82,6 +83,7 @@ fun ExerciseStep(
                 .width(200.dp)
                 .height(200.dp)
         )
+        Spacer(Modifier.weight(0.1f))
     }
     Spacer(modifier = Modifier.height(16.dp))
 }

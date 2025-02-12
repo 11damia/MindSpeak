@@ -5,18 +5,20 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import cat.dam.mindspeak.SettingsUser
+import cat.dam.mindspeak.ui.screens.SettingsUser
 import cat.dam.mindspeak.model.EmotionViewModel
 import cat.dam.mindspeak.ui.screens.EmotionRatingScreen
 import cat.dam.mindspeak.ui.screens.Emotions
 import cat.dam.mindspeak.ui.screens.Exercises
 import cat.dam.mindspeak.ui.screens.Inicio
 import cat.dam.mindspeak.ui.screens.EmotionHistoryScreen
+import cat.dam.mindspeak.ui.screens.Login
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
 @Composable
 fun NavigationHost(navController: NavHostController, viewModel: EmotionViewModel) {
-    NavHost(navController = navController, startDestination = "inicio") {
+    NavHost(navController = navController, startDestination = "login") {
+        composable("login"){ Login(navController) }
         composable("inicio") { Inicio(navController) }
         composable("emotions") { Emotions(navController) }
         composable("exercise") { Exercises(navController) }
