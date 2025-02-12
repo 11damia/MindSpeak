@@ -17,6 +17,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import cat.dam.mindspeak.model.EmotionViewModel
 import cat.dam.mindspeak.ui.navigation.NavigationHost
@@ -44,8 +45,11 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MyApp(viewModel: EmotionViewModel = viewModel()) {
     val navController = rememberNavController()
-    val selectedButton = rememberSaveable { mutableIntStateOf(0) }
-    val showBottomBar by remember { mutableStateOf(true) }
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+    val showBottomBar = when (currentRoute) {
+        "login" -> false // Ocultar en la pantalla de login
+        else -> true // Mostrar en otras pantallas
+    }
 
     Column(
         modifier = Modifier
@@ -53,19 +57,16 @@ fun MyApp(viewModel: EmotionViewModel = viewModel()) {
             .systemBarsPadding()
             .background(LocalCustomColors.current.background)
     ) {
-
         TopBar(navController = navController)
-
 
         Box(modifier = Modifier.weight(1f)) {
             NavigationHost(navController = navController, viewModel = viewModel)
         }
 
-
         if (showBottomBar) {
             BottomBar(
                 navController = navController,
-                selectedButton = selectedButton
+                currentRoute = currentRoute
             )
         }
     }
