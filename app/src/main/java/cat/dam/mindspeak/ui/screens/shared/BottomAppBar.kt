@@ -9,7 +9,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,7 +20,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import cat.dam.mindspeak.R
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
-import cat.dam.mindspeak.ui.theme.MindSpeakTheme
+
 
 @Composable
 fun BottomBar(
@@ -28,7 +28,7 @@ fun BottomBar(
     selectedButton: MutableState<Int>,
     modifier: Modifier = Modifier
 ) {
-    val items = listOf("home", "How I feel", "Exercice", "Settings")
+    val items = listOf("home", "Emotions", "Exercise", "Settings")
     val icons = listOf(
         painterResource(id = R.drawable.home),
         painterResource(id = R.drawable.heartplus),
@@ -60,8 +60,8 @@ fun BottomBar(
                     selectedButton.value = index
                     val route = when (index) {
                         0 -> "inicio" // Route pour "Home"
-                        1 -> "info"  // Route pour "How I feel"
-                        2 -> "exercise" // Route pour "Exercice"
+                        1 -> "emotions"  // Route pour "How I feel"
+                        2 -> "exercise" // Route pour "Exercise"
                         3 -> "settings" // Route pour "Settings"
                         else -> return@NavigationBarItem
                     }
@@ -87,7 +87,7 @@ fun BottomBar(
 fun BottomBarPreview() {
         // Simuler un NavController et un état sélectionné
         val navController = rememberNavController()
-        val selectedButton = remember { mutableStateOf(0) }
+        val selectedButton = remember { mutableIntStateOf(0) }
         BottomBar(
             navController = navController,
             selectedButton = selectedButton

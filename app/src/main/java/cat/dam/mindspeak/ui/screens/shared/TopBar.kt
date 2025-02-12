@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,14 +17,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import cat.dam.mindspeak.R
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 import cat.dam.mindspeak.ui.theme.MindSpeakTheme
 
 @Composable
-fun TopBar(modifier: Modifier = Modifier) {
+fun TopBar(
+    modifier: Modifier = Modifier, navController: NavHostController,
+) {
     Row(
-        modifier = modifier.fillMaxWidth().padding(vertical = 16.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -64,11 +70,19 @@ fun TopBar(modifier: Modifier = Modifier) {
                 ),
                 modifier = Modifier.padding(end = 8.dp)
             )
-            Image(
-                painter = painterResource(id = R.drawable.user_icon),
-                contentDescription = "User Icon",
-                modifier = Modifier.size(55.dp).padding(end = 20.dp)
-            )
+            IconButton(
+                onClick = {
+                    navController.navigate("settings")
+                }
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.user_icon),
+                    contentDescription = "User Icon",
+                    modifier = Modifier
+                        .size(55.dp)
+                        .padding(end = 20.dp)
+                )
+            }
         }
     }
 }
@@ -77,6 +91,6 @@ fun TopBar(modifier: Modifier = Modifier) {
 @Composable
 fun TopBarPreview() {
     MindSpeakTheme {
-        TopBar()
+        //TopBar()
     }
 }
