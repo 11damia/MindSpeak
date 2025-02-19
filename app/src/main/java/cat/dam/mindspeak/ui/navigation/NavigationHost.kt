@@ -15,6 +15,7 @@ import cat.dam.mindspeak.ui.screens.EmotionHistoryScreen
 import cat.dam.mindspeak.ui.screens.HomeSupervisorScreen
 import cat.dam.mindspeak.ui.screens.Login
 import cat.dam.mindspeak.ui.screens.LogoPage
+import cat.dam.mindspeak.ui.screens.NotificationScreen
 import cat.dam.mindspeak.ui.screens.SignUp
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
@@ -24,6 +25,7 @@ fun NavigationHost(navController: NavHostController, viewModel: EmotionViewModel
         composable("logo"){ LogoPage(navController) }
         composable("signup"){ SignUp(navController) }
         composable("homesupervis"){ HomeSupervisorScreen(navController) }
+        composable("notis"){ NotificationScreen() }
         composable("login"){ Login(navController) }
         composable("inicio") { Inicio(navController) }
         composable("emotions") { Emotions(navController) }

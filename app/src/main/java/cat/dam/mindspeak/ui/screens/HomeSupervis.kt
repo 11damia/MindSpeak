@@ -46,7 +46,7 @@ fun HomeSupervisorScreen(navController: NavHostController) {
             Spacer(modifier = Modifier.height(30.dp))
         }
         item {
-            OptionButton(text = "Alertas", onClick = { /* Handle click */ })
+            OptionButton(text = "Alertas", onClick = { navController.navigate("notis") })
         }
         item {
             OptionButton(text = "Gráfico", onClick = { /* Handle click */ })
