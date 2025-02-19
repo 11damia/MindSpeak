@@ -13,11 +13,15 @@ import cat.dam.mindspeak.ui.screens.Exercises
 import cat.dam.mindspeak.ui.screens.Inicio
 import cat.dam.mindspeak.ui.screens.EmotionHistoryScreen
 import cat.dam.mindspeak.ui.screens.Login
+import cat.dam.mindspeak.ui.screens.LogoPage
+import cat.dam.mindspeak.ui.screens.SignUp
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
 @Composable
 fun NavigationHost(navController: NavHostController, viewModel: EmotionViewModel) {
-    NavHost(navController = navController, startDestination = "login") {
+    NavHost(navController = navController, startDestination = "logo") {
+        composable("logo"){ LogoPage(navController) }
+        composable("signup"){ SignUp(navController) }
         composable("login"){ Login(navController) }
         composable("inicio") { Inicio(navController) }
         composable("emotions") { Emotions(navController) }

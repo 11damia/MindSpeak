@@ -8,24 +8,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import cat.dam.mindspeak.R
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
-
 
 @Composable
 fun BottomBar(
     navController: NavHostController,
-    selectedButton: MutableState<Int>,
+    currentRoute: String?, // Ruta actual
     modifier: Modifier = Modifier
 ) {
     val items = listOf("home", "Emotions", "Exercise", "Settings")
@@ -41,6 +35,13 @@ fun BottomBar(
         modifier = modifier
     ) {
         items.forEachIndexed { index, item ->
+            val route = when (index) {
+                0 -> "inicio" // Ruta para "Home"
+                1 -> "emotions" // Ruta para "Emotions"
+                2 -> "exercise" // Ruta para "Exercise"
+                3 -> "settings" // Ruta para "Settings"
+                else -> null
+            }
             NavigationBarItem(
                 icon = {
                     Box(
@@ -51,23 +52,16 @@ fun BottomBar(
                         Icon(
                             painter = icon,
                             contentDescription = item,
-                            modifier = Modifier.size(30.dp)
-                        )
+                            modifier = Modifier.size(30.dp))
                     }
                 },
-                selected = selectedButton.value == index,
+                selected = currentRoute == route, // Determina si está seleccionado
                 onClick = {
-                    selectedButton.value = index
-                    val route = when (index) {
-                        0 -> "inicio" // Route pour "Home"
-                        1 -> "emotions"  // Route pour "How I feel"
-                        2 -> "exercise" // Route pour "Exercise"
-                        3 -> "settings" // Route pour "Settings"
-                        else -> return@NavigationBarItem
-                    }
-                    navController.navigate(route) {
-                        launchSingleTop = true
-                        restoreState = true
+                    route?.let {
+                        navController.navigate(it) {
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
                 },
                 colors = NavigationBarItemDefaults.colors(
@@ -80,16 +74,4 @@ fun BottomBar(
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BottomBarPreview() {
-        // Simuler un NavController et un état sélectionné
-        val navController = rememberNavController()
-        val selectedButton = remember { mutableIntStateOf(0) }
-        BottomBar(
-            navController = navController,
-            selectedButton = selectedButton
-        )
 }

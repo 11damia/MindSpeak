@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -35,70 +36,76 @@ fun Login(navController: NavHostController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var rememberMe by remember { mutableStateOf(false) }
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "Iniciar Sesión",
-            color = LocalCustomColors.current.text1,
-            fontSize = 24.sp,
-            modifier = Modifier.padding(bottom = 24.dp)
-        )
-
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Correo electrónico", color = LocalCustomColors.current.text1) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Contraseña", color = LocalCustomColors.current.text1) },
-            visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Checkbox(
-                checked = rememberMe,
-                onCheckedChange = { rememberMe = it }
+        item {
+            Text(
+                text = "Iniciar Sesión",
+                color = LocalCustomColors.current.text1,
+                fontSize = 24.sp,
+                modifier = Modifier.padding(bottom = 24.dp)
             )
-            Text(text = "Recuérdame", color = LocalCustomColors.current.secondary,modifier = Modifier.padding(start = 8.dp))
-            TextButton(
-                onClick = { /* Handle forgot password logic here */ }
+        }
+        item {
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Correo electrónico", color = LocalCustomColors.current.text1) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        item {
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Contraseña", color = LocalCustomColors.current.text1) },
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        item {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "¿Olvidaste tu contraseña?", color = LocalCustomColors.current.secondary)
+                Checkbox(
+                    checked = rememberMe,
+                    onCheckedChange = { rememberMe = it }
+                )
+                Text(text = "Recuérdame", color = LocalCustomColors.current.secondary,modifier = Modifier.padding(start = 8.dp))
+                TextButton(
+                    onClick = { /* Handle forgot password logic here */ }
+                ) {
+                    Text(text = "¿Olvidaste tu contraseña?", color = LocalCustomColors.current.secondary)
+                }
             }
+
+            Spacer(modifier = Modifier.height(24.dp))
         }
+        item {
+            Button(
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = LocalCustomColors.current.secondary
+                ),
+                onClick = { navController.navigate("inicio") },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Iniciar Sesión")
+            }
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Button(
-            colors = ButtonDefaults.buttonColors(
-                containerColor = LocalCustomColors.current.secondary
-            ),
-            onClick = { navController.navigate("inicio") },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = "Iniciar Sesión")
+            Spacer(modifier = Modifier.height(16.dp))
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
     }
 
 }
