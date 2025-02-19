@@ -14,11 +14,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
-@Preview(showBackground = true)
 @Composable
-fun HomeSupervisorScreen() {
+fun HomeSupervisorScreen(navController: NavHostController) {
 
 
     LazyColumn(

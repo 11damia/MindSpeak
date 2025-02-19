@@ -175,7 +175,7 @@ fun SignUp(navController: NavHostController) {
         }
         item {
             Button(
-                onClick = { navController.navigate("inicio")},
+                onClick = { navController.navigate("homesupervis")},
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = DarkGray

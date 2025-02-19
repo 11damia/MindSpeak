@@ -12,6 +12,7 @@ import cat.dam.mindspeak.ui.screens.Emotions
 import cat.dam.mindspeak.ui.screens.Exercises
 import cat.dam.mindspeak.ui.screens.Inicio
 import cat.dam.mindspeak.ui.screens.EmotionHistoryScreen
+import cat.dam.mindspeak.ui.screens.HomeSupervisorScreen
 import cat.dam.mindspeak.ui.screens.Login
 import cat.dam.mindspeak.ui.screens.LogoPage
 import cat.dam.mindspeak.ui.screens.SignUp
@@ -22,6 +23,7 @@ fun NavigationHost(navController: NavHostController, viewModel: EmotionViewModel
     NavHost(navController = navController, startDestination = "logo") {
         composable("logo"){ LogoPage(navController) }
         composable("signup"){ SignUp(navController) }
+        composable("homesupervis"){ HomeSupervisorScreen(navController) }
         composable("login"){ Login(navController) }
         composable("inicio") { Inicio(navController) }
         composable("emotions") { Emotions(navController) }
