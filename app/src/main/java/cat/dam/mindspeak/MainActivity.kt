@@ -43,16 +43,25 @@ fun MyApp(viewModel: EmotionViewModel = viewModel()) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
     val showBottomBar = when (currentRoute) {
         "login" -> false // Ocultar en la pantalla de login
+        "logo" ->false
+        "signup" ->false
         else -> true // Mostrar en otras pantallas
     }
-
+    val showTopBar = when (currentRoute){
+        "login" -> false // Ocultar en la pantalla de login
+        "logo" ->false
+        "signup" -> false
+        else -> true // Mostrar en otras pantallas
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding()
             .background(LocalCustomColors.current.background)
     ) {
-        TopBar(navController = navController)
+        if(showTopBar){
+            TopBar(navController = navController)
+        }
 
         Box(modifier = Modifier.weight(1f)) {
             NavigationHost(navController = navController, viewModel = viewModel)
