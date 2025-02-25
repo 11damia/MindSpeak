@@ -1,5 +1,6 @@
 package cat.dam.mindspeak
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -41,17 +43,19 @@ class MainActivity : ComponentActivity() {
 fun MyApp(viewModel: EmotionViewModel = viewModel()) {
     val navController = rememberNavController()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     val showBottomBar = when (currentRoute) {
         "login" -> false // Ocultar en la pantalla de login
         "logo" ->false
         "signup" ->false
-        else -> true // Mostrar en otras pantallas
+        else -> !isLandscape // Mostrar en otras pantallas
     }
     val showTopBar = when (currentRoute){
         "login" -> false // Ocultar en la pantalla de login
         "logo" ->false
         "signup" -> false
-        else -> true // Mostrar en otras pantallas
+        else -> !isLandscape // Mostrar en otras pantallas
     }
     Column(
         modifier = Modifier
