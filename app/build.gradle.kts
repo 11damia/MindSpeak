@@ -41,7 +41,7 @@ android {
 }
 
 dependencies {
-    implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation(libs.coil.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -61,4 +61,12 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
+
+    // Firebase
+    implementation (libs.firebase.auth)
+    implementation (platform(libs.firebase.bom.v3272))
+    implementation (libs.firebase.auth.ktx)
+    implementation (libs.firebase.firestore.ktx)
+    implementation (libs.firebase.database.ktx)
+
 }

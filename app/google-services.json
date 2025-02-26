@@ -12,7 +12,12 @@
           "package_name": "cat.dam.mindspeak"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "83986896491-88bsmsefhb91klv82i5k3e0vk0dp1ebf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBJQ6biYSp3wlRfrFOt66R_IrKt0KVtuGs"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "83986896491-88bsmsefhb91klv82i5k3e0vk0dp1ebf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
