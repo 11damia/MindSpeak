@@ -32,24 +32,6 @@ fun NotificationScreen() {
             .padding(16.dp),
     ) {
         item {
-            Text(
-                text = "Bienvenid@",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = LocalCustomColors.current.text1,
-//                modifier = Modifier.align(Alignment.Start)
-            )
-
-            Text(
-                text = "Username",
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold,
-                color = LocalCustomColors.current.text1,
-//                modifier = Modifier.padding(bottom = 24.dp).align(Alignment.Start)
-            )
-            Spacer(modifier = Modifier.height(30.dp))
-        }
-        item {
             Notification(userName = "User 1", description = "Esta trist li ha passat algo a l’escola...", onClick = { /* Handle click */ })
         }
         item {
