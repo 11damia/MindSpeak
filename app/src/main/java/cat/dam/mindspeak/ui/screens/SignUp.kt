@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,24 +33,32 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import cat.dam.mindspeak.firebase.FirebaseManager
 import cat.dam.mindspeak.ui.theme.DarkGray
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
+import kotlinx.coroutines.launch
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUp(navController: NavHostController) {
+    val firebaseManager = FirebaseManager()
     var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
-    var nombre by remember { mutableStateOf("") }
-    var apellido by remember { mutableStateOf("") }
-    var bday by remember { mutableStateOf("") }
-    // Estado para controlar si el menú está expandido
+    var contrasenya by remember { mutableStateOf("") }
+    var confirmarContrasenya by remember { mutableStateOf("") }
+    var nom by remember { mutableStateOf("") }
+    var cognom by remember { mutableStateOf("") }
+    var telefon by remember { mutableStateOf("") }
+    var dataNaixement by remember { mutableStateOf("") }
+    var sexe by remember { mutableStateOf("") }
+    var grau by remember { mutableStateOf("") }
     var isExpanded by remember { mutableStateOf(false) }
-    // Estado para almacenar la opción seleccionada
-    var selectedOption by remember { mutableStateOf("") }
-    // Lista de opciones para el menú desplegable
-    val options = listOf("Supervisor", "Familiar", "Profesor")
+    var rolSeleccionat by remember { mutableStateOf("") }
+    val opcions = listOf("Supervisor", "Familiar", "Professor", "Usuari")
+
+    // Créer un scope de coroutine
+    val coroutineScope = rememberCoroutineScope()
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -59,135 +68,152 @@ fun SignUp(navController: NavHostController) {
     ) {
         item {
             Text(
-                text = "Crear usuario",
+                text = "Crear compte",
                 color = LocalCustomColors.current.text1,
                 fontWeight = FontWeight.ExtraBold,
                 fontSize = 24.sp,
                 modifier = Modifier.padding(bottom = 24.dp)
             )
         }
-        item {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                OutlinedTextField(
-                    value = nombre,
-                    onValueChange = { nombre = it },
-                    label = { Text("Nombre", color = LocalCustomColors.current.text1) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                    modifier = Modifier.weight(1f)
-                )
-                OutlinedTextField(
-                    value = apellido,
-                    onValueChange = { apellido = it },
-                    label = { Text("Apellidos", color = LocalCustomColors.current.text1) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                    modifier = Modifier.weight(1f)
-                )
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-        }
+
         item {
             OutlinedTextField(
-                value = bday,
-                onValueChange = { bday = it },
-                label = { Text("Fecha de nacimiento", color = LocalCustomColors.current.text1) },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                value = nom,
+                onValueChange = { nom = it },
+                label = { Text("Nom", color = LocalCustomColors.current.text1) },
                 modifier = Modifier.fillMaxWidth()
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
         }
+
+        item {
+            OutlinedTextField(
+                value = cognom,
+                onValueChange = { cognom = it },
+                label = { Text("Cognoms", color = LocalCustomColors.current.text1) },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+
+        item {
+            OutlinedTextField(
+                value = telefon,
+                onValueChange = { telefon = it },
+                label = { Text("Telèfon", color = LocalCustomColors.current.text1) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+
         item {
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Correo electrónico", color = LocalCustomColors.current.text1) },
+                label = { Text("Correu electrònic", color = LocalCustomColors.current.text1) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 modifier = Modifier.fillMaxWidth()
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
         }
+
         item {
             OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text("Contraseña", color = LocalCustomColors.current.text1) },
+                value = contrasenya,
+                onValueChange = { contrasenya = it },
+                label = { Text("Contrasenya", color = LocalCustomColors.current.text1) },
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 modifier = Modifier.fillMaxWidth()
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
         }
+
         item {
             OutlinedTextField(
-                value = confirmPassword,
-                onValueChange = { confirmPassword = it },
-                label = { Text("Confirmar Contraseña", color = LocalCustomColors.current.text1) },
+                value = confirmarContrasenya,
+                onValueChange = { confirmarContrasenya = it },
+                label = { Text("Confirmar contrasenya", color = LocalCustomColors.current.text1) },
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 modifier = Modifier.fillMaxWidth()
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
         }
+
         item {
-            // Componente ExposedDropdownMenuBox
             ExposedDropdownMenuBox(
                 expanded = isExpanded,
                 onExpandedChange = { isExpanded = it }
             ) {
-                // OutlinedTextField para mostrar la opción seleccionada
                 OutlinedTextField(
-                    value = selectedOption,
+                    value = rolSeleccionat,
                     onValueChange = { },
-                    label = { Text("Tipo de usuario") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .menuAnchor(), // Conecta el TextField con el menú
-                    readOnly = true, // Hace que el campo sea de solo lectura
-                    trailingIcon = {
-                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
-                    }
+                    label = { Text("Tipus d'usuari") },
+                    readOnly = true,
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded) },
+                    modifier = Modifier.menuAnchor()
                 )
-
-                // Menú desplegable
                 ExposedDropdownMenu(
                     expanded = isExpanded,
                     onDismissRequest = { isExpanded = false }
                 ) {
-                    options.forEach { option ->
+                    opcions.forEach { opcio ->
                         DropdownMenuItem(
-                            text = { Text(option) },
+                            text = { Text(opcio) },
                             onClick = {
-                                selectedOption = option
+                                rolSeleccionat = opcio
                                 isExpanded = false
                             }
                         )
                     }
                 }
             }
-
             Spacer(modifier = Modifier.height(16.dp))
         }
+
         item {
             Button(
-                onClick = { navController.navigate("homesupervis")},
-                shape = RoundedCornerShape(10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = DarkGray
-                ),            modifier = Modifier
-                    .width(300.dp)
-                    .height(50.dp),
-            ) {
-                Text("Crear usuario")
-            }
+                onClick = {
+                    if (contrasenya != confirmarContrasenya) {
+                        println("Les contrasenyes no coincideixen.")
+                        return@Button
+                    }
 
+                    if (nom.isEmpty() || cognom.isEmpty() || email.isEmpty() || contrasenya.isEmpty() || rolSeleccionat.isEmpty()) {
+                        println("Tots els camps són obligatoris.")
+                        return@Button
+                    }
+
+                    // Lancer une coroutine pour appeler les fonctions suspendues
+                    coroutineScope.launch {
+                        try {
+                            firebaseManager.registrarUsuari(
+                                email = email,
+                                contrasenya = contrasenya,
+                                nom = nom,
+                                cognom = cognom,
+                                telefon = telefon,
+                                dataNaixement = dataNaixement.toLongOrNull(),
+                                sexe = sexe,
+                                grau = grau,
+                                rol = rolSeleccionat,
+                                onSuccess = { navController.navigate("homesupervis") },
+                                onFailure = { error -> println(error) }
+                            )
+                        } catch (e: Exception) {
+                            println("Error durant el registre: ${e.message}")
+                        }
+                    }
+                },
+                modifier = Modifier
+                    .width(300.dp)
+                    .height(50.dp)
+            ) {
+                Text("Crear compte")
+            }
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
-
 }
