@@ -199,7 +199,7 @@ fun SignUp(navController: NavHostController) {
                                 sexe = sexe,
                                 grau = grau,
                                 rol = rolSeleccionat,
-                                onSuccess = { navController.navigate("homesupervis") },
+                                onSuccess = { navController.navigate("login") },
                                 onFailure = { error -> println(error) }
                             )
                         } catch (e: Exception) {
