@@ -28,14 +28,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import cat.dam.mindspeak.firebase.FirebaseManager
+import cat.dam.mindspeak.model.UserViewModel
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 @Composable
-fun Login(navController: NavHostController) {
+fun Login(navController: NavHostController,userViewModel:UserViewModel) {
     val firebaseManager = FirebaseManager()
     var email by remember { mutableStateOf("") }
     var contrasenya by remember { mutableStateOf("") }
@@ -128,11 +127,12 @@ fun Login(navController: NavHostController) {
                                     // Obtenir le rôle de l'utilisateur après la connexion réussie
                                     coroutineScope.launch {
                                         val rol = firebaseManager.obtenirRolUsuari()
+                                        userViewModel.updateUserRole(rol?:"Usuari")
                                         when (rol) {
                                             "Supervisor" -> navController.navigate("homesupervis")
                                             "Familiar" -> navController.navigate("homefamiliar")
                                             "Professor" -> navController.navigate("homeprofessor")
-                                            "Usuari" -> navController.navigate("homeusuari")
+                                            "Usuari" -> navController.navigate("homeuser")
                                             else -> println("Rol no vàlid")
                                         }
                                     }
