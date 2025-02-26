@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import cat.dam.mindspeak.ui.screens.SettingsUser
 import cat.dam.mindspeak.model.EmotionViewModel
+import cat.dam.mindspeak.model.UserViewModel
 import cat.dam.mindspeak.ui.screens.EmotionRatingScreen
 import cat.dam.mindspeak.ui.screens.Emotions
 import cat.dam.mindspeak.ui.screens.Exercises
@@ -20,20 +21,22 @@ import cat.dam.mindspeak.ui.screens.SignUp
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
 @Composable
-fun NavigationHost(navController: NavHostController, viewModel: EmotionViewModel) {
+fun NavigationHost(
+    navController: NavHostController,
+    viewModel: EmotionViewModel,
+    userRoleViewModel: UserViewModel // Añade el UserRoleViewModel como parámetro
+) {
     NavHost(navController = navController, startDestination = "logo") {
-        composable("logo"){ LogoPage(navController) }
-        composable("signup"){ SignUp(navController) }
-        composable("homesupervis"){ HomeSupervisorScreen(navController) }
-        composable("notis"){ NotificationScreen() }
-        composable("login"){ Login(navController) }
-        composable("inicio") { Inicio(navController) }
+        composable("logo") { LogoPage(navController) }
+        composable("signup") { SignUp(navController) }
+        composable("homesupervis") { HomeSupervisorScreen(navController) }
+        composable("notis") { NotificationScreen() }
+        composable("login") {Login(navController = navController, userViewModel = userRoleViewModel)}
+        composable("homeuser") { Inicio(navController) }
         composable("emotions") { Emotions(navController) }
         composable("exercise") { Exercises(navController) }
         composable("settings") { SettingsUser(LocalCustomColors) }
-        composable("history") { // Routa para el historial
-            EmotionHistoryScreen(viewModel = viewModel)
-        }
+        composable("history") { EmotionHistoryScreen(viewModel = viewModel) }
         composable("emotionRating/{emotionType}") { backStackEntry ->
             val emotionType = backStackEntry.arguments?.getString("emotionType") ?: "UNKNOWN"
             if (emotionType == "UNKNOWN") {
