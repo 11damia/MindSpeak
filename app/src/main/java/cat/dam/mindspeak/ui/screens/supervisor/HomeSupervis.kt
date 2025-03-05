@@ -54,10 +54,10 @@ fun HomeSupervisorScreen(navController: NavHostController) {
             OptionButton(text = "Añadir Ejercicio", onClick = { /* Handle click */ })
         }
         item {
-            OptionButton(text = "Configuración", onClick = { /* Handle click */ })
+            OptionButton(text = "Configuración", onClick = { navController.navigate("settings") })
         }
         item {
-            OptionButton(text = "Crear Usuario", onClick = { /* Handle click */ })
+            OptionButton(text = "Crear Usuario", onClick = { navController.navigate("signup") })
         }
     }
 }

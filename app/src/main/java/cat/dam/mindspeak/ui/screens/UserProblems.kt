@@ -1,5 +1,6 @@
 package cat.dam.mindspeak.ui.screens
 
+import android.content.ClipData.Item
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.background
@@ -7,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -50,54 +52,103 @@ fun UserProblems(navController: NavHostController?) {
                 .padding(16.dp),
             contentAlignment = Alignment.TopStart
         ) {
-            Column(
+            LazyColumn (
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.Start
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.user_icon),
-                        contentDescription = "user_icon",
-                        modifier = Modifier.size(60.dp)
-                    )
-                    Text(
-                        text = "UserName",
-                        fontWeight = FontWeight.Bold,
-                        color = LocalCustomColors.current.text2,
-                        fontSize = 30.sp,
-                        modifier = Modifier
-                            .padding(start = 10.dp)
-                            .weight(1f)
+                item{
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.user_icon),
+                            contentDescription = "user_icon",
+                            modifier = Modifier.size(60.dp)
+                        )
+                        Text(
+                            text = "UserName",
+                            fontWeight = FontWeight.Bold,
+                            color = LocalCustomColors.current.text2,
+                            fontSize = 30.sp,
+                            modifier = Modifier
+                                .padding(start = 10.dp)
+                                .weight(1f)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(30.dp))
+                }
+                item {
+                    Problem("01/01/0001", "desc")
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        thickness = 2.dp,
+                        color = LocalCustomColors.current.text1
                     )
                 }
-                Spacer(modifier = Modifier.height(30.dp))
-                Problem("01/01/0001", "desc")
-                Divider(
-                    modifier = Modifier.padding(vertical = 10.dp),
-                    thickness = 2.dp,
-                    color = LocalCustomColors.current.text1
-                )
-                Problem("02/02/0002", "desc")
-                Divider(
-                    modifier = Modifier.padding(vertical = 10.dp),
-                    thickness = 2.dp,
-                    color = LocalCustomColors.current.text1
-                )
-                Problem("03/03/0003", "desc")
-                Divider(
-                    modifier = Modifier.padding(vertical = 10.dp),
-                    thickness = 2.dp,
-                    color = LocalCustomColors.current.text1
-                )
-                Problem("04/04/0004", "desc")
-                Divider(
-                    modifier = Modifier.padding(vertical = 10.dp),
-                    thickness = 2.dp,
-                    color = LocalCustomColors.current.text1
-                )
-                Problem("05/05/0005", "desc")
+                item {
+                    Problem("01/01/0001", "desc")
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        thickness = 2.dp,
+                        color = LocalCustomColors.current.text1
+                    )
+                }
+                item {
+                    Problem("01/01/0001", "desc")
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        thickness = 2.dp,
+                        color = LocalCustomColors.current.text1
+                    )
+                }
+                item {
+                    Problem("01/01/0001", "desc")
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        thickness = 2.dp,
+                        color = LocalCustomColors.current.text1
+                    )
+                }
+                item {
+                    Problem("01/01/0001", "desc")
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        thickness = 2.dp,
+                        color = LocalCustomColors.current.text1
+                    )
+                }
+                item {
+                    Problem("01/01/0001", "desc")
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        thickness = 2.dp,
+                        color = LocalCustomColors.current.text1
+                    )
+                }
+                item {
+                    Problem("01/01/0001", "desc")
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        thickness = 2.dp,
+                        color = LocalCustomColors.current.text1
+                    )
+                }
+                item {
+                    Problem("01/01/0001", "desc")
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        thickness = 2.dp,
+                        color = LocalCustomColors.current.text1
+                    )
+                }
+                item {
+                    Problem("01/01/0001", "desc")
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        thickness = 2.dp,
+                        color = LocalCustomColors.current.text1
+                    )
+                }
             }
         }
     }
