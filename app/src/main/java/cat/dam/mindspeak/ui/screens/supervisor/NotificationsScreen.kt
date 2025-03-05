@@ -31,19 +31,19 @@ fun NotificationScreen(navController: NavHostController) {
             .padding(16.dp),
     ) {
         item {
-            Notification(userName = "User 1", description = "Esta trist li ha passat algo a l’escola...", onClick = { navController.navigate("problemas") })
+            Notification(userName = "User 1", description = "Está triste, le ha pasado algo en la escuela...", onClick = { navController.navigate("problemas") })
         }
         item {
-            Notification(userName = "User 2", description = "Esta trist li ha passat algo a l’escola...", onClick = { /* Handle click */ })
+            Notification(userName = "User 2", description = "Está triste, le ha pasado algo en la escuela...", onClick = { /* Handle click */ })
         }
         item {
-            Notification(userName = "User 3", description = "Esta trist li ha passat algo a l’escola...", onClick = { /* Handle click */ })
+            Notification(userName = "User 3", description = "Está triste, le ha pasado algo en la escuela...", onClick = { /* Handle click */ })
         }
         item {
-            Notification(userName = "User 4", description = "Esta trist li ha passat algo a l’escola...", onClick = { /* Handle click */ })
+            Notification(userName = "User 4", description = "Está triste, le ha pasado algo en la escuela...", onClick = { /* Handle click */ })
         }
         item {
-            Notification(userName = "User 5", description = "Esta trist li ha passat algo a l’escola...", onClick = { /* Handle click */ })
+            Notification(userName = "User 5", description = "Está triste, le ha pasado algo en la escuela...", onClick = { /* Handle click */ })
         }
     }
 }
