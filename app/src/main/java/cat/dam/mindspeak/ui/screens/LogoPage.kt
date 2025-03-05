@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import cat.dam.mindspeak.R
+import cat.dam.mindspeak.ui.theme.Black
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
 @Composable
@@ -78,7 +79,7 @@ fun LogoPage(navController: NavHostController) {
                         .width(300.dp)
                         .height(50.dp)
                 ) {
-                    Text("Iniciar Sesión")
+                    Text(text = "Iniciar Sesión", color = Black)
                 }
                 Spacer(Modifier.height(8.dp))
             }
