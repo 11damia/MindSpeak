@@ -18,6 +18,7 @@ import cat.dam.mindspeak.ui.screens.Login
 import cat.dam.mindspeak.ui.screens.LogoPage
 import cat.dam.mindspeak.ui.screens.supervisor.NotificationScreen
 import cat.dam.mindspeak.ui.screens.SignUp
+import cat.dam.mindspeak.ui.screens.UserProblems
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
 @Composable
@@ -30,12 +31,13 @@ fun NavigationHost(
         composable("logo") { LogoPage(navController) }
         composable("signup") { SignUp(navController) }
         composable("homesupervis") { HomeSupervisorScreen(navController) }
-        composable("notis") { NotificationScreen() }
+        composable("notis") { NotificationScreen(navController) }
+        composable("problemas") { UserProblems(navController) }
         composable("login") {Login(navController = navController, userViewModel = userRoleViewModel)}
         composable("homeuser") { Inicio(navController) }
         composable("emotions") { Emotions(navController) }
         composable("exercise") { Exercises(navController) }
-        composable("settings") { SettingsUser(LocalCustomColors) }
+        composable("settings") { SettingsUser(LocalCustomColors, navController) }
         composable("history") { EmotionHistoryScreen(viewModel = viewModel) }
         composable("emotionRating/{emotionType}") { backStackEntry ->
             val emotionType = backStackEntry.arguments?.getString("emotionType") ?: "UNKNOWN"
