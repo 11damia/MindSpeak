@@ -1,8 +1,12 @@
 package cat.dam.mindspeak.firebase
 
+import android.util.Log
+import cat.dam.mindspeak.model.EmotionRecord
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await
+import java.util.Date
 
 class FirebaseManager {
     private val auth = FirebaseAuth.getInstance()
@@ -97,6 +101,119 @@ class FirebaseManager {
     fun estaUsuariConnectat(): Boolean {
         return auth.currentUser != null
     }
+    // Add a new emotion record
+    suspend fun afegirRegistreEmocio(
+        emotionType: String,
+        rating: Int,
+        onSuccess: () -> Unit = {},
+        onFailure: (String) -> Unit = {}
+    ) {
+        try {
+            // Get current user ID
+            val userId = auth.currentUser?.uid
+                ?: throw Exception("No hi ha un usuari connectat")
 
+            // Prepare emotion record data
+            val emotionData = mapOf(
+                "userId" to userId,
+                "emotionType" to emotionType,
+                "rating" to rating,
+                "date" to com.google.firebase.Timestamp.now()
+            )
+
+            // Add to Firestore
+            db.collection("Emotions")
+                .add(emotionData)
+                .await()
+
+            onSuccess()
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "Error adding emotion record", e)
+            onFailure(e.message ?: "Error desconegut en afegir el registre d'emocions")
+        }
+    }
+
+    // Fetch emotion records for the current user
+    suspend fun obtenirRegistresEmocions(): List<EmotionRecord> {
+        try {
+            // Get current user ID
+            val userId = auth.currentUser?.uid
+                ?: return emptyList()
+
+            // Fetch emotions for the current user, ordered by date
+            val snapshot = db.collection("Emotions")
+                .whereEqualTo("userId", userId)
+                .orderBy("date", Query.Direction.DESCENDING)
+                .get()
+                .await()
+
+            // Convert Firestore documents to EmotionRecord objects
+            return snapshot.documents.map { document ->
+                EmotionRecord(
+                    id = document.id,
+                    emotionType = document.getString("emotionType") ?: "",
+                    rating = document.getLong("rating")?.toInt() ?: 0,
+                    date = document.getTimestamp("date")?.toDate() ?: Date(),
+                    userId = userId
+                )
+            }
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "Error fetching emotion records", e)
+            return emptyList()
+        }
+    }
+
+    // Eliminar un registre d'emocions específic
+    suspend fun eliminarRegistreEmocio(
+        emotionRecordId: String,
+        onSuccess: () -> Unit = {},
+        onFailure: (String) -> Unit = {}
+    ) {
+        try {
+            // Verificar que l'usuari estigui connectat
+            val userId = auth.currentUser?.uid
+                ?: throw Exception("No hi ha un usuari connectat")
+
+            // Eliminar el registre d'emocions
+            db.collection("Emotions")
+                .document(emotionRecordId)
+                .delete()
+                .await()
+
+            onSuccess()
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "Error deleting emotion record", e)
+            onFailure(e.message ?: "Error desconegut en eliminar el registre d'emocions")
+        }
+    }
+
+    // Obtenir estadístiques bàsiques de les emocions
+    suspend fun obtenirEstatistiquesEmocions(): Map<String, Any> {
+        try {
+            // Get current user ID
+            val userId = auth.currentUser?.uid
+                ?: return emptyMap()
+
+            // Fetch all emotion records for the user
+            val snapshot = db.collection("Emotions")
+                .whereEqualTo("userId", userId)
+                .get()
+                .await()
+
+            // Calcular estadístiques
+            val emotions = snapshot.documents.map { document ->
+                document.getString("emotionType") to document.getLong("rating")?.toInt()
+            }
+
+            return mapOf(
+                "totalRegistres" to emotions.size,
+                "mitjanaValoracions" to emotions.mapNotNull { it.second }.average(),
+                "distribuciooEmocions" to emotions.groupingBy { it.first }.eachCount()
+            )
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "Error fetching emotion statistics", e)
+            return emptyMap()
+        }
+    }
 
 }

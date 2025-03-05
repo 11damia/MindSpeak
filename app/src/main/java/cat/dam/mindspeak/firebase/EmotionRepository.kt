@@ -2,11 +2,14 @@ package cat.dam.mindspeak.firebase
 
 import android.util.Log
 import cat.dam.mindspeak.model.EmotionRecord
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await
 
 class EmotionRepository {
-    private val firestore = FirebaseManager.firestore
-    private val auth = FirebaseManager.auth
+    private val firestore = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
 
     // Collection reference
     private val emotionsCollection = firestore.collection("emotions")
@@ -15,12 +18,12 @@ class EmotionRepository {
     suspend fun addEmotionRecord(record: EmotionRecord) {
         try {
             // Get current user ID or use anonymous ID
-            val userId = getCurrentUserId()
+            val userId = auth.currentUser?.uid ?: ""
 
             // Create a new record with user ID
-            val newRecord = record.copy(userId = userId ?: "")
+            val newRecord = record.copy(userId = userId)
 
-            // Add to Firestore
+            // Convert to map and add to Firestore
             emotionsCollection.add(newRecord.toMap()).await()
         } catch (e: Exception) {
             Log.e("EmotionRepository", "Error adding emotion record", e)
@@ -31,7 +34,7 @@ class EmotionRepository {
     // Fetch emotion records for current user
     suspend fun getEmotionRecords(): List<EmotionRecord> {
         return try {
-            val userId = getCurrentUserId()
+            val userId = auth.currentUser?.uid ?: ""
 
             val snapshot = emotionsCollection
                 .whereEqualTo("userId", userId)
@@ -39,26 +42,19 @@ class EmotionRepository {
                 .get()
                 .await()
 
-            snapshot.toObjects(EmotionRecord::class.java)
+            // Convert documents to EmotionRecord objects
+            snapshot.documents.map { doc ->
+                EmotionRecord(
+                    id = doc.id,
+                    emotionType = doc.getString("emotionType") ?: "",
+                    rating = doc.getLong("rating")?.toInt() ?: 0,
+                    date = doc.getDate("date") ?: java.util.Date(),
+                    userId = userId
+                )
+            }
         } catch (e: Exception) {
             Log.e("EmotionRepository", "Error fetching emotion records", e)
             emptyList()
-        }
-    }
-
-    // Get current user ID (or create anonymous user if not logged in)
-    private fun getCurrentUserId(): String? {
-        // If user is logged in, return their UID
-        return FirebaseManager.getCurrentUserId() ?: run {
-            // If no user, sign in anonymously
-            try {
-                // This is a synchronous call in a real app, you'd want to handle this more carefully
-                val result = auth.signInAnonymously().result
-                result.user?.uid
-            } catch (e: Exception) {
-                Log.e("EmotionRepository", "Error creating anonymous user", e)
-                null
-            }
         }
     }
 }
