@@ -8,6 +8,11 @@ class FirebaseManager {
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
 
+    companion object {
+        fun logoutUser() {
+            FirebaseAuth.getInstance().signOut()
+        }
+    }
     // Registrar un usuari
     suspend fun registrarUsuari(
         email: String,
@@ -92,4 +97,6 @@ class FirebaseManager {
     fun estaUsuariConnectat(): Boolean {
         return auth.currentUser != null
     }
+
+
 }

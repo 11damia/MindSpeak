@@ -32,12 +32,12 @@ fun NavigationHost(
         composable("signup") { SignUp(navController) }
         composable("homesupervis") { HomeSupervisorScreen(navController) }
         composable("notis") { NotificationScreen(navController) }
-        composable("problemas") { UserProblems() }
+        composable("problemas") { UserProblems(navController) }
         composable("login") {Login(navController = navController, userViewModel = userRoleViewModel)}
         composable("homeuser") { Inicio(navController) }
         composable("emotions") { Emotions(navController) }
         composable("exercise") { Exercises(navController) }
-        composable("settings") { SettingsUser(LocalCustomColors) }
+        composable("settings") { SettingsUser(LocalCustomColors, navController) }
         composable("history") { EmotionHistoryScreen(viewModel = viewModel) }
         composable("emotionRating/{emotionType}") { backStackEntry ->
             val emotionType = backStackEntry.arguments?.getString("emotionType") ?: "UNKNOWN"
