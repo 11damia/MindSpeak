@@ -1,4 +1,4 @@
-package cat.dam.mindspeak.ui.screens
+package cat.dam.mindspeak.ui.screens.user
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

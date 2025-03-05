@@ -17,8 +17,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import cat.dam.mindspeak.model.EmotionViewModel
+import cat.dam.mindspeak.model.UserViewModel
 import cat.dam.mindspeak.ui.navigation.NavigationHost
-import cat.dam.mindspeak.ui.screens.shared.BottomBar
+import cat.dam.mindspeak.ui.screens.shared.BottomBarAdmin
+import cat.dam.mindspeak.ui.screens.shared.BottomBarUser
 import cat.dam.mindspeak.ui.screens.shared.TopBar
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 import cat.dam.mindspeak.ui.theme.MindSpeakTheme
@@ -29,8 +31,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MindSpeakTheme {
-                val viewModel: EmotionViewModel = viewModel()
-                MyApp(viewModel)
+                val emotionViewModel: EmotionViewModel = viewModel()
+                val userViewModel: UserViewModel = viewModel()
+                MyApp(emotionViewModel, userViewModel)
             }
         }
     }
@@ -38,44 +41,53 @@ class MainActivity : ComponentActivity() {
 
 
 
-
 @Composable
-fun MyApp(viewModel: EmotionViewModel = viewModel()) {
+fun MyApp(
+    viewModel: EmotionViewModel = viewModel(),
+    userViewModel: UserViewModel = viewModel()
+) {
     val navController = rememberNavController()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     val showBottomBar = when (currentRoute) {
         "login" -> false // Ocultar en la pantalla de login
-        "logo" ->false
-        "signup" ->false
-        else -> !isLandscape // Mostrar en otras pantallas
-    }
-    val showTopBar = when (currentRoute){
-        "login" -> false // Ocultar en la pantalla de login
-        "logo" ->false
+        "logo" -> false
         "signup" -> false
         else -> !isLandscape // Mostrar en otras pantallas
     }
+    val showTopBar = when (currentRoute) {
+        "login" -> false // Ocultar en la pantalla de login
+        "logo" -> false
+        "signup" -> false
+        else -> !isLandscape // Mostrar en otras pantallas
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding()
             .background(LocalCustomColors.current.background)
     ) {
-        if(showTopBar){
+        if (showTopBar) {
             TopBar(navController = navController)
         }
 
         Box(modifier = Modifier.weight(1f)) {
-            NavigationHost(navController = navController, viewModel = viewModel)
+            NavigationHost(navController = navController, viewModel = viewModel,userViewModel)
         }
 
         if (showBottomBar) {
-            BottomBar(
-                navController = navController,
-                currentRoute = currentRoute
-            )
+            when (userViewModel.userRole) {
+                "Usuari" -> BottomBarUser(
+                    navController = navController,
+                    currentRoute = currentRoute
+                )
+                else -> BottomBarAdmin(
+                    navController = navController,
+                    currentRoute = currentRoute
+                )
+            }
         }
     }
 }

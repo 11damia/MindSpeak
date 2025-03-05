@@ -1,4 +1,4 @@
-package cat.dam.mindspeak.ui.screens
+package cat.dam.mindspeak.ui.screens.user
 
 import android.util.Log
 import androidx.compose.foundation.Image

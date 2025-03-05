@@ -17,7 +17,7 @@ import cat.dam.mindspeak.R
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
 @Composable
-fun BottomBar(
+fun BottomBarUser(
     navController: NavHostController,
     currentRoute: String?, // Ruta actual
     modifier: Modifier = Modifier
@@ -36,7 +36,7 @@ fun BottomBar(
     ) {
         items.forEachIndexed { index, item ->
             val route = when (index) {
-                0 -> "inicio" // Ruta para "Home"
+                0 -> "homeuser" // Ruta para "Home"
                 1 -> "emotions" // Ruta para "Emotions"
                 2 -> "exercise" // Ruta para "Exercise"
                 3 -> "settings" // Ruta para "Settings"

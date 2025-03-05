@@ -69,4 +69,7 @@ dependencies {
     implementation (libs.firebase.firestore.ktx)
     implementation (libs.firebase.database.ktx)
 
+    // Coil per carregar imatges de manera asíncrona
+    implementation(libs.coil.compose)
+
 }
