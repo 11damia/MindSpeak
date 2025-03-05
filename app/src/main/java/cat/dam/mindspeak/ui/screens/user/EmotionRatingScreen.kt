@@ -30,7 +30,6 @@ fun EmotionRatingScreen(
     backStackEntry: NavBackStackEntry,
     viewModel: EmotionViewModel = viewModel()
 ) {
-
     val emotionType = backStackEntry.arguments?.getString("emotionType") ?: "UNKNOWN"
 
     if (emotionType == "UNKNOWN") {
@@ -92,7 +91,13 @@ fun EmotionRatingScreen(
         Spacer(modifier = Modifier.height(32.dp))
         Button(
             onClick = {
-                viewModel.addEmotionRecord(EmotionRecord(emotionType, rating, Date()))
+                // Use the EmotionRecord constructor with all parameters
+                val emotionRecord = EmotionRecord(
+                    emotionType = emotionType,
+                    rating = rating,
+                    date = Date()
+                )
+                viewModel.addEmotionRecord(emotionRecord)
                 navController.popBackStack()
             },
             colors = ButtonDefaults.buttonColors(containerColor = LocalCustomColors.current.secondary)

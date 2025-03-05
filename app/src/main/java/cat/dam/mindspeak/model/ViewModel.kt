@@ -6,13 +6,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.util.Date
-
+/*
 data class EmotionRecord(
     val emotionType: String,
     val rating: Int,
     val date: Date
 )
-
+/*
 class EmotionViewModel : ViewModel() {
     private val _emotionRecords = MutableStateFlow<List<EmotionRecord>>(emptyList())
     val emotionRecords: StateFlow<List<EmotionRecord>> get() = _emotionRecords
@@ -23,3 +23,4 @@ class EmotionViewModel : ViewModel() {
         }
     }
 }
+*/

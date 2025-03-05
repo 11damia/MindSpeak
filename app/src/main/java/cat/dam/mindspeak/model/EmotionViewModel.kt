@@ -6,7 +6,6 @@ import cat.dam.mindspeak.firebase.EmotionRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.util.Date
 
 class EmotionViewModel : ViewModel() {
     private val repository = EmotionRepository()
