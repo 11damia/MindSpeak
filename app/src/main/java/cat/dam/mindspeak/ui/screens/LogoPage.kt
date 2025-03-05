@@ -108,6 +108,7 @@ fun LogoPage(navController: NavHostController) {
                 }
                 Spacer(Modifier.height(8.dp))
             }
+            /* Per registrarte ho ha de fer un admin
             item {
                 Button(
                     onClick = { navController.navigate("signup") },
@@ -122,7 +123,7 @@ fun LogoPage(navController: NavHostController) {
                     Text("Registrarse")
                 }
                 Spacer(Modifier.height(20.dp))
-            }
+            }*/
         }
         /*
         Image(
