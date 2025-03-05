@@ -32,6 +32,7 @@ import androidx.navigation.NavHostController
 import cat.dam.mindspeak.firebase.FirebaseManager
 import cat.dam.mindspeak.model.UserViewModel
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
+import cat.dam.mindspeak.ui.theme.White
 import kotlinx.coroutines.launch
 
 
@@ -154,7 +155,7 @@ fun Login(navController: NavHostController,userViewModel:UserViewModel) {
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Iniciar sessió")
+                Text(text = "Iniciar sessió",color = White)
             }
             Spacer(modifier = Modifier.height(16.dp))
         }
