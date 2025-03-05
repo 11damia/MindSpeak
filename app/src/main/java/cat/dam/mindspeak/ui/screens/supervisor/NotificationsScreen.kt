@@ -16,12 +16,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import cat.dam.mindspeak.R
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
-@Preview(showBackground = true)
 @Composable
-fun NotificationScreen() {
+fun NotificationScreen(navController: NavHostController) {
 
 
     LazyColumn(
@@ -31,7 +31,7 @@ fun NotificationScreen() {
             .padding(16.dp),
     ) {
         item {
-            Notification(userName = "User 1", description = "Esta trist li ha passat algo a l’escola...", onClick = { /* Handle click */ })
+            Notification(userName = "User 1", description = "Esta trist li ha passat algo a l’escola...", onClick = { navController.navigate("problemas") })
         }
         item {
             Notification(userName = "User 2", description = "Esta trist li ha passat algo a l’escola...", onClick = { /* Handle click */ })
