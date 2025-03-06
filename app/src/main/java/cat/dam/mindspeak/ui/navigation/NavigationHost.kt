@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import cat.dam.mindspeak.ui.screens.user.SettingsUser
 import cat.dam.mindspeak.model.EmotionViewModel
 import cat.dam.mindspeak.model.UserViewModel
+import cat.dam.mindspeak.ui.screens.EmotionStatistics
 import cat.dam.mindspeak.ui.screens.user.EmotionRatingScreen
 import cat.dam.mindspeak.ui.screens.user.Emotions
 import cat.dam.mindspeak.ui.screens.user.Exercises
@@ -41,6 +42,7 @@ fun NavigationHost(
         composable("exercise") { Exercises(navController) }
         composable("settings") { SettingsUser(LocalCustomColors, navController) }
         composable("history") { EmotionHistoryScreen(viewModel = viewModel) }
+        composable("grafic") { EmotionStatistics() }
         composable("emotionRating/{emotionType}") { backStackEntry ->
             val emotionType = backStackEntry.arguments?.getString("emotionType") ?: "UNKNOWN"
             if (emotionType == "UNKNOWN") {

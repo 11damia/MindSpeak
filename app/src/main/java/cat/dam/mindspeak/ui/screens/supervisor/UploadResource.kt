@@ -41,11 +41,20 @@ fun UploadResourceApp() {
         horizontalAlignment = Alignment.Start
     ) {
         item {
-        Text(text = "Subir un recurso", color = LocalCustomColors.current.text1,fontSize = 20.sp, fontWeight = FontWeight.Bold)
-        Spacer(modifier = Modifier.height(32.dp))
+            Text(
+                text = "Subir un recurso",
+                color = LocalCustomColors.current.text1,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(32.dp))
         }
         item {
-            Text(text = "Título del ejercicio:", fontWeight = FontWeight.Medium,color = LocalCustomColors.current.text1)
+            Text(
+                text = "Título del ejercicio:",
+                fontWeight = FontWeight.Medium,
+                color = LocalCustomColors.current.text1
+            )
             Spacer(modifier = Modifier.height(16.dp))
             OutlinedTextField(
                 value = "Ejercicio n°1",
@@ -101,7 +110,8 @@ fun UploadSection(title: String, imageResId: Int, imageSize: Dp = 48.dp, onClick
                 Image(
                     painter = painterResource(id = R.drawable.upload),
                     contentDescription = "Upload",
-                    modifier = Modifier.size(20.dp))
+                    modifier = Modifier.size(20.dp)
+                )
             }
 
         }
@@ -122,7 +132,8 @@ fun UploadSection(title: String, imageResId: Int, imageSize: Dp = 48.dp, onClick
             Image(
                 painter = painterResource(id = imageResId),
                 contentDescription = title,
-                modifier = Modifier.size(imageSize))
+                modifier = Modifier.size(imageSize)
+            )
         }
     }
     Spacer(modifier = Modifier.height(32.dp))

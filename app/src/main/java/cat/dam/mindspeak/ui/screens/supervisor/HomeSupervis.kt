@@ -48,10 +48,10 @@ fun HomeSupervisorScreen(navController: NavHostController) {
             OptionButton(text = "Alertas", onClick = { navController.navigate("notis") })
         }
         item {
-            OptionButton(text = "Gráfico", onClick = { /* Handle click */ })
+            OptionButton(text = "Gráfico", onClick = { navController.navigate("grafic") })
         }
         item {
-            OptionButton(text = "Añadir Ejercicio", onClick = { /* Handle click */ })
+            OptionButton(text = "Añadir Ejercicio", onClick = { navController.navigate("upload") })
         }
         item {
             OptionButton(text = "Configuración", onClick = { navController.navigate("settings") })
