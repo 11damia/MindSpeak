@@ -53,13 +53,11 @@ fun MyApp(
     val showBottomBar = when (currentRoute) {
         "login" -> false // Ocultar en la pantalla de login
         "logo" -> false
-        "signup" -> false
         else -> !isLandscape // Mostrar en otras pantallas
     }
     val showTopBar = when (currentRoute) {
         "login" -> false // Ocultar en la pantalla de login
         "logo" -> false
-        "signup" -> false
         else -> !isLandscape // Mostrar en otras pantallas
     }
 

@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -30,6 +32,7 @@ import androidx.navigation.NavHostController
 import cat.dam.mindspeak.firebase.FirebaseManager
 import cat.dam.mindspeak.model.UserViewModel
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
+import cat.dam.mindspeak.ui.theme.White
 import kotlinx.coroutines.launch
 
 
@@ -110,6 +113,10 @@ fun Login(navController: NavHostController,userViewModel:UserViewModel) {
 
         item {
             Button(
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = LocalCustomColors.current.secondary
+                ),
                 onClick = {
                     if (email.isEmpty() || contrasenya.isEmpty()) {
                         println("Ompli tots els camps.")
@@ -148,7 +155,7 @@ fun Login(navController: NavHostController,userViewModel:UserViewModel) {
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Iniciar sessió")
+                Text(text = "Iniciar sessió",color = White)
             }
             Spacer(modifier = Modifier.height(16.dp))
         }

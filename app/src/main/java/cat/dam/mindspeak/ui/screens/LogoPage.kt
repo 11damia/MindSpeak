@@ -3,40 +3,29 @@ package cat.dam.mindspeak.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import androidx.navigation.NavHostController
 import cat.dam.mindspeak.R
-import cat.dam.mindspeak.ui.theme.DarkGray
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
+import cat.dam.mindspeak.ui.theme.White
 
 @Composable
 fun LogoPage(navController: NavHostController) {
@@ -44,20 +33,6 @@ fun LogoPage(navController: NavHostController) {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        /*
-        Image(
-            painter = painterResource(id = R.drawable.circulo2),
-            contentDescription = "image description",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.TopStart)
-                .zIndex(-1f)
-                .graphicsLayer {
-                    rotationZ = 180f // Rota la imagen 180 grados
-                }
-        )*/
-
         // Contenido centrado
         LazyColumn(
             modifier = Modifier
@@ -104,10 +79,11 @@ fun LogoPage(navController: NavHostController) {
                         .width(300.dp)
                         .height(50.dp)
                 ) {
-                    Text("Iniciar Sesión")
+                    Text(text = "Iniciar Sesión", color = White)
                 }
                 Spacer(Modifier.height(8.dp))
             }
+            /* Registrar ho ha de fer un admin
             item {
                 Button(
                     onClick = { navController.navigate("signup") },
@@ -122,23 +98,7 @@ fun LogoPage(navController: NavHostController) {
                     Text("Registrarse")
                 }
                 Spacer(Modifier.height(20.dp))
-            }
+            }*/
         }
-        /*
-        Image(
-            painter = painterResource(id = R.drawable.circulo2),
-            contentDescription = "image description",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomEnd)
-                .zIndex(-1f)
-                /*
-                .graphicsLayer {
-                    rotationZ = 180f // Rota la imagen 180 grados
-                }*/
-        )
-        */
-
     }
 }

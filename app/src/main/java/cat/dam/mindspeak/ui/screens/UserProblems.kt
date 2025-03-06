@@ -1,5 +1,6 @@
 package cat.dam.mindspeak.ui.screens
 
+import android.content.ClipData.Item
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.background
@@ -7,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,68 +20,136 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavHostController
 import cat.dam.mindspeak.R
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
-@Preview(showBackground = true)
 @Composable
-fun UserProblems() {
-
-    Box(
+fun UserProblems(navController: NavHostController?) {
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(vertical = 20.dp, horizontal = 25.dp)
-            .background(LocalCustomColors.current.third, shape = RoundedCornerShape(14.dp))
-            .height(100.dp)
-            .padding(16.dp),
-        contentAlignment = Alignment.TopCenter
     ) {
-//        Row(
-//            modifier = Modifier
-//                .padding(8.dp)
-//                .fillMaxWidth(),
-//            verticalAlignment = Alignment.CenterVertically,
-//            horizontalArrangement = Arrangement.SpaceEvenly
-//        ) {
-//            Image(
-//                painter = painterResource(id = R.drawable.arrow_back),
-//                contentDescription = null,
-//                modifier = Modifier.size(40.dp)
-//            )
-//        }
-        Column (
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.Start
-        ){
+        // Flecha de retroceso fuera del Box
+        Image(
+            painter = painterResource(id = R.drawable.arrow_back),
+            contentDescription = null,
+            modifier = Modifier
+                .size(40.dp)
+                .clickable {
+                    // Navegar hacia atrás o realizar alguna acción
+                    navController?.popBackStack()
+                }
+                .padding(bottom = 10.dp) // Espacio entre la flecha y el Box
+        )
 
-            Row (
-                modifier = Modifier.fillMaxWidth()
-            ){
-                Image(
-                    painter = painterResource(id = R.drawable.user_icon),
-                    contentDescription = "user_icon",
-                    modifier = Modifier
-                        .size(60.dp)
-                )
-                Text(
-                    text = "UserName",
-                    fontWeight = FontWeight.Bold,
-                    color = LocalCustomColors.current.text2,
-                    fontSize = 30.sp,
-                    modifier = Modifier
-                        .padding(start = 10.dp)
-                        .weight(1f)
-                )
-
+        // Box que contiene el resto del contenido
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(LocalCustomColors.current.third, shape = RoundedCornerShape(14.dp))
+                .padding(16.dp),
+            contentAlignment = Alignment.TopStart
+        ) {
+            LazyColumn (
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.Start
+            ) {
+                item{
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.user_icon),
+                            contentDescription = "user_icon",
+                            modifier = Modifier.size(60.dp)
+                        )
+                        Text(
+                            text = "UserName",
+                            fontWeight = FontWeight.Bold,
+                            color = LocalCustomColors.current.text2,
+                            fontSize = 30.sp,
+                            modifier = Modifier
+                                .padding(start = 10.dp)
+                                .weight(1f)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(30.dp))
+                }
+                item {
+                    Problem("01/01/0001", "desc")
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        thickness = 2.dp,
+                        color = LocalCustomColors.current.text1
+                    )
+                }
+                item {
+                    Problem("01/01/0001", "desc")
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        thickness = 2.dp,
+                        color = LocalCustomColors.current.text1
+                    )
+                }
+                item {
+                    Problem("01/01/0001", "desc")
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        thickness = 2.dp,
+                        color = LocalCustomColors.current.text1
+                    )
+                }
+                item {
+                    Problem("01/01/0001", "desc")
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        thickness = 2.dp,
+                        color = LocalCustomColors.current.text1
+                    )
+                }
+                item {
+                    Problem("01/01/0001", "desc")
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        thickness = 2.dp,
+                        color = LocalCustomColors.current.text1
+                    )
+                }
+                item {
+                    Problem("01/01/0001", "desc")
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        thickness = 2.dp,
+                        color = LocalCustomColors.current.text1
+                    )
+                }
+                item {
+                    Problem("01/01/0001", "desc")
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        thickness = 2.dp,
+                        color = LocalCustomColors.current.text1
+                    )
+                }
+                item {
+                    Problem("01/01/0001", "desc")
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        thickness = 2.dp,
+                        color = LocalCustomColors.current.text1
+                    )
+                }
+                item {
+                    Problem("01/01/0001", "desc")
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        thickness = 2.dp,
+                        color = LocalCustomColors.current.text1
+                    )
+                }
             }
-            Spacer(modifier = Modifier.height(30.dp))
-            Problem("01/01/0001", "desc")
-            Divider(modifier = Modifier.padding(vertical = 10.dp), thickness = 2.dp, color = LocalCustomColors.current.text1)
-            Problem("02/02/0002", "desc")
-            Divider(modifier = Modifier.padding(vertical = 10.dp), thickness = 2.dp, color = LocalCustomColors.current.text1)
-            Problem("03/03/0003", "desc")
-            Divider(modifier = Modifier.padding(vertical = 10.dp), thickness = 2.dp, color = LocalCustomColors.current.text1)
-            Problem("04/04/0004", "desc")
         }
     }
 }

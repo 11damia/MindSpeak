@@ -22,7 +22,7 @@ fun BottomBarAdmin(
     currentRoute: String?, // Ruta actual
     modifier: Modifier = Modifier
 ) {
-    val items = listOf("homesupervis", "grafic", "alerts","upload","settingsAdmin")
+    val items = listOf("homesupervis", "grafic", "notis","upload","settings")
     val icons = listOf(
         painterResource(id = R.drawable.home),
         painterResource(id = R.drawable.grafic),
@@ -39,9 +39,9 @@ fun BottomBarAdmin(
             val route = when (index) {
                 0 -> "homesupervis" // Ruta para "Home"
                 1 -> "grafic" // Ruta para "Emotions"
-                2 -> "alerts" // Ruta para "Exercise"
+                2 -> "notis" // Ruta para "Exercise"
                 3 -> "upload" // Ruta para "Settings"
-                4 -> "settingsAdmin" // Ruta para "Settings"
+                4 -> "settings" // Ruta para "Settings"
                 else -> null
             }
             NavigationBarItem(

@@ -69,6 +69,9 @@ dependencies {
     implementation (libs.firebase.firestore.ktx)
     implementation (libs.firebase.database.ktx)
 
+    // Coroutines support for Firebase tasks
+    implementation (libs.jetbrains.kotlinx.coroutines.play.services)
+
     // Coil per carregar imatges de manera asíncrona
     implementation(libs.coil.compose)
 
