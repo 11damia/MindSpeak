@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -109,6 +110,7 @@ fun UploadSection(title: String, imageResId: Int, imageSize: Dp = 48.dp, onClick
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.upload),
+                    colorFilter = ColorFilter.tint(LocalCustomColors.current.text1),
                     contentDescription = "Upload",
                     modifier = Modifier.size(20.dp)
                 )
@@ -132,6 +134,7 @@ fun UploadSection(title: String, imageResId: Int, imageSize: Dp = 48.dp, onClick
             Image(
                 painter = painterResource(id = imageResId),
                 contentDescription = title,
+                colorFilter = ColorFilter.tint(LocalCustomColors.current.text1),
                 modifier = Modifier.size(imageSize)
             )
         }

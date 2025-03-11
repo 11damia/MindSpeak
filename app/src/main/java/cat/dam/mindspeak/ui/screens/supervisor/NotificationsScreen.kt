@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,7 +28,6 @@ fun NotificationScreen(navController: NavHostController) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
             .padding(16.dp),
     ) {
         item {
@@ -77,7 +77,7 @@ fun Notification(userName: String, description: String, onClick: () -> Unit) {
                 Text(
                     text = userName,
                     fontWeight = FontWeight.Bold,
-                    color = LocalCustomColors.current.text2,
+                    color = LocalCustomColors.current.text1,
                     fontSize = 18.sp,
                     modifier = Modifier
                         .padding(start = 10.dp)
@@ -86,6 +86,7 @@ fun Notification(userName: String, description: String, onClick: () -> Unit) {
                 Image(
                     painter = painterResource(id = R.drawable.trash),
                     contentDescription = "user_icon",
+                    colorFilter = ColorFilter.tint(LocalCustomColors.current.text1),
                     modifier = Modifier
                         .size(25.dp)
                         .align(Alignment.CenterVertically)
@@ -93,7 +94,7 @@ fun Notification(userName: String, description: String, onClick: () -> Unit) {
             }
             Text(
                 text = description,
-                color = LocalCustomColors.current.text3,
+                color = LocalCustomColors.current.text1,
                 fontSize = 14.sp,
                 modifier = Modifier
                     .padding(top = 10.dp)

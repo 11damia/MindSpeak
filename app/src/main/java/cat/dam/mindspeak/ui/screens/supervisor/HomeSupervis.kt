@@ -23,7 +23,6 @@ fun HomeSupervisorScreen(navController: NavHostController) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
             .padding(16.dp),
     ) {
         item {
