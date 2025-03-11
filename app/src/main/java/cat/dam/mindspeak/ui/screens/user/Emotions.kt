@@ -44,13 +44,12 @@ fun Emotions(navController: NavHostController) {
         EmotionItem("ENFADADO", Color(0xFFFF5353), R.drawable.enfadado),
         EmotionItem("TRISTE", Color(0xFF2E9DFF), R.drawable.triste),
         EmotionItem("MIEDO", Color(0xFF894AB8), R.drawable.miedoso),
-        EmotionItem("FELIZ", Color(0xFFE2EA00), R.drawable.feliz),
+        EmotionItem("FELIZ", Color(0xFF4CAF50), R.drawable.feliz),
         EmotionItem("ANSIOSO", Color(0xFFD97904), R.drawable.ansioso)
     )
 
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
     ) {
         Column(
             modifier = Modifier
