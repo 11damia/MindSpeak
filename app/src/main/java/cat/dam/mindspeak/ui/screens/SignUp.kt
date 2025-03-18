@@ -27,12 +27,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import cat.dam.mindspeak.R
 import cat.dam.mindspeak.firebase.FirebaseManager
 import cat.dam.mindspeak.ui.theme.DarkGray
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
@@ -68,7 +70,7 @@ fun SignUp(navController: NavHostController) {
     ) {
         item {
             Text(
-                text = "Crear compte",
+                text = stringResource(R.string.create_account),
                 color = LocalCustomColors.current.text1,
                 fontWeight = FontWeight.ExtraBold,
                 fontSize = 24.sp,
@@ -80,7 +82,7 @@ fun SignUp(navController: NavHostController) {
             OutlinedTextField(
                 value = nom,
                 onValueChange = { nom = it },
-                label = { Text("Nom", color = LocalCustomColors.current.text1) },
+                label = { Text(stringResource(R.string.name), color = LocalCustomColors.current.text1) },
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -90,7 +92,7 @@ fun SignUp(navController: NavHostController) {
             OutlinedTextField(
                 value = cognom,
                 onValueChange = { cognom = it },
-                label = { Text("Cognoms", color = LocalCustomColors.current.text1) },
+                label = { Text(stringResource(R.string.surname), color = LocalCustomColors.current.text1) },
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -100,7 +102,7 @@ fun SignUp(navController: NavHostController) {
             OutlinedTextField(
                 value = telefon,
                 onValueChange = { telefon = it },
-                label = { Text("Telèfon", color = LocalCustomColors.current.text1) },
+                label = { Text(stringResource(R.string.number), color = LocalCustomColors.current.text1) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                 modifier = Modifier.fillMaxWidth()
             )
@@ -111,7 +113,7 @@ fun SignUp(navController: NavHostController) {
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Correu electrònic", color = LocalCustomColors.current.text1) },
+                label = { Text(stringResource(R.string.mail_user), color = LocalCustomColors.current.text1) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 modifier = Modifier.fillMaxWidth()
             )
@@ -122,7 +124,7 @@ fun SignUp(navController: NavHostController) {
             OutlinedTextField(
                 value = contrasenya,
                 onValueChange = { contrasenya = it },
-                label = { Text("Contrasenya", color = LocalCustomColors.current.text1) },
+                label = { Text(stringResource(R.string.password), color = LocalCustomColors.current.text1) },
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 modifier = Modifier.fillMaxWidth()
@@ -134,7 +136,7 @@ fun SignUp(navController: NavHostController) {
             OutlinedTextField(
                 value = confirmarContrasenya,
                 onValueChange = { confirmarContrasenya = it },
-                label = { Text("Confirmar contrasenya", color = LocalCustomColors.current.text1) },
+                label = { Text(stringResource(R.string.confirm_password), color = LocalCustomColors.current.text1) },
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 modifier = Modifier.fillMaxWidth()
@@ -150,7 +152,7 @@ fun SignUp(navController: NavHostController) {
                 OutlinedTextField(
                     value = rolSeleccionat,
                     onValueChange = { },
-                    label = { Text("Tipus d'usuari") },
+                    label = { Text(stringResource(R.string.user_type)) },
                     readOnly = true,
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded) },
                     modifier = Modifier.menuAnchor()
@@ -211,7 +213,7 @@ fun SignUp(navController: NavHostController) {
                     .width(300.dp)
                     .height(50.dp)
             ) {
-                Text("Crear compte")
+                Text(stringResource(R.string.create_account))
             }
             Spacer(modifier = Modifier.height(16.dp))
         }

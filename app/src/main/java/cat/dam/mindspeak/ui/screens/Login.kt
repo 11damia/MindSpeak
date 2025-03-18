@@ -24,11 +24,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import cat.dam.mindspeak.R
 import cat.dam.mindspeak.firebase.FirebaseManager
 import cat.dam.mindspeak.model.UserViewModel
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
@@ -55,7 +57,7 @@ fun Login(navController: NavHostController,userViewModel:UserViewModel) {
     ) {
         item {
             Text(
-                text = "Iniciar sessió",
+                text = stringResource(R.string.login),
                 color = LocalCustomColors.current.text1,
                 fontSize = 24.sp,
                 modifier = Modifier.padding(bottom = 24.dp)
@@ -66,7 +68,7 @@ fun Login(navController: NavHostController,userViewModel:UserViewModel) {
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Correu electrònic", color = LocalCustomColors.current.text1) },
+                label = { Text(stringResource(R.string.mail_user), color = LocalCustomColors.current.text1) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 modifier = Modifier.fillMaxWidth()
             )
@@ -77,7 +79,7 @@ fun Login(navController: NavHostController,userViewModel:UserViewModel) {
             OutlinedTextField(
                 value = contrasenya,
                 onValueChange = { contrasenya = it },
-                label = { Text("Contrasenya", color = LocalCustomColors.current.text1) },
+                label = { Text(stringResource(R.string.password), color = LocalCustomColors.current.text1) },
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 modifier = Modifier.fillMaxWidth()
@@ -95,7 +97,7 @@ fun Login(navController: NavHostController,userViewModel:UserViewModel) {
                     onCheckedChange = { recordarMe = it }
                 )
                 Text(
-                    text = "Recorda'm",
+                    text = stringResource(R.string.remember),
                     color = LocalCustomColors.current.secondary,
                     modifier = Modifier.padding(start = 8.dp)
                 )
@@ -103,7 +105,7 @@ fun Login(navController: NavHostController,userViewModel:UserViewModel) {
                     onClick = { /* Gestionar l'olvid de contrasenya */ }
                 ) {
                     Text(
-                        text = "Has oblidat la contrasenya?",
+                        text = stringResource(R.string.forget_password),
                         color = LocalCustomColors.current.secondary
                     )
                 }
@@ -155,7 +157,7 @@ fun Login(navController: NavHostController,userViewModel:UserViewModel) {
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Iniciar sessió",color = White)
+                Text(text = stringResource(R.string.login),color = White)
             }
             Spacer(modifier = Modifier.height(16.dp))
         }

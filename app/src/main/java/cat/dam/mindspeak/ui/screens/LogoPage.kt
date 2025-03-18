@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -79,7 +80,7 @@ fun LogoPage(navController: NavHostController) {
                         .width(300.dp)
                         .height(50.dp)
                 ) {
-                    Text(text = "Iniciar Sesión", color = White)
+                    Text(text = stringResource(R.string.login), color = White)
                 }
                 Spacer(Modifier.height(8.dp))
             }

@@ -36,7 +36,7 @@ fun NavigationHost(
         composable("upload"){ UploadResourceApp() }
         composable("notis") { NotificationScreen(navController) }
         composable("problemas") { UserProblems(navController) }
-        composable("login") {Login(navController = navController, userViewModel = userRoleViewModel)}
+        composable("login") {Login(navController = navController, userViewModel = userRoleViewModel) }
         composable("homeuser") { Inicio(navController) }
         composable("emotions") { Emotions(navController) }
         composable("exercise") { Exercises(navController) }

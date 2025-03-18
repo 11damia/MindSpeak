@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">MindSpeak</string>
+    <string name="mail_user">Correu electrònic</string>
+    <string name="remember">Recorda\'m</string>
+    <string name="forget_password">Has oblidat la contrasenya?</string>
+    <string name="login">Iniciar sessió</string>
+    <string name="password">Contrasenya</string>
+    <string name="create_account">Crear compte</string>
+    <string name="name">Nom</string>
+    <string name="surname">Cognoms</string>
+    <string name="number">Telèfon</string>
+    <string name="confirm_password">Confirmar contrasenya</string>
+    <string name="user_type">Tipus d\'usuari</string>
+    <string name="username">Usuari</string>
+    <string name="welcome">Benvingut</string>
+    <string name="alert">Alertas</string>
 </resources>

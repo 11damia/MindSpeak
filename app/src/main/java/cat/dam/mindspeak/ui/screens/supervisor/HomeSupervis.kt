@@ -10,10 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import cat.dam.mindspeak.R
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
 @Composable
@@ -27,7 +29,7 @@ fun HomeSupervisorScreen(navController: NavHostController) {
     ) {
         item {
             Text(
-                text = "Bienvenid@",
+                text = stringResource(R.string.welcome),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = LocalCustomColors.current.text1,
@@ -35,7 +37,7 @@ fun HomeSupervisorScreen(navController: NavHostController) {
             )
 
             Text(
-                text = "Username",
+                text = stringResource(R.string.username),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 color = LocalCustomColors.current.text1,
@@ -44,7 +46,7 @@ fun HomeSupervisorScreen(navController: NavHostController) {
             Spacer(modifier = Modifier.height(30.dp))
         }
         item {
-            OptionButton(text = "Alertas", onClick = { navController.navigate("notis") })
+            OptionButton(text = stringResource(R.string.alert), onClick = { navController.navigate("notis") })
         }
         item {
             OptionButton(text = "Gráfico", onClick = { navController.navigate("grafic") })
