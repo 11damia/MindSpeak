@@ -1,5 +1,6 @@
 package cat.dam.mindspeak.ui.screens
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +18,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,13 +41,21 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun Login(navController: NavHostController,userViewModel:UserViewModel) {
+fun Login(navController: NavHostController, userViewModel: UserViewModel, context: Context) {
     val firebaseManager = FirebaseManager()
     var email by remember { mutableStateOf("") }
     var contrasenya by remember { mutableStateOf("") }
     var recordarMe by remember { mutableStateOf(false) }
 
-    // Créer un scope de coroutine lié au cycle de vie du composant
+    // Inicializar SharedPreferences
+    val prefs = remember { Prefs(context) }
+
+    // Cargar el correo electrónico y la opción "Recordar usuario" al iniciar la pantalla
+    LaunchedEffect(Unit) {
+        email = prefs.getEmail() ?: ""
+        recordarMe = prefs.getRememberMe()
+    }
+
     val coroutineScope = rememberCoroutineScope()
 
     LazyColumn(
@@ -57,7 +67,7 @@ fun Login(navController: NavHostController,userViewModel:UserViewModel) {
     ) {
         item {
             Text(
-                text = stringResource(R.string.login),
+                text = "Iniciar sessió",
                 color = LocalCustomColors.current.text1,
                 fontSize = 24.sp,
                 modifier = Modifier.padding(bottom = 24.dp)
@@ -68,7 +78,7 @@ fun Login(navController: NavHostController,userViewModel:UserViewModel) {
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text(stringResource(R.string.mail_user), color = LocalCustomColors.current.text1) },
+                label = { Text("Correu electrònic", color = LocalCustomColors.current.text1) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 modifier = Modifier.fillMaxWidth()
             )
@@ -79,7 +89,7 @@ fun Login(navController: NavHostController,userViewModel:UserViewModel) {
             OutlinedTextField(
                 value = contrasenya,
                 onValueChange = { contrasenya = it },
-                label = { Text(stringResource(R.string.password), color = LocalCustomColors.current.text1) },
+                label = { Text("Contrasenya", color = LocalCustomColors.current.text1) },
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 modifier = Modifier.fillMaxWidth()
@@ -97,7 +107,7 @@ fun Login(navController: NavHostController,userViewModel:UserViewModel) {
                     onCheckedChange = { recordarMe = it }
                 )
                 Text(
-                    text = stringResource(R.string.remember),
+                    text = "Recorda'm",
                     color = LocalCustomColors.current.secondary,
                     modifier = Modifier.padding(start = 8.dp)
                 )
@@ -105,7 +115,7 @@ fun Login(navController: NavHostController,userViewModel:UserViewModel) {
                     onClick = { /* Gestionar l'olvid de contrasenya */ }
                 ) {
                     Text(
-                        text = stringResource(R.string.forget_password),
+                        text = "Has oblidat la contrasenya?",
                         color = LocalCustomColors.current.secondary
                     )
                 }
@@ -125,6 +135,14 @@ fun Login(navController: NavHostController,userViewModel:UserViewModel) {
                         return@Button
                     }
 
+                    // Guardar el correo electrónico y la opción "Recordar usuario" en SharedPreferences
+                    if (recordarMe) {
+                        prefs.saveEmail(email)
+                        prefs.saveRememberMe(true)
+                    } else {
+                        prefs.clear()
+                    }
+
                     // Lancer une coroutine pour gérer toutes les opérations suspendues
                     coroutineScope.launch {
                         try {
@@ -136,7 +154,7 @@ fun Login(navController: NavHostController,userViewModel:UserViewModel) {
                                     // Obtenir le rôle de l'utilisateur après la connexion réussie
                                     coroutineScope.launch {
                                         val rol = firebaseManager.obtenirRolUsuari()
-                                        userViewModel.updateUserRole(rol?:"Usuari")
+                                        userViewModel.updateUserRole(rol ?: "Usuari")
                                         when (rol) {
                                             "Supervisor" -> navController.navigate("homesupervis")
                                             "Familiar" -> navController.navigate("homefamiliar")
@@ -157,7 +175,7 @@ fun Login(navController: NavHostController,userViewModel:UserViewModel) {
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = stringResource(R.string.login),color = White)
+                Text(text = "Iniciar sessió", color = White)
             }
             Spacer(modifier = Modifier.height(16.dp))
         }

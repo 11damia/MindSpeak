@@ -2,6 +2,7 @@ package cat.dam.mindspeak.ui.navigation
 
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -36,7 +37,7 @@ fun NavigationHost(
         composable("upload"){ UploadResourceApp() }
         composable("notis") { NotificationScreen(navController) }
         composable("problemas") { UserProblems(navController) }
-        composable("login") {Login(navController = navController, userViewModel = userRoleViewModel) }
+        composable("login") {Login(navController = navController, userViewModel = userRoleViewModel, context = LocalContext.current) }
         composable("homeuser") { Inicio(navController) }
         composable("emotions") { Emotions(navController) }
         composable("exercise") { Exercises(navController) }
