@@ -43,7 +43,6 @@ class FirebaseManager {
                 "cognom" to cognom,
                 "rol" to rol,
                 "telefon" to telefon,
-                "contrasenya" to contrasenya // Nota: Utilitza un hash per la seguretat
             )
 
             // Guardar dades bàsiques a Persona
