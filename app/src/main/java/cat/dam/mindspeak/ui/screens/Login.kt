@@ -26,14 +26,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import cat.dam.mindspeak.R
 import cat.dam.mindspeak.firebase.FirebaseManager
+import cat.dam.mindspeak.firebase.Prefs
 import cat.dam.mindspeak.model.UserViewModel
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 import cat.dam.mindspeak.ui.theme.White
@@ -138,6 +137,7 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
                     // Guardar el correo electrónico y la opción "Recordar usuario" en SharedPreferences
                     if (recordarMe) {
                         prefs.saveEmail(email)
+                        prefs.savePassword(contrasenya)
                         prefs.saveRememberMe(true)
                     } else {
                         prefs.clear()

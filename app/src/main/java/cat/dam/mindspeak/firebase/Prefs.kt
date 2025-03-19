@@ -1,4 +1,4 @@
-package cat.dam.mindspeak.ui.screens
+package cat.dam.mindspeak.firebase
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -12,6 +12,14 @@ class Prefs(context: Context) {
 
     fun getEmail(): String? {
         return sharedPreferences.getString("email", null)
+    }
+
+    fun savePassword(password: String) {
+        sharedPreferences.edit().putString("password", password).apply()
+    }
+
+    fun getPassword(): String? {
+        return sharedPreferences.getString("password", null)
     }
 
     fun saveRememberMe(rememberMe: Boolean) {
