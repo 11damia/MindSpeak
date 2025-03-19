@@ -17,7 +17,6 @@ class FirebaseManager {
             FirebaseAuth.getInstance().signOut()
         }
     }
-    // Registrar un usuari
     suspend fun registrarUsuari(
         email: String,
         contrasenya: String,
@@ -34,7 +33,7 @@ class FirebaseManager {
         try {
             // Crear compte a Firebase Auth
             val authResult = auth.createUserWithEmailAndPassword(email, contrasenya).await()
-            val userId = authResult.user?.uid ?: ""
+            val userId = authResult.user?.uid ?: throw Exception("No s'ha pogut obtenir l'ID de l'usuari")
 
             // Afegir informació a Firestore
             val personaData = mutableMapOf<String, Any?>(
@@ -42,7 +41,7 @@ class FirebaseManager {
                 "nom" to nom,
                 "cognom" to cognom,
                 "rol" to rol,
-                "telefon" to telefon,
+                "telefon" to telefon
             )
 
             // Guardar dades bàsiques a Persona
