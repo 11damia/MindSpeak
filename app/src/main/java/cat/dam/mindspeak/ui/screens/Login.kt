@@ -52,6 +52,7 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
     // Cargar el correo electrónico y la opción "Recordar usuario" al iniciar la pantalla
     LaunchedEffect(Unit) {
         email = prefs.getEmail() ?: ""
+        contrasenya = prefs.getPassword() ?: ""
         recordarMe = prefs.getRememberMe()
     }
 
