@@ -69,10 +69,26 @@ dependencies {
     implementation (libs.firebase.firestore.ktx)
     implementation (libs.firebase.database.ktx)
 
+    // Supabase
+    implementation (libs.io.github.jan.tennert.supabase.postgrest.kt)
+    implementation (libs.storage.kt)
+    implementation (libs.supabase.kt)
+    implementation (libs.kotlinx.coroutines.android)
+
     // Coroutines support for Firebase tasks
     implementation (libs.jetbrains.kotlinx.coroutines.play.services)
 
     // Coil per carregar imatges de manera asíncrona
     implementation(libs.coil.compose)
 
+    // Assegureu-vos que teniu aquestes dependències per l'ActivityResultLauncher
+    implementation (libs.activity.compose.v172)
+
+    // Images icons externals
+    implementation (libs.androidx.material.icons.extended)
+
+    // Ktor http
+    implementation (libs.ktor.client.android)  
+    implementation (libs.ktor.client.content.negotiation)
+    implementation (libs.ktor.serialization.kotlinx.json)
 }
