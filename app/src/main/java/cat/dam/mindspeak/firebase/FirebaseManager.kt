@@ -2,7 +2,6 @@ package cat.dam.mindspeak.firebase
 
 import android.util.Log
 import androidx.compose.ui.graphics.Color
-import cat.dam.mindspeak.R
 import cat.dam.mindspeak.model.EmotionItem
 import cat.dam.mindspeak.model.EmotionRecord
 import com.google.firebase.auth.FirebaseAuth
@@ -133,6 +132,29 @@ class FirebaseManager {
             onFailure(e.message ?: "Error desconegut en afegir el registre d'emocions")
         }
     }
+    suspend fun obtenirEmocions(): List<EmotionItem> {
+        Log.d("FirebaseManager", "Début de la récupération des émotions")
+        try {
+            val snapshot = db.collection("Emocio").get().await()
+
+            return snapshot.documents.map { document ->
+                // Convertir la couleur en format Color
+                val colorHex = document.getString("color") ?: "FFFFFFFF" // Sans le préfixe "0x"
+                val color = Color(android.graphics.Color.parseColor("#$colorHex"))
+
+                EmotionItem(
+                    text = document.getString("emocio_nom") ?: "",
+                    color = color,
+                    imageUrl = document.getString("imagen") ?: ""
+
+                )
+            }
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "Error fetching emotions", e)
+            throw e
+        }
+    }
+    /*
     // Obtenir la liste des émotions depuis Firebase
     suspend fun obtenirEmocions(): List<EmotionItem> {
         Log.d("FirebaseManager", "Début de la récupération des émotions")
@@ -165,6 +187,8 @@ class FirebaseManager {
 
         }
     }
+
+     */
     // Fetch emotion records for the current user
     suspend fun obtenirRegistresEmocions(): List<EmotionRecord> {
         try {
