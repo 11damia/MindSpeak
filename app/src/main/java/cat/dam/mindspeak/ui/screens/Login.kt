@@ -1,5 +1,6 @@
 package cat.dam.mindspeak.ui.screens
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +18,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import cat.dam.mindspeak.R
 import cat.dam.mindspeak.firebase.FirebaseManager
+import cat.dam.mindspeak.firebase.Prefs
 import cat.dam.mindspeak.model.UserViewModel
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 import cat.dam.mindspeak.ui.theme.White
@@ -39,13 +42,21 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun Login(navController: NavHostController,userViewModel:UserViewModel) {
+fun Login(navController: NavHostController,userViewModel: UserViewModel,context: Context) {
     val firebaseManager = FirebaseManager()
     var email by remember { mutableStateOf("") }
     var contrasenya by remember { mutableStateOf("") }
     var recordarMe by remember { mutableStateOf(false) }
 
-    // Créer un scope de coroutine lié au cycle de vie du composant
+    // Inicializar SharedPreferences
+    val prefs = remember { Prefs(context) }
+
+    // Cargar el correo electrónico y la opción "Recordar usuario" al iniciar la pantalla
+    LaunchedEffect(Unit) {
+        email = prefs.getEmail() ?: ""
+        contrasenya = prefs.getPassword() ?: ""
+        recordarMe = prefs.getRememberMe()
+    }
     val coroutineScope = rememberCoroutineScope()
 
     LazyColumn(
