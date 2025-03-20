@@ -78,7 +78,7 @@ fun TopBar(
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.user_icon),
-                    contentDescription = "User Icon",
+                    contentDescription = stringResource(R.string.user_icon),
                     modifier = Modifier
                         .size(55.dp)
                         .padding(end = 20.dp)
