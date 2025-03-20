@@ -1,6 +1,5 @@
 package cat.dam.mindspeak.ui.screens
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,7 +17,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,13 +24,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import cat.dam.mindspeak.R
 import cat.dam.mindspeak.firebase.FirebaseManager
-import cat.dam.mindspeak.firebase.Prefs
 import cat.dam.mindspeak.model.UserViewModel
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 import cat.dam.mindspeak.ui.theme.White
@@ -40,22 +39,13 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun Login(navController: NavHostController, userViewModel: UserViewModel, context: Context) {
+fun Login(navController: NavHostController,userViewModel:UserViewModel) {
     val firebaseManager = FirebaseManager()
     var email by remember { mutableStateOf("") }
     var contrasenya by remember { mutableStateOf("") }
     var recordarMe by remember { mutableStateOf(false) }
 
-    // Inicializar SharedPreferences
-    val prefs = remember { Prefs(context) }
-
-    // Cargar el correo electrónico y la opción "Recordar usuario" al iniciar la pantalla
-    LaunchedEffect(Unit) {
-        email = prefs.getEmail() ?: ""
-        contrasenya = prefs.getPassword() ?: ""
-        recordarMe = prefs.getRememberMe()
-    }
-
+    // Créer un scope de coroutine lié au cycle de vie du composant
     val coroutineScope = rememberCoroutineScope()
 
     LazyColumn(
@@ -67,7 +57,7 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
     ) {
         item {
             Text(
-                text = "Iniciar sessió",
+                text = stringResource(R.string.login),
                 color = LocalCustomColors.current.text1,
                 fontSize = 24.sp,
                 modifier = Modifier.padding(bottom = 24.dp)
@@ -78,7 +68,7 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Correu electrònic", color = LocalCustomColors.current.text1) },
+                label = { Text(stringResource(R.string.mail_user), color = LocalCustomColors.current.text1) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 modifier = Modifier.fillMaxWidth()
             )
@@ -89,7 +79,7 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
             OutlinedTextField(
                 value = contrasenya,
                 onValueChange = { contrasenya = it },
-                label = { Text("Contrasenya", color = LocalCustomColors.current.text1) },
+                label = { Text(stringResource(R.string.password), color = LocalCustomColors.current.text1) },
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 modifier = Modifier.fillMaxWidth()
@@ -107,7 +97,8 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
                     onCheckedChange = { recordarMe = it }
                 )
                 Text(
-                    text = "Recorda'm",
+                    text = stringResource(R.string.remember),
+
                     color = LocalCustomColors.current.secondary,
                     modifier = Modifier.padding(start = 8.dp)
                 )
@@ -115,7 +106,7 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
                     onClick = { /* Gestionar l'olvid de contrasenya */ }
                 ) {
                     Text(
-                        text = "Has oblidat la contrasenya?",
+                        text = stringResource(R.string.forget_password),
                         color = LocalCustomColors.current.secondary
                     )
                 }
@@ -135,15 +126,6 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
                         return@Button
                     }
 
-                    // Guardar el correo electrónico y la opción "Recordar usuario" en SharedPreferences
-                    if (recordarMe) {
-                        prefs.saveEmail(email)
-                        prefs.savePassword(contrasenya)
-                        prefs.saveRememberMe(true)
-                    } else {
-                        prefs.clear()
-                    }
-
                     // Lancer une coroutine pour gérer toutes les opérations suspendues
                     coroutineScope.launch {
                         try {
@@ -155,7 +137,7 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
                                     // Obtenir le rôle de l'utilisateur après la connexion réussie
                                     coroutineScope.launch {
                                         val rol = firebaseManager.obtenirRolUsuari()
-                                        userViewModel.updateUserRole(rol ?: "Usuari")
+                                        userViewModel.updateUserRole(rol?:"Usuari")
                                         when (rol) {
                                             "Supervisor" -> navController.navigate("homesupervis")
                                             "Familiar" -> navController.navigate("homefamiliar")
@@ -176,7 +158,7 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Iniciar sessió", color = White)
+                Text(text = stringResource(R.string.login),color = White)
             }
             Spacer(modifier = Modifier.height(16.dp))
         }
