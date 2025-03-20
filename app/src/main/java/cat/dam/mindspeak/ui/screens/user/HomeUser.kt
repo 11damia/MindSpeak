@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,14 +39,14 @@ fun Inicio(navController: NavHostController) {
     ) {
         item {
             Text(
-                text = "Bienvenid@",
+                text = stringResource(R.string.welcome),
                 fontWeight = FontWeight.Bold,
                 color = LocalCustomColors.current.text1,
                 fontSize = 24.sp
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "UserName",
+                text = stringResource(R.string.username),
                 color = LocalCustomColors.current.text1,
                 fontSize = 18.sp
             )
@@ -61,7 +62,7 @@ fun Inicio(navController: NavHostController) {
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.persona_settings_user),
-                    contentDescription = "Feeling",
+                    contentDescription = stringResource(R.string.emotions),
                     modifier = Modifier
                         .zIndex(1f)
                         .align(Alignment.BottomEnd)
@@ -74,14 +75,14 @@ fun Inicio(navController: NavHostController) {
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "Como me siento",
+                        text = stringResource(R.string.how_im_feeling),
                         color = LocalCustomColors.current.text2, // Accès direct
                         fontWeight = FontWeight.Bold,
                         fontSize = 30.sp
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Espacio para que niños y adultos elijan imágenes que representen cómo se sienten.",
+                        text = stringResource(R.string.space_for_the_kids),
                         color = LocalCustomColors.current.text2, // Accès direct
                         fontWeight = FontWeight.Normal,
                         fontSize = 12.sp
@@ -94,7 +95,7 @@ fun Inicio(navController: NavHostController) {
                         )
                     ) {
                         Text(
-                            text = "Quiero Expresarme",
+                            text = stringResource(R.string.i_want_express),
                             color = White
                         )
                     }
@@ -111,7 +112,7 @@ fun Inicio(navController: NavHostController) {
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.tablet),
-                    contentDescription = "Feeling",
+                    contentDescription = stringResource(R.string.emotions),
                     modifier = Modifier
                         .width(181.dp)
                         .height(161.dp)
@@ -124,14 +125,14 @@ fun Inicio(navController: NavHostController) {
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "Ejercicios",
+                        text = stringResource(R.string.activities),
                         fontWeight = FontWeight.Bold,
                         color = LocalCustomColors.current.text2,
                         fontSize = 30.sp
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Recursos y actividades para apoyar su desarrollo, comunicación y autonomía de forma inclusiva.",
+                        text = stringResource(R.string.resurces),
                         color = LocalCustomColors.current.text2,
                         fontWeight = FontWeight.Normal,
                         fontSize = 12.sp
@@ -146,7 +147,7 @@ fun Inicio(navController: NavHostController) {
                         )
                     ) {
                         Text(
-                            text = "Hacer Tareas",
+                            text = stringResource(R.string.do_homework),
                             color = White
                         )
                     }
@@ -163,7 +164,7 @@ fun Inicio(navController: NavHostController) {
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.history_icon), // Ajoutez un icône appropriée
-                        contentDescription = "Historial",
+                        contentDescription = stringResource(R.string.history),
                         modifier = Modifier
                             .width(181.dp)
                             .height(161.dp)
@@ -176,14 +177,14 @@ fun Inicio(navController: NavHostController) {
                     ) {
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = "Historial de emociones",
+                            text = stringResource(R.string.history_emotions),
                             fontWeight = FontWeight.Bold,
                             color = LocalCustomColors.current.text2,
                             fontSize = 30.sp
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = "Consulta tu historial de emociones registradas.",
+                            text = stringResource(R.string.consult_history),
                             color = LocalCustomColors.current.text2,
                             fontWeight = FontWeight.Normal,
                             fontSize = 12.sp
@@ -196,7 +197,7 @@ fun Inicio(navController: NavHostController) {
                             )
                         ) {
                             Text(
-                                text = "Ver historial",
+                                text = stringResource(R.string.watch_history),
                                 color = White
                             )
                         }

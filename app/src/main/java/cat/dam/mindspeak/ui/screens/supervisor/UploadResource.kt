@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -43,7 +44,7 @@ fun UploadResourceApp() {
     ) {
         item {
             Text(
-                text = "Subir un recurso",
+                text = stringResource(R.string.add_rescurse),
                 color = LocalCustomColors.current.text1,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
@@ -52,13 +53,13 @@ fun UploadResourceApp() {
         }
         item {
             Text(
-                text = "Título del ejercicio:",
+                text = stringResource(R.string.exercicie_title),
                 fontWeight = FontWeight.Medium,
                 color = LocalCustomColors.current.text1
             )
             Spacer(modifier = Modifier.height(16.dp))
             OutlinedTextField(
-                value = "Ejercicio n°1",
+                value = stringResource(R.string.exercicie_1),
                 onValueChange = {},
                 modifier = Modifier.fillMaxWidth()
             )
@@ -66,21 +67,21 @@ fun UploadResourceApp() {
         }
         item {
             UploadSection(
-                title = "Subir una imagen",
+                title = stringResource(R.string.add_image),
                 imageResId = R.drawable.cam, // ID de la imagen
                 onClick = { /* Lógica para subir una imagen */ }
             )
         }
         item {
             UploadSection(
-                title = "Subir un video",
+                title = stringResource(R.string.add_video),
                 imageResId = R.drawable.video, // ID de la imagen
                 onClick = { /* Lógica para subir un video */ }
             )
         }
         item {
             UploadSection(
-                title = "Grabar audio / Subir audio",
+                title = stringResource(R.string.add_audio),
                 imageResId = R.drawable.audio, // ID de la imagen
                 onClick = { /* Lógica para grabar o subir audio */ }
             )
@@ -111,7 +112,7 @@ fun UploadSection(title: String, imageResId: Int, imageSize: Dp = 48.dp, onClick
                 Image(
                     painter = painterResource(id = R.drawable.upload),
                     colorFilter = ColorFilter.tint(LocalCustomColors.current.text1),
-                    contentDescription = "Upload",
+                    contentDescription = stringResource(R.string.upload),
                     modifier = Modifier.size(20.dp)
                 )
             }

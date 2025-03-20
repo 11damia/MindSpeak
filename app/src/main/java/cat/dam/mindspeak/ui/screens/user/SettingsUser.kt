@@ -11,6 +11,7 @@ import androidx.compose.ui.*
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -62,7 +63,9 @@ fun SettingsUser(localCustomColors: ProvidableCompositionLocal<CustomColors>, na
             }
             item {
                 Column(
-                    modifier = Modifier.padding(horizontal = 20.dp).zIndex(1f)
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp)
+                        .zIndex(1f)
                 ) {
                     Spacer(modifier = Modifier.height(40.dp))
                     SettingItem("Nombre", "Nombre del usuario", localCustomColors)
@@ -84,9 +87,11 @@ fun SettingsUser(localCustomColors: ProvidableCompositionLocal<CustomColors>, na
                                 launchSingleTop = true
                             }
                         },
-                        modifier = Modifier.fillMaxWidth().padding(top = 20.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 20.dp)
                     ) {
-                        Text("Cerrar sesión")
+                        Text(stringResource(R.string.logout))
                     }
                 }
                 Image(
@@ -112,7 +117,9 @@ fun SettingItem(
     val isEditing = remember { mutableStateOf(false) }
     val editableText = remember { mutableStateOf(txt2) }
 
-    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 15.dp)) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(vertical = 15.dp)) {
         Text(
             txt1,
             style = TextStyle(
@@ -127,7 +134,9 @@ fun SettingItem(
                 value = editableText.value,
                 onValueChange = { editableText.value = it },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                modifier = Modifier.fillMaxWidth().padding(top = 10.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp)
             )
         } else {
             Text(

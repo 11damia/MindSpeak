@@ -49,16 +49,16 @@ fun HomeSupervisorScreen(navController: NavHostController) {
             OptionButton(text = stringResource(R.string.alert), onClick = { navController.navigate("notis") })
         }
         item {
-            OptionButton(text = "Gráfico", onClick = { navController.navigate("grafic") })
+            OptionButton(text = stringResource(R.string.grafic), onClick = { navController.navigate("grafic") })
         }
         item {
-            OptionButton(text = "Añadir Ejercicio", onClick = { navController.navigate("upload") })
+            OptionButton(text = stringResource(R.string.add_activity), onClick = { navController.navigate("upload") })
         }
         item {
-            OptionButton(text = "Configuración", onClick = { navController.navigate("settings") })
+            OptionButton(text = stringResource(R.string.configuration), onClick = { navController.navigate("settings") })
         }
         item {
-            OptionButton(text = "Crear Usuario", onClick = { navController.navigate("signup") })
+            OptionButton(text = stringResource(R.string.add_user), onClick = { navController.navigate("signup") })
         }
     }
 }
