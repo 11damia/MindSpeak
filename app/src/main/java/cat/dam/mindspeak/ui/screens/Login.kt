@@ -98,6 +98,7 @@ fun Login(navController: NavHostController,userViewModel:UserViewModel) {
                 )
                 Text(
                     text = stringResource(R.string.remember),
+
                     color = LocalCustomColors.current.secondary,
                     modifier = Modifier.padding(start = 8.dp)
                 )
