@@ -3,6 +3,7 @@ package cat.dam.mindspeak.ui.screens.user
 import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -239,14 +240,11 @@ fun EmotionRatingScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = Color.White,
-                focusedContainerColor = Color.White
+                unfocusedContainerColor = Color.Black,
+                focusedContainerColor = Color.Black
             ),
             minLines = 3
         )
-
-        // Le reste du code reste identique
-        // ...
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -312,17 +310,21 @@ fun EmotionRatingScreen(
 
                         Spacer(modifier = Modifier.width(16.dp))
 
+                        // Botón para la galería
                         Button(
                             onClick = {
+                                val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                    Manifest.permission.READ_MEDIA_IMAGES
+                                } else {
+                                    Manifest.permission.READ_EXTERNAL_STORAGE
+                                }
+
                                 when (PackageManager.PERMISSION_GRANTED) {
-                                    ContextCompat.checkSelfPermission(
-                                        context,
-                                        Manifest.permission.READ_EXTERNAL_STORAGE
-                                    ) -> {
+                                    ContextCompat.checkSelfPermission(context, permission) -> {
                                         pickImageLauncher.launch("image/*")
                                     }
                                     else -> {
-                                        requestStoragePermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+                                        requestStoragePermissionLauncher.launch(permission)
                                     }
                                 }
                             },
