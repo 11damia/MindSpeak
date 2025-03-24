@@ -150,7 +150,11 @@ fun EmotionRatingScreen(
         if (isGranted) {
             takePhotoLauncher.launch(tempImageUri)
         } else {
-            Toast.makeText(context, "Es necessita permís de càmera per fer fotos", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                context,
+                "Es necessita permís de càmera per fer fotos",
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
@@ -160,7 +164,11 @@ fun EmotionRatingScreen(
         if (isGranted) {
             pickImageLauncher.launch("image/*")
         } else {
-            Toast.makeText(context, "Es necessita permís d'emmagatzematge per accedir a les imatges", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                context,
+                "Es necessita permís d'emmagatzematge per accedir a les imatges",
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
@@ -171,9 +179,9 @@ fun EmotionRatingScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-        .verticalScroll(scrollState),
-    verticalArrangement = Arrangement.Center,
-    horizontalAlignment = Alignment.CenterHorizontally
+            .verticalScroll(scrollState),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Carte d'émotion avec image depuis Firebase
         Card(
@@ -297,6 +305,7 @@ fun EmotionRatingScreen(
                                     ) -> {
                                         takePhotoLauncher.launch(tempImageUri)
                                     }
+
                                     else -> {
                                         requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
                                     }
@@ -317,16 +326,18 @@ fun EmotionRatingScreen(
                         // Botón para la galería
                         Button(
                             onClick = {
-                                val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                                    Manifest.permission.READ_MEDIA_IMAGES
-                                } else {
-                                    Manifest.permission.READ_EXTERNAL_STORAGE
-                                }
+                                val permission =
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                        Manifest.permission.READ_MEDIA_IMAGES
+                                    } else {
+                                        Manifest.permission.READ_EXTERNAL_STORAGE
+                                    }
 
                                 when (PackageManager.PERMISSION_GRANTED) {
                                     ContextCompat.checkSelfPermission(context, permission) -> {
                                         pickImageLauncher.launch("image/*")
                                     }
+
                                     else -> {
                                         requestStoragePermissionLauncher.launch(permission)
                                     }
@@ -385,27 +396,41 @@ fun EmotionRatingScreen(
                     isUploading = true
                     scope.launch {
                         try {
-                            // Uploader l'image à Supabase
-                            val imageUrl = SupabaseStorageUtil.uploadImage(context, imageUri!!)
-
-                            // Créer un enregistrement d'émotion avec l'URL de l'image
+                            val imageUrl = if (imageUri != null) {
+                                val url = SupabaseStorageUtil.uploadImage(context, imageUri!!)
+                                Log.d("UploadDebug", "Imagen subida correctamente a: $url")
+                                url
+                            } else null
+                            // En EmotionRatingScreen donde guardas el registro
                             val emotionRecord = EmotionRecord(
                                 emotionType = emotionType,
                                 rating = rating,
                                 date = Date(),
                                 userId = currentUserId,
                                 comentari = comentariEmocional,
-                                fotoUri = imageUrl
+                                fotoUri = imageUrl ?: "" // Usar string vacío en lugar de null
                             )
+
+                            Log.d(
+                                "EmotionRatingScreen",
+                                "Guardando registro con URL de imagen: $imageUrl"
+                            )
+
 
                             // Sauvegarder dans Firestore
                             viewModel.addEmotionRecord(emotionRecord)
                             isUploading = false
                             navController.popBackStack()
                         } catch (e: Exception) {
-                            Log.e("EmotionRatingScreen", "Error pujant la imatge", e)
-                            Toast.makeText(context, "Error pujant la imatge", Toast.LENGTH_SHORT).show()
+                            Log.e("EmotionRatingScreen", "Error subiendo imagen: ${e.message}", e)
+                            Toast.makeText(
+                                context,
+                                "Error al subir la imagen: ${e.message?.take(100)}",
+                                Toast.LENGTH_LONG
+                            ).show()
                             isUploading = false
+                        } catch (e: Exception) {
+                            Log.e("UploadError", "Error completo: ${e.stackTraceToString()}")
                         }
                     }
                 } else {

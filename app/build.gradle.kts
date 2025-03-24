@@ -70,6 +70,7 @@ dependencies {
     implementation (libs.firebase.database.ktx)
 
     // Supabase
+    implementation(libs.storage.kt.vversion)
     implementation (libs.io.github.jan.tennert.supabase.postgrest.kt)
     implementation (libs.storage.kt)
     implementation (libs.supabase.kt)
