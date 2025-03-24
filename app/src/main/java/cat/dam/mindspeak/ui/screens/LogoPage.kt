@@ -1,5 +1,7 @@
 package cat.dam.mindspeak.ui.screens
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +17,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -30,6 +37,13 @@ import cat.dam.mindspeak.ui.theme.White
 
 @Composable
 fun LogoPage(navController: NavHostController) {
+    var animationTriggered by remember { mutableStateOf(false) }
+
+    // Ejecuta la animación cuando el composable aparece por primera vez
+    LaunchedEffect(Unit) {
+        animationTriggered = true
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -42,11 +56,23 @@ fun LogoPage(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
-                Image(
-                    painter = painterResource(id = R.drawable.logo),
-                    contentDescription = "image description",
-                    contentScale = ContentScale.FillBounds
+                // Animación para la imagen
+                val verticalOffset by animateDpAsState(
+                    targetValue = if (animationTriggered) 0.dp else 100.dp,
+                    animationSpec = tween(durationMillis = 800),
+                    label = "image_animation"
                 )
+
+                Box(
+                    modifier = Modifier
+                        .padding(bottom = verticalOffset)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.logo),
+                        contentDescription = "image description",
+                        contentScale = ContentScale.FillBounds
+                    )
+                }
                 Spacer(Modifier.height(8.dp))
             }
             item {
@@ -67,8 +93,8 @@ fun LogoPage(navController: NavHostController) {
                     )
                 }
                 Spacer(Modifier.height(8.dp))
-
             }
+            // Resto del código permanece igual...
             item {
                 Button(
                     onClick = { navController.navigate("login") },
@@ -84,22 +110,6 @@ fun LogoPage(navController: NavHostController) {
                 }
                 Spacer(Modifier.height(8.dp))
             }
-            /* Registrar ho ha de fer un admin
-            item {
-                Button(
-                    onClick = { navController.navigate("signup") },
-                    shape = RoundedCornerShape(10.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = DarkGray
-                    ),
-                    modifier = Modifier
-                        .width(300.dp)
-                        .height(50.dp)
-                ) {
-                    Text("Registrarse")
-                }
-                Spacer(Modifier.height(20.dp))
-            }*/
         }
     }
 }
