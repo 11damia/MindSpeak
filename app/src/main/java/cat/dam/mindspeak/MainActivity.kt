@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,6 +45,7 @@ fun MyApp(
     viewModel: EmotionViewModel = viewModel(),
     userViewModel: UserViewModel = viewModel()
 ) {
+    val userData by userViewModel.userData.collectAsState()
     val navController = rememberNavController()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
     val configuration = LocalConfiguration.current
@@ -73,7 +76,7 @@ fun MyApp(
         }
 
         if (showBottomBar) {
-            when (userViewModel.userData.rol) {  // Changed from userRole to userData.rol
+            when (userData.rol) {  // Changed from userRole to userData.rol
                 "Usuari" -> BottomBarUser(
                     navController = navController,
                     currentRoute = currentRoute

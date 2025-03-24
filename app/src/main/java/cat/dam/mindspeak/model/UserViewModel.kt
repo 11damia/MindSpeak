@@ -4,6 +4,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 data class UserData(
     val nom: String? = null,
@@ -14,9 +19,8 @@ data class UserData(
 )
 
 class UserViewModel : ViewModel() {
-    internal var userData by mutableStateOf(UserData())
-
-    private var isLoggedIn: Boolean by mutableStateOf(false)
+    private val _userData = MutableStateFlow(UserData())
+    val userData: StateFlow<UserData> = _userData.asStateFlow()
 
     fun updateUserData(
         nom: String? = null,
@@ -25,18 +29,20 @@ class UserViewModel : ViewModel() {
         telefon: String? = null,
         rol: String? = null
     ) {
-        userData = UserData(
-            nom = nom ?: userData.nom,
-            cognom = cognom ?: userData.cognom,
-            email = email ?: userData.email,
-            telefon = telefon ?: userData.telefon,
-            rol = rol ?: userData.rol
-        )
-        isLoggedIn = true
+        viewModelScope.launch {
+            _userData.value = UserData(
+                nom = nom ?: _userData.value.nom,
+                cognom = cognom ?: _userData.value.cognom,
+                email = email ?: _userData.value.email,
+                telefon = telefon ?: _userData.value.telefon,
+                rol = rol ?: _userData.value.rol
+            )
+        }
     }
 
     fun clearUserData() {
-        userData = UserData()
-        isLoggedIn = false
+        viewModelScope.launch {
+            _userData.value = UserData()
+        }
     }
 }
