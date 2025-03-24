@@ -60,7 +60,12 @@ object SupabaseStorageUtil {
                 )
 
                 // Obtenir l'URL pública
-                val publicUrl = storageClient.from(SupabaseConfig.BUCKET_NAME).publicUrl(filename)
+                var publicUrl = storageClient.from(SupabaseConfig.BUCKET_NAME).publicUrl(filename)
+
+                // Asegurar que la URL tiene formato correcto
+                if (!publicUrl.startsWith("http")) {
+                    publicUrl = "https://$publicUrl"
+                }
 
                 Log.d(TAG, "Imatge pujada correctament: $publicUrl")
 
