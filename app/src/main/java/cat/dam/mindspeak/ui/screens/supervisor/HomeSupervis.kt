@@ -7,6 +7,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,8 +23,7 @@ import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
 @Composable
 fun HomeSupervisorScreen(navController: NavHostController,userViewModel: UserViewModel) {
-
-
+    val userData by userViewModel.userData.collectAsState()
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -38,7 +39,7 @@ fun HomeSupervisorScreen(navController: NavHostController,userViewModel: UserVie
             )
 
             Text(
-                text = userViewModel.userData.nom ?: "Usuari",
+                text = userData.nom ?: "Usuari",
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 color = LocalCustomColors.current.text1,

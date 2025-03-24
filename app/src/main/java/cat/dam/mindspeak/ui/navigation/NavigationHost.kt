@@ -41,7 +41,7 @@ fun NavigationHost(
         composable("homeuser") { Inicio(navController,userViewModel) }
         composable("emotions") { Emotions(navController) }
         composable("exercise") { Exercises(navController) }
-        composable("settings") { SettingsUser(LocalCustomColors, navController) }
+        composable("settings") { SettingsUser(LocalCustomColors, navController, userViewModel) }
         composable("history") { EmotionHistoryScreen(viewModel = viewModel) }
         composable("grafic") { EmotionStatistics() }
         composable("emotionRating/{emotionType}") { backStackEntry ->

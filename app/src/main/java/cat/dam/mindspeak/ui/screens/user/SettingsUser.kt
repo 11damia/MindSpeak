@@ -17,13 +17,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import cat.dam.mindspeak.R
 import cat.dam.mindspeak.firebase.FirebaseManager
+import cat.dam.mindspeak.model.UserViewModel
 import cat.dam.mindspeak.ui.theme.CustomColors
 
 @Composable
-fun SettingsUser(localCustomColors: ProvidableCompositionLocal<CustomColors>, navController: NavController) {
+fun SettingsUser(
+    localCustomColors: ProvidableCompositionLocal<CustomColors>,
+    navController: NavController,
+    userViewModel: UserViewModel
+) {
+    val userData by userViewModel.userData.collectAsState()
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item {
@@ -41,7 +48,7 @@ fun SettingsUser(localCustomColors: ProvidableCompositionLocal<CustomColors>, na
                             modifier = Modifier
                                 .size(30.dp)
                                 .align(Alignment.TopEnd)
-                                .clickable { /* Aquí puedes agregar lógica para editar la foto de perfil */ },
+                                .clickable { /* Lógica para editar foto de perfil */ },
                             contentScale = ContentScale.Fit
                         )
                     }
@@ -68,20 +75,37 @@ fun SettingsUser(localCustomColors: ProvidableCompositionLocal<CustomColors>, na
                         .zIndex(1f)
                 ) {
                     Spacer(modifier = Modifier.height(40.dp))
-                    SettingItem("Nombre", "Nombre del usuario", localCustomColors)
+                    SettingItem(
+                        label = "Nombre",
+                        value = userData.nom ?: "No disponible",
+                        localCustomColors = localCustomColors
+                    )
                     Spacer(modifier = Modifier.height(5.dp))
-                    SettingItem("Apellido", "Apellido del usuario", localCustomColors)
+                    SettingItem(
+                        label = "Apellido",
+                        value = userData.cognom ?: "No disponible",
+                        localCustomColors = localCustomColors
+                    )
                     Spacer(modifier = Modifier.height(5.dp))
-                    SettingItem("Correo Electrónico", "Correo del usuario", localCustomColors)
+                    SettingItem(
+                        label = "Correo Electrónico",
+                        value = userData.email ?: "No disponible",
+                        localCustomColors = localCustomColors
+                    )
                     Spacer(modifier = Modifier.height(5.dp))
-                    SettingItem("Fecha Nacimiento", "22/01/2002", localCustomColors)
+                    SettingItem(
+                        label = "Teléfono",
+                        value = userData.telefon ?: "No disponible",
+                        localCustomColors = localCustomColors
+                    )
 
                     Spacer(modifier = Modifier.height(20.dp))
 
                     // Botón de Logout
                     Button(
                         onClick = {
-                            FirebaseManager.logoutUser()  // Cerrar sesión en Firebase
+                            FirebaseManager.logoutUser()
+                            userViewModel.clearUserData() // Limpiar los datos del usuario
                             navController.navigate("login") {
                                 popUpTo("user") { inclusive = true }
                                 launchSingleTop = true
@@ -110,18 +134,18 @@ fun SettingsUser(localCustomColors: ProvidableCompositionLocal<CustomColors>, na
 
 @Composable
 fun SettingItem(
-    txt1: String,
-    txt2: String,
+    label: String,
+    value: String,
     localCustomColors: ProvidableCompositionLocal<CustomColors>
 ) {
     val isEditing = remember { mutableStateOf(false) }
-    val editableText = remember { mutableStateOf(txt2) }
+    val editableText = remember { mutableStateOf(value) }
 
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(vertical = 15.dp)) {
         Text(
-            txt1,
+            label,
             style = TextStyle(
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold,

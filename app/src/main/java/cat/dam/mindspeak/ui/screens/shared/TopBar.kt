@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -30,6 +32,7 @@ fun TopBar(
     navController: NavHostController,
     userViewModel: UserViewModel  // Añade el ViewModel como parámetro
 ) {
+    val userData by userViewModel.userData.collectAsState()
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -64,7 +67,7 @@ fun TopBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Muestra el nombre del usuario si está disponible
-            userViewModel.userData.nom?.let { nombre ->
+            userData.nom?.let { nombre ->
                 Text(
                     text = nombre,  // Usa el nombre del ViewModel
                     style = TextStyle(
