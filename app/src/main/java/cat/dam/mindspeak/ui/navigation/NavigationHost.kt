@@ -28,7 +28,7 @@ import cat.dam.mindspeak.ui.theme.LocalCustomColors
 fun NavigationHost(
     navController: NavHostController,
     viewModel: EmotionViewModel,
-    userRoleViewModel: UserViewModel // Añade el UserRoleViewModel como parámetro
+    userViewModel: UserViewModel // Añade el UserRoleViewModel como parámetro
 ) {
     NavHost(navController = navController, startDestination = "logo") {
         composable("logo") { LogoPage(navController) }
@@ -37,7 +37,7 @@ fun NavigationHost(
         composable("upload"){ UploadResourceApp() }
         composable("notis") { NotificationScreen(navController) }
         composable("problemas") { UserProblems(navController) }
-        composable("login") {Login(navController = navController, userViewModel = userRoleViewModel, context = LocalContext.current) }
+        composable("login") {Login(navController = navController, userViewModel = userViewModel, context = LocalContext.current) }
         composable("homeuser") { Inicio(navController) }
         composable("emotions") { Emotions(navController) }
         composable("exercise") { Exercises(navController) }
