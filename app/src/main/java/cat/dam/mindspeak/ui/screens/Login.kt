@@ -40,7 +40,6 @@ import cat.dam.mindspeak.ui.theme.LocalCustomColors
 import cat.dam.mindspeak.ui.theme.White
 import kotlinx.coroutines.launch
 
-
 @Composable
 fun Login(navController: NavHostController, userViewModel: UserViewModel, context: Context) {
     val firebaseManager = FirebaseManager()
@@ -119,7 +118,6 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
                 )
                 Text(
                     text = stringResource(R.string.remember),
-
                     color = LocalCustomColors.current.secondary,
                     modifier = Modifier.padding(start = 8.dp)
                 )
@@ -133,6 +131,9 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
                 colors = ButtonDefaults.buttonColors(
                     containerColor = LocalCustomColors.current.secondary
                 ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(45.dp), // Botón más grande
                 onClick = {
                     if (email.isEmpty() || contrasenya.isEmpty()) {
                         println("Ompli tots els camps.")
@@ -156,7 +157,7 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
                                     // Obtener todos los datos del usuario
                                     coroutineScope.launch {
                                         val userDetails =
-                                            firebaseManager.obtenirDadesUsuari() // Asume que tienes esta función
+                                            firebaseManager.obtenirDadesUsuari()
 
                                         // Actualizar ViewModel con todos los datos
                                         userViewModel.updateUserData(
@@ -187,7 +188,11 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
                     }
                 }
             ) {
-                Text(text = stringResource(R.string.login), color = White)
+                Text(
+                    text = stringResource(R.string.login),
+                    color = White,
+                    fontSize = 18.sp // Texto un poco más grande
+                )
             }
             Spacer(modifier = Modifier.height(16.dp))
         }

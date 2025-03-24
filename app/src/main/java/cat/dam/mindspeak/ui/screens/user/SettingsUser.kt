@@ -211,40 +211,45 @@ fun SettingItem(
         currentValue = initialValue
     }
 
-    Column(modifier = Modifier
+    Box(modifier = Modifier
         .fillMaxWidth()
         .padding(vertical = 15.dp)) {
-        Text(
-            label,
-            style = TextStyle(
-                fontSize = 25.sp,
-                fontWeight = FontWeight.Bold,
-                color = localCustomColors.current.text1
-            )
-        )
-
-        if (isEditing) {
-            OutlinedTextField(
-                value = currentValue,
-                onValueChange = { currentValue = it },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 10.dp)
-            )
-        } else {
+        Column(modifier = Modifier.fillMaxWidth()) {
             Text(
-                currentValue.ifEmpty { "No disponible" },
+                label,
                 style = TextStyle(
-                    color = localCustomColors.current.text1,
-                    fontSize = 25.sp
-                ),
-                modifier = Modifier.padding(top = 10.dp)
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = localCustomColors.current.text1
+                )
             )
+
+            if (isEditing) {
+                OutlinedTextField(
+                    value = currentValue,
+                    onValueChange = { currentValue = it },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp)
+                )
+            } else {
+                Text(
+                    currentValue.ifEmpty { "No disponible" },
+                    style = TextStyle(
+                        color = localCustomColors.current.text1,
+                        fontSize = 25.sp
+                    ),
+                    modifier = Modifier.padding(top = 10.dp)
+                )
+            }
         }
 
+        // Mover los botones de edición al mismo nivel que el texto
         Row(
-            modifier = Modifier.align(Alignment.End),
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .offset(y = 10.dp), // Ajuste fino para alinear verticalmente
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             if (isEditing) {
