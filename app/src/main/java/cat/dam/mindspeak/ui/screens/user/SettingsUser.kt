@@ -8,16 +8,18 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import cat.dam.mindspeak.R
 import cat.dam.mindspeak.firebase.FirebaseManager
@@ -31,6 +33,21 @@ fun SettingsUser(
     userViewModel: UserViewModel
 ) {
     val userData by userViewModel.userData.collectAsState()
+    val firebaseManager = remember { FirebaseManager() }
+    var showUpdateSuccess by remember { mutableStateOf(false) }
+
+    if (showUpdateSuccess) {
+        AlertDialog(
+            onDismissRequest = { showUpdateSuccess = false },
+            title = { Text("Actualización exitosa") },
+            text = { Text("Los datos se han actualizado correctamente") },
+            confirmButton = {
+                Button(onClick = { showUpdateSuccess = false }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item {
@@ -75,28 +92,76 @@ fun SettingsUser(
                         .zIndex(1f)
                 ) {
                     Spacer(modifier = Modifier.height(40.dp))
+
                     SettingItem(
                         label = "Nombre",
-                        value = userData.nom ?: "No disponible",
-                        localCustomColors = localCustomColors
+                        initialValue = userData.nom ?: "",
+                        localCustomColors = localCustomColors,
+                        onUpdate = { newValue ->
+                            userViewModel.updateUserData(nom = newValue)
+                            firebaseManager.updateUserFieldFromComposable("nom", newValue)
+                            showUpdateSuccess = true
+                        }
                     )
+
                     Spacer(modifier = Modifier.height(5.dp))
+
                     SettingItem(
                         label = "Apellido",
-                        value = userData.cognom ?: "No disponible",
-                        localCustomColors = localCustomColors
+                        initialValue = userData.cognom ?: "",
+                        localCustomColors = localCustomColors,
+                        onUpdate = { newValue ->
+                            userViewModel.updateUserData(cognom = newValue)
+                            firebaseManager.updateUserFieldFromComposable("cognom", newValue)
+                            showUpdateSuccess = true
+                        }
                     )
+
                     Spacer(modifier = Modifier.height(5.dp))
-                    SettingItem(
-                        label = "Correo Electrónico",
-                        value = userData.email ?: "No disponible",
-                        localCustomColors = localCustomColors
-                    )
+
+                    Column(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 15.dp)) {
+                        Text(
+                            "Correo Electrónico",
+                            style = TextStyle(
+                                fontSize = 25.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = localCustomColors.current.text1
+                            )
+                        )
+
+                        Text(
+                            userData.email ?: "No disponible",
+                            style = TextStyle(
+                                color = localCustomColors.current.text1,
+                                fontSize = 25.sp
+                            ),
+                            modifier = Modifier.padding(top = 10.dp)
+                        )
+
+                        Text(
+                            "* Para cambiar el correo, contacta con soporte",
+                            style = TextStyle(
+                                color = localCustomColors.current.text2,
+                                fontSize = 14.sp,
+                                fontStyle = FontStyle.Italic
+                            ),
+                            modifier = Modifier.padding(top = 8.dp)
+                        )
+                    }
+
                     Spacer(modifier = Modifier.height(5.dp))
+
                     SettingItem(
                         label = "Teléfono",
-                        value = userData.telefon ?: "No disponible",
-                        localCustomColors = localCustomColors
+                        initialValue = userData.telefon ?: "",
+                        localCustomColors = localCustomColors,
+                        onUpdate = { newValue ->
+                            userViewModel.updateUserData(telefon = newValue)
+                            firebaseManager.updateUserFieldFromComposable("telefon", newValue)
+                            showUpdateSuccess = true
+                        }
                     )
 
                     Spacer(modifier = Modifier.height(20.dp))
@@ -135,11 +200,16 @@ fun SettingsUser(
 @Composable
 fun SettingItem(
     label: String,
-    value: String,
-    localCustomColors: ProvidableCompositionLocal<CustomColors>
+    initialValue: String,
+    localCustomColors: ProvidableCompositionLocal<CustomColors>,
+    onUpdate: (String) -> Unit
 ) {
-    val isEditing = remember { mutableStateOf(false) }
-    val editableText = remember { mutableStateOf(value) }
+    var isEditing by remember { mutableStateOf(false) }
+    var currentValue by remember { mutableStateOf(initialValue) }
+
+    LaunchedEffect(initialValue) {
+        currentValue = initialValue
+    }
 
     Column(modifier = Modifier
         .fillMaxWidth()
@@ -153,10 +223,10 @@ fun SettingItem(
             )
         )
 
-        if (isEditing.value) {
+        if (isEditing) {
             OutlinedTextField(
-                value = editableText.value,
-                onValueChange = { editableText.value = it },
+                value = currentValue,
+                onValueChange = { currentValue = it },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -164,7 +234,7 @@ fun SettingItem(
             )
         } else {
             Text(
-                editableText.value,
+                currentValue.ifEmpty { "No disponible" },
                 style = TextStyle(
                     color = localCustomColors.current.text1,
                     fontSize = 25.sp
@@ -173,17 +243,65 @@ fun SettingItem(
             )
         }
 
-        Image(
-            painter = painterResource(id = R.drawable.lapiz_icon),
-            contentDescription = null,
-            colorFilter = ColorFilter.tint(localCustomColors.current.text1),
-            modifier = Modifier
-                .size(30.dp)
-                .align(Alignment.End)
-                .clickable {
-                    isEditing.value = !isEditing.value
-                },
-            contentScale = ContentScale.Fit
-        )
+        Row(
+            modifier = Modifier.align(Alignment.End),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            if (isEditing) {
+                // Botón de confirmar (usando el mismo ícono de lápiz pero rotado)
+                IconButton(
+                    onClick = {
+                        if (currentValue != initialValue) {
+                            onUpdate(currentValue)
+                        }
+                        isEditing = false
+                    }
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.lapiz_icon),
+                        contentDescription = "Confirmar",
+                        colorFilter = ColorFilter.tint(Color.Green),
+                        modifier = Modifier
+                            .size(24.dp)
+                            .rotate(45f)
+                    )
+                }
+                // Botón de cancelar (usando el mismo ícono pero con X)
+                IconButton(
+                    onClick = {
+                        currentValue = initialValue
+                        isEditing = false
+                    }
+                ) {
+                    Box(modifier = Modifier.size(24.dp)) {
+                        Image(
+                            painter = painterResource(id = R.drawable.lapiz_icon),
+                            contentDescription = "Cancelar",
+                            colorFilter = ColorFilter.tint(Color.Red),
+                            modifier = Modifier.size(12.dp)
+                        )
+                        Image(
+                            painter = painterResource(id = R.drawable.lapiz_icon),
+                            contentDescription = null,
+                            colorFilter = ColorFilter.tint(Color.Red),
+                            modifier = Modifier
+                                .size(12.dp)
+                                .rotate(90f)
+                        )
+                    }
+                }
+            } else {
+                IconButton(
+                    onClick = { isEditing = true }
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.lapiz_icon),
+                        contentDescription = "Editar",
+                        colorFilter = ColorFilter.tint(localCustomColors.current.text1),
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+            }
+        }
     }
 }

@@ -11,7 +11,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.util.Date
 
 class FirebaseManager {
@@ -298,8 +302,39 @@ class FirebaseManager {
             null
         }
     }
+    // En FirebaseManager.kt
+    suspend fun updateUserField(field: String, value: String) {
+        try {
+            val userId = auth.currentUser?.uid ?: throw Exception("Usuario no autenticado")
 
+            db.collection("Persona")
+                .document(userId)
+                .update(field, value)
+                .await()
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "Error al actualizar campo $field", e)
+            throw e
+        }
+    }
 
-    
-
+    // Añade esta función para llamadas desde composables
+    fun updateUserFieldFromComposable(
+        field: String,
+        value: String,
+        onSuccess: () -> Unit = {},
+        onError: (Exception) -> Unit = {}
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                updateUserField(field, value)
+                withContext(Dispatchers.Main) {
+                    onSuccess()
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    onError(e)
+                }
+            }
+        }
+    }
 }
