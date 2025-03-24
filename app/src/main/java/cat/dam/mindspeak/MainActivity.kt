@@ -25,7 +25,6 @@ import cat.dam.mindspeak.ui.screens.shared.TopBar
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 import cat.dam.mindspeak.ui.theme.MindSpeakTheme
 
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,8 +38,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
-
 @Composable
 fun MyApp(
     viewModel: EmotionViewModel = viewModel(),
@@ -51,14 +48,14 @@ fun MyApp(
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     val showBottomBar = when (currentRoute) {
-        "login" -> false // Ocultar en la pantalla de login
+        "login" -> false
         "logo" -> false
-        else -> !isLandscape // Mostrar en otras pantallas
+        else -> !isLandscape
     }
     val showTopBar = when (currentRoute) {
-        "login" -> false // Ocultar en la pantalla de login
+        "login" -> false
         "logo" -> false
-        else -> !isLandscape // Mostrar en otras pantallas
+        else -> !isLandscape
     }
 
     Column(
@@ -68,15 +65,15 @@ fun MyApp(
             .background(LocalCustomColors.current.background)
     ) {
         if (showTopBar) {
-            TopBar(navController = navController)
+            TopBar(navController = navController, userViewModel = userViewModel)
         }
 
         Box(modifier = Modifier.weight(1f)) {
-            NavigationHost(navController = navController, viewModel = viewModel,userViewModel)
+            NavigationHost(navController = navController, viewModel = viewModel, userViewModel = userViewModel)
         }
 
         if (showBottomBar) {
-            when (userViewModel.userRole) {
+            when (userViewModel.userData.rol) {  // Changed from userRole to userData.rol
                 "Usuari" -> BottomBarUser(
                     navController = navController,
                     currentRoute = currentRoute
@@ -89,8 +86,6 @@ fun MyApp(
         }
     }
 }
-
-
 
 @Preview(showBackground = true)
 @Composable
