@@ -20,12 +20,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import cat.dam.mindspeak.R
+import cat.dam.mindspeak.model.UserViewModel
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 import cat.dam.mindspeak.ui.theme.MindSpeakTheme
 
 @Composable
 fun TopBar(
-    modifier: Modifier = Modifier, navController: NavHostController,
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    userViewModel: UserViewModel  // Añade el ViewModel como parámetro
 ) {
     Row(
         modifier = modifier
@@ -34,7 +37,6 @@ fun TopBar(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-
         Row(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
@@ -58,19 +60,21 @@ fun TopBar(
             )
         }
 
-
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = stringResource(R.string.username),
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = LocalCustomColors.current.text1,
-                ),
-                modifier = Modifier.padding(end = 8.dp)
-            )
+            // Muestra el nombre del usuario si está disponible
+            userViewModel.userData.nom?.let { nombre ->
+                Text(
+                    text = nombre,  // Usa el nombre del ViewModel
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = LocalCustomColors.current.text1,
+                    ),
+                    modifier = Modifier.padding(end = 8.dp)
+                )
+            }
             IconButton(
                 onClick = {
                     navController.navigate("settings")

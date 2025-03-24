@@ -42,7 +42,7 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun Login(navController: NavHostController,userViewModel: UserViewModel,context: Context) {
+fun Login(navController: NavHostController, userViewModel: UserViewModel, context: Context) {
     val firebaseManager = FirebaseManager()
     var email by remember { mutableStateOf("") }
     var contrasenya by remember { mutableStateOf("") }
@@ -79,7 +79,12 @@ fun Login(navController: NavHostController,userViewModel: UserViewModel,context:
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text(stringResource(R.string.mail_user), color = LocalCustomColors.current.text1) },
+                label = {
+                    Text(
+                        stringResource(R.string.mail_user),
+                        color = LocalCustomColors.current.text1
+                    )
+                },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 modifier = Modifier.fillMaxWidth()
             )
@@ -90,7 +95,12 @@ fun Login(navController: NavHostController,userViewModel: UserViewModel,context:
             OutlinedTextField(
                 value = contrasenya,
                 onValueChange = { contrasenya = it },
-                label = { Text(stringResource(R.string.password), color = LocalCustomColors.current.text1) },
+                label = {
+                    Text(
+                        stringResource(R.string.password),
+                        color = LocalCustomColors.current.text1
+                    )
+                },
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 modifier = Modifier.fillMaxWidth()
@@ -113,14 +123,6 @@ fun Login(navController: NavHostController,userViewModel: UserViewModel,context:
                     color = LocalCustomColors.current.secondary,
                     modifier = Modifier.padding(start = 8.dp)
                 )
-                TextButton(
-                    onClick = { /* Gestionar l'olvid de contrasenya */ }
-                ) {
-                    Text(
-                        text = stringResource(R.string.forget_password),
-                        color = LocalCustomColors.current.secondary
-                    )
-                }
             }
             Spacer(modifier = Modifier.height(24.dp))
         }
@@ -137,10 +139,8 @@ fun Login(navController: NavHostController,userViewModel: UserViewModel,context:
                         return@Button
                     }
 
-                    // Lancer une coroutine pour gérer toutes les opérations suspendues
                     coroutineScope.launch {
                         try {
-                            // Appel de la fonction suspendue iniciarSessio
                             firebaseManager.iniciarSessio(
                                 email = email,
                                 contrasenya = contrasenya,
@@ -152,11 +152,23 @@ fun Login(navController: NavHostController,userViewModel: UserViewModel,context:
                                     } else {
                                         prefs.clear()
                                     }
-                                    // Obtenir le rôle de l'utilisateur après la connexion réussie
+
+                                    // Obtener todos los datos del usuario
                                     coroutineScope.launch {
-                                        val rol = firebaseManager.obtenirRolUsuari()
-                                        userViewModel.updateUserRole(rol?:"Usuari")
-                                        when (rol) {
+                                        val userDetails =
+                                            firebaseManager.obtenirDadesUsuari() // Asume que tienes esta función
+
+                                        // Actualizar ViewModel con todos los datos
+                                        userViewModel.updateUserData(
+                                            email = email,
+                                            nom = userDetails?.nom,
+                                            cognom = userDetails?.cognom,
+                                            telefon = userDetails?.telefon,
+                                            rol = userDetails?.rol ?: "Usuari"
+                                        )
+
+                                        // Navegar según el rol
+                                        when (userDetails?.rol) {
                                             "Supervisor" -> navController.navigate("homesupervis")
                                             "Familiar" -> navController.navigate("homefamiliar")
                                             "Professor" -> navController.navigate("homeprofessor")
@@ -173,10 +185,9 @@ fun Login(navController: NavHostController,userViewModel: UserViewModel,context:
                             println("Error general: ${e.message}")
                         }
                     }
-                },
-                modifier = Modifier.fillMaxWidth()
+                }
             ) {
-                Text(text = stringResource(R.string.login),color = White)
+                Text(text = stringResource(R.string.login), color = White)
             }
             Spacer(modifier = Modifier.height(16.dp))
         }
