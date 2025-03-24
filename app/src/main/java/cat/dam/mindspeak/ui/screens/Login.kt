@@ -145,6 +145,13 @@ fun Login(navController: NavHostController,userViewModel: UserViewModel,context:
                                 email = email,
                                 contrasenya = contrasenya,
                                 onSuccess = {
+                                    if (recordarMe) {
+                                        prefs.saveEmail(email)
+                                        prefs.savePassword(contrasenya)
+                                        prefs.saveRememberMe(true)
+                                    } else {
+                                        prefs.clear()
+                                    }
                                     // Obtenir le rôle de l'utilisateur après la connexion réussie
                                     coroutineScope.launch {
                                         val rol = firebaseManager.obtenirRolUsuari()
