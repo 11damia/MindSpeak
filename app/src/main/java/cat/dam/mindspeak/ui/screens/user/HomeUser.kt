@@ -27,11 +27,12 @@ import androidx.compose.ui.zIndex
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import cat.dam.mindspeak.R
+import cat.dam.mindspeak.model.UserViewModel
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 import cat.dam.mindspeak.ui.theme.White
 
 @Composable
-fun Inicio(navController: NavHostController) {
+fun Inicio(navController: NavHostController, userViewModel: UserViewModel) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -46,7 +47,7 @@ fun Inicio(navController: NavHostController) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(R.string.username),
+                text = userViewModel.userData.nom ?: "Usuari",
                 color = LocalCustomColors.current.text1,
                 fontSize = 18.sp
             )
@@ -208,10 +209,4 @@ fun Inicio(navController: NavHostController) {
         }
 
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun InicioPreview() {
-    Inicio(navController = rememberNavController())
 }

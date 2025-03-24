@@ -16,10 +16,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import cat.dam.mindspeak.R
+import cat.dam.mindspeak.model.UserViewModel
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
 @Composable
-fun HomeSupervisorScreen(navController: NavHostController) {
+fun HomeSupervisorScreen(navController: NavHostController,userViewModel: UserViewModel) {
 
 
     LazyColumn(
@@ -37,7 +38,7 @@ fun HomeSupervisorScreen(navController: NavHostController) {
             )
 
             Text(
-                text = stringResource(R.string.username),
+                text = userViewModel.userData.nom ?: "Usuari",
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 color = LocalCustomColors.current.text1,
