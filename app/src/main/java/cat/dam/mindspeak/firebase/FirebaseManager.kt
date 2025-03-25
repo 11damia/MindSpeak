@@ -168,41 +168,7 @@ class FirebaseManager {
         }
     }
 
-    /*
-    // Obtenir la liste des émotions depuis Firebase
-    suspend fun obtenirEmocions(): List<EmotionItem> {
-        Log.d("FirebaseManager", "Début de la récupération des émotions")
-        try {
-            val snapshot = db.collection("Emocio").get().await()
 
-            return snapshot.documents.map { document ->
-                // Convertir la couleur en format Color
-                val colorHex = document.getString("color") ?: "FFFFFFFF" // Note: no "0x" prefix
-                val color = Color(android.graphics.Color.parseColor("#$colorHex"))
-
-                EmotionItem(
-                    text = document.getString("emocio_nom") ?: "",
-                    color = color,
-                    imageUrl = document.getString("imagen") ?: "",
-                    // Vous pouvez aussi ajouter une ressource locale de secours si nécessaire
-                    imageRes = when(document.getString("emocio_nom")) {
-                        "ENFADADO" -> R.drawable.enfadado
-                        "TRISTE" -> R.drawable.triste
-                        "MIEDO" -> R.drawable.miedoso
-                        "FELIZ" -> R.drawable.feliz
-                        "ANSIOSO" -> R.drawable.ansioso
-                        else -> R.drawable.enfadado // Image par défaut
-                    }
-                )
-            }
-        } catch (e: Exception) {
-            Log.e("FirebaseManager", "Error fetching emotions", e)
-            return emptyList()
-
-        }
-    }
-
-     */
     // Fetch emotion records for the current user
     suspend fun obtenirRegistresEmocions(): List<EmotionRecord> {
         try {
@@ -372,35 +338,7 @@ class FirebaseManager {
         }
     }
 
-    /*
-    suspend fun getUsersByRole(role: String): List<UserData> {
-        try {
-            // Get current user (supervisor) ID
-            val supervisorId = auth.currentUser?.uid
-                ?: return emptyList()
 
-            // Query users with the specified role
-            val snapshot = db.collection("Persona")
-                .whereEqualTo("rol", role)
-                // You might want to add additional filtering for users under this supervisor
-                .get()
-                .await()
-
-            return snapshot.documents.map { document ->
-                UserData(
-                    nom = document.getString("nom"),
-                    cognom = document.getString("cognom"),
-                    email = document.getString("email"),
-                    telefon = document.getString("telefon"),
-                    rol = document.getString("rol")
-                )
-            }
-        } catch (e: Exception) {
-            Log.e("FirebaseManager", "Error fetching users", e)
-            return emptyList()
-        }
-    }
-*/
     suspend fun updateUserInformation(user: UserRelation) {
         try {
             // Find the user document by email

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
@@ -56,9 +55,19 @@ fun SupervisorManagementScreen(
     var isEditUserDialogOpen by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
 
+    // Récupérer l'ID du superviseur connecté
+    var currentSupervisorId by remember { mutableStateOf<String?>(null) }
+
     // Use LaunchedEffect to safely call suspend functions
     LaunchedEffect(Unit) {
-        users = firebaseManager.getUsersByRole("Usuari")
+        // Récupérer l'ID du superviseur
+        currentSupervisorId = firebaseManager.auth.currentUser?.uid
+
+        // Charger les utilisateurs assignés au superviseur connecté
+        currentSupervisorId?.let { supervisorId ->
+            users = firebaseManager.getUsersBySupervisor(supervisorId)
+        }
+
         professors = firebaseManager.getUsersByRole("Professor")
         familiars = firebaseManager.getUsersByRole("Familiar")
     }
@@ -66,12 +75,7 @@ fun SupervisorManagementScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Gestió d'Usuaris") },
-                actions = {
-                    IconButton(onClick = { isAddUserDialogOpen = true }) {
-                        Icon(Icons.Default.Add, contentDescription = "Afegir Usuari")
-                    }
-                }
+                title = { Text("Gestió d'Usuaris Assignats") }
             )
         }
     ) { paddingValues ->
@@ -89,8 +93,11 @@ fun SupervisorManagementScreen(
                     },
                     onDelete = {
                         coroutineScope.launch {
-                            firebaseManager.deleteUser(user.email)
-                            users = firebaseManager.getUsersByRole("Usuari")
+                            currentSupervisorId?.let { supervisorId ->
+                                firebaseManager.removeUserAssignment(user.userId, supervisorId)
+                                // Recharger la liste des utilisateurs après suppression
+                                users = firebaseManager.getUsersBySupervisor(supervisorId)
+                            }
                         }
                     }
                 )
@@ -166,7 +173,9 @@ fun SupervisorManagementScreen(
                         }
 
                         // Refresh users list
-                        users = firebaseManager.getUsersByRole("Usuari")
+                        currentSupervisorId?.let { supervisorId ->
+                            users = firebaseManager.getUsersBySupervisor(supervisorId)
+                        }
 
                         isEditUserDialogOpen = false
                     }
