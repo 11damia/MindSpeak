@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.Color
 import cat.dam.mindspeak.model.EmotionItem
 import cat.dam.mindspeak.model.EmotionRecord
 import cat.dam.mindspeak.model.UserData
+import cat.dam.mindspeak.model.UserRelation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -19,7 +20,7 @@ import kotlinx.coroutines.withContext
 import java.util.Date
 
 class FirebaseManager {
-    private val auth = FirebaseAuth.getInstance()
+    val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
 
     companion object {
@@ -27,6 +28,7 @@ class FirebaseManager {
             FirebaseAuth.getInstance().signOut()
         }
     }
+
     suspend fun registrarUsuari(
         email: String,
         contrasenya: String,
@@ -43,7 +45,8 @@ class FirebaseManager {
         try {
             // Crear compte a Firebase Auth
             val authResult = auth.createUserWithEmailAndPassword(email, contrasenya).await()
-            val userId = authResult.user?.uid ?: throw Exception("No s'ha pogut obtenir l'ID de l'usuari")
+            val userId =
+                authResult.user?.uid ?: throw Exception("No s'ha pogut obtenir l'ID de l'usuari")
 
             // Afegir informació a Firestore
             val personaData = mutableMapOf<String, Any?>(
@@ -109,6 +112,7 @@ class FirebaseManager {
     fun estaUsuariConnectat(): Boolean {
         return auth.currentUser != null
     }
+
     // Add a new emotion record
     suspend fun afegirRegistreEmocio(
         emotionType: String,
@@ -140,6 +144,7 @@ class FirebaseManager {
             onFailure(e.message ?: "Error desconegut en afegir el registre d'emocions")
         }
     }
+
     suspend fun obtenirEmocions(): List<EmotionItem> {
         Log.d("FirebaseManager", "Début de la récupération des émotions")
         try {
@@ -162,6 +167,7 @@ class FirebaseManager {
             throw e
         }
     }
+
     /*
     // Obtenir la liste des émotions depuis Firebase
     suspend fun obtenirEmocions(): List<EmotionItem> {
@@ -279,6 +285,7 @@ class FirebaseManager {
             return emptyMap()
         }
     }
+
     suspend fun obtenirDadesUsuari(): UserData? {
         return try {
             val currentUser = Firebase.auth.currentUser
@@ -302,8 +309,9 @@ class FirebaseManager {
             null
         }
     }
+
     // En FirebaseManager.kt
-    suspend fun updateUserField(field: String, value: String) {
+    private suspend fun updateUserField(field: String, value: String) {
         try {
             val userId = auth.currentUser?.uid ?: throw Exception("Usuario no autenticado")
 
@@ -337,4 +345,335 @@ class FirebaseManager {
             }
         }
     }
+
+    // SupervisorManagement
+    suspend fun getUsersByRole(role: String): List<UserRelation> {
+        try {
+            val snapshot = db.collection("Persona")
+                .whereEqualTo("rol", role)
+                .get()
+                .await()
+
+            return snapshot.documents.map { document ->
+                UserRelation(
+                    userId = document.id,
+                    nom = document.getString("nom") ?: "",
+                    cognom = document.getString("cognom") ?: "",
+                    email = document.getString("email") ?: "",
+                    telefon = document.getString("telefon"),
+                    supervisor = document.getString("supervisor"),
+                    professor = document.getString("professor"),
+                    familiar = document.getString("familiar")
+                )
+            }
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "Error fetching users by role", e)
+            return emptyList()
+        }
+    }
+
+    /*
+    suspend fun getUsersByRole(role: String): List<UserData> {
+        try {
+            // Get current user (supervisor) ID
+            val supervisorId = auth.currentUser?.uid
+                ?: return emptyList()
+
+            // Query users with the specified role
+            val snapshot = db.collection("Persona")
+                .whereEqualTo("rol", role)
+                // You might want to add additional filtering for users under this supervisor
+                .get()
+                .await()
+
+            return snapshot.documents.map { document ->
+                UserData(
+                    nom = document.getString("nom"),
+                    cognom = document.getString("cognom"),
+                    email = document.getString("email"),
+                    telefon = document.getString("telefon"),
+                    rol = document.getString("rol")
+                )
+            }
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "Error fetching users", e)
+            return emptyList()
+        }
+    }
+*/
+    suspend fun updateUserInformation(user: UserRelation) {
+        try {
+            // Find the user document by email
+            val querySnapshot = db.collection("Persona")
+                .whereEqualTo("email", user.email)
+                .get()
+                .await()
+
+            if (!querySnapshot.isEmpty) {
+                val documentId = querySnapshot.documents[0].id
+
+                // Prepare update map
+                val updateData = mapOf(
+                    "nom" to user.nom,
+                    "cognom" to user.cognom,
+                    "telefon" to user.telefon
+                )
+
+                // Update the document
+                db.collection("Persona")
+                    .document(documentId)
+                    .update(updateData)
+                    .await()
+            } else {
+                throw Exception("User not found")
+            }
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "Error updating user", e)
+            throw e
+        }
+    }
+
+    suspend fun deleteUser(email: String) {
+        try {
+            // Find the user document by email
+            val querySnapshot = db.collection("Persona")
+                .whereEqualTo("email", email)
+                .get()
+                .await()
+
+            if (!querySnapshot.isEmpty) {
+                val documentId = querySnapshot.documents[0].id
+
+                // Delete the document
+                db.collection("Persona")
+                    .document(documentId)
+                    .delete()
+                    .await()
+            } else {
+                throw Exception("User not found")
+            }
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "Error deleting user", e)
+            throw e
+        }
+    }
+
+    // Assignar users a supervisor
+    suspend fun getUsersWithoutSupervisor(): List<UserRelation> {
+        try {
+            val snapshot = db.collection("Persona")
+                .whereEqualTo("rol", "Usuari")
+                .get()
+                .await()
+
+            Log.d("FirebaseManager", "Total documents retrieved: ${snapshot.documents.size}")
+
+            val users = snapshot.documents.map { document ->
+                val userData = UserRelation(
+                    userId = document.id,
+                    nom = document.getString("nom") ?: "",
+                    cognom = document.getString("cognom") ?: "",
+                    email = document.getString("email") ?: "",
+                    telefon = document.getString("telefon"),
+                    supervisor = document.getString("supervisor"),
+                    professor = document.getString("professor"),
+                    familiar = document.getString("familiar")
+                )
+
+                // Log details of each user
+                Log.d(
+                    "FirebaseManager", "User details: " +
+                            "ID: ${userData.userId}, " +
+                            "Name: ${userData.nom} ${userData.cognom}, " +
+                            "Email: ${userData.email}, " +
+                            "Supervisor: ${userData.supervisor}"
+                )
+
+                userData
+            }.filter { user ->
+                // Explicitly log why a user is considered available
+                val isAvailable = user.supervisor.isNullOrBlank()
+                Log.d("FirebaseManager", "User ${user.email} is available: $isAvailable")
+                isAvailable
+            }
+
+            Log.d("FirebaseManager", "Number of available users: ${users.size}")
+            return users
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "Error retrieving users without supervisor", e)
+            return emptyList()
+        }
+    }
+
+    suspend fun getUsersBySupervisor(supervisorId: String): List<UserRelation> {
+        try {
+            val snapshot = db.collection("Persona")
+                .whereEqualTo("rol", "Usuari")
+                .whereEqualTo("supervisor", supervisorId)
+                .get()
+                .await()
+
+            return snapshot.documents.map { document ->
+                UserRelation(
+                    userId = document.id,
+                    nom = document.getString("nom") ?: "",
+                    cognom = document.getString("cognom") ?: "",
+                    email = document.getString("email") ?: "",
+                    telefon = document.getString("telefon"),
+                    supervisor = document.getString("supervisor"),
+                    professor = document.getString("professor"),
+                    familiar = document.getString("familiar")
+                )
+            }
+        } catch (e: Exception) {
+            Log.e(
+                "FirebaseManager",
+                "Erreur lors de la récupération des utilisateurs du superviseur",
+                e
+            )
+            return emptyList()
+        }
+    }
+
+    suspend fun assignUserToSupervisor(userId: String, supervisorId: String) {
+        try {
+            Log.d(
+                "FirebaseManager",
+                "Attempting to assign user $userId to supervisor $supervisorId"
+            )
+
+            val currentUserRole = obtenirRolUsuari()
+            if (currentUserRole != "Supervisor") {
+                Log.e("FirebaseManager", "Assignment failed: Current user is not a supervisor")
+                throw Exception("Seuls les superviseurs peuvent assigner des utilisateurs")
+            }
+
+            // Vérifier que l'utilisateur n'a pas déjà un superviseur
+            val userDoc = db.collection("Persona").document(userId).get().await()
+            val existingSupervisor = userDoc.getString("supervisor")
+
+            if (existingSupervisor != null) {
+                Log.e("FirebaseManager", "Assignment failed: User already has a supervisor")
+                throw Exception("L'usuario te un supervisor")
+            }
+
+            // Mettre à jour le document de l'utilisateur
+            db.collection("Persona")
+                .document(userId)
+                .update("supervisor", supervisorId)
+                .await()
+
+            Log.d(
+                "FirebaseManager",
+                "User $userId successfully assigned to supervisor $supervisorId"
+            )
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "Error in assignUserToSupervisor", e)
+            throw e
+        }
+    }
+
+    suspend fun removeUserAssignment(userId: String, supervisorId: String) {
+        try {
+            // Vérifier que le superviseur correspond
+            val userDoc = db.collection("Persona").document(userId).get().await()
+            val currentSupervisor = userDoc.getString("supervisor")
+
+            if (currentSupervisor != supervisorId) {
+                throw Exception("Le superviseur ne correspond pas")
+            }
+
+            // Supprimer l'assignation du superviseur
+            db.collection("Persona")
+                .document(userId)
+                .update("supervisor", null)
+                .await()
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "Erreur lors de la suppression de l'assignation", e)
+            throw e
+        }
+    }
+
+    // Méthodes similaires à implémenter pour professor et familiar
+    suspend fun assignUserToProfessor(userEmail: String, professorId: String) {
+        try {
+            // Trouver l'ID de l'utilisateur par email
+            val userQuery = db.collection("Persona")
+                .whereEqualTo("email", userEmail)
+                .get()
+                .await()
+
+            if (userQuery.documents.isEmpty()) throw Exception("User not found")
+            val userId = userQuery.documents[0].id
+
+            // Assigner le professeur
+            db.collection("Persona").document(userId)
+                .update("professor", professorId)
+                .await()
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "Erreur d'assignation", e)
+            throw e
+        }
+    }
+
+    suspend fun assignUserToFamiliar(userEmail: String, familiarId: String) {
+        try {
+            // Trouver l'ID de l'utilisateur par email
+            val userQuery = db.collection("Persona")
+                .whereEqualTo("email", userEmail)
+                .get()
+                .await()
+
+            if (userQuery.documents.isEmpty()) throw Exception("User not found")
+            val userId = userQuery.documents[0].id
+
+            // Assigner le professeur
+            db.collection("Persona").document(userId)
+                .update("familiar", familiarId)
+                .await()
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "Erreur d'assignation", e)
+            throw e
+        }
+    }
 }
+    /*
+suspend fun assignUserToProfessor(userId: String, professorId: String) {
+    try {
+        val userDoc = db.collection("Persona").document(userId).get().await()
+        val existingProfessor = userDoc.getString("professor")
+
+        if (existingProfessor != null) {
+            throw Exception("L'usuario te un professor")
+        }
+
+        db.collection("Persona")
+            .document(userId)
+            .update("professor", professorId)
+            .await()
+    } catch (e: Exception) {
+        Log.e("FirebaseManager", "Erreur lors de l'assignation du professeur", e)
+        throw e
+    }
+}
+
+suspend fun assignUserToFamiliar(userId: String, familiarId: String) {
+    try {
+        val userDoc = db.collection("Persona").document(userId).get().await()
+        val existingFamiliar = userDoc.getString("familiar")
+
+        if (existingFamiliar != null) {
+            throw Exception("L'usuario te un familier")
+        }
+
+        db.collection("Persona")
+            .document(userId)
+            .update("familiar", familiarId)
+            .await()
+    } catch (e: Exception) {
+        Log.e("FirebaseManager", "Erreur lors de l'assignation du familier", e)
+        throw e
+    }
+}
+
+ */

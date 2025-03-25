@@ -72,7 +72,7 @@ fun MyApp(
         }
 
         Box(modifier = Modifier.weight(1f)) {
-            NavigationHost(navController = navController, viewModel = viewModel, userViewModel = userViewModel)
+            NavigationHost(navController = navController, emotionViewModel = viewModel, userViewModel = userViewModel)
         }
 
         if (showBottomBar) {

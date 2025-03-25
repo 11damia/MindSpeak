@@ -44,4 +44,6 @@
     <string name="add_audio">Gravar àudio / Pujar àudio</string>
     <string name="upload">Pujar</string>
     <string name="user_icon">Icona d\'usuari</string>
+    <string name="manage_users">manage_users</string>
+    <string name="assignment_users">assignment_users</string>
 </resources>
