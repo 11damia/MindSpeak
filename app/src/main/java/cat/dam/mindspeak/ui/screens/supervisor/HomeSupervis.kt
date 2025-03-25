@@ -1,8 +1,13 @@
 package cat.dam.mindspeak.ui.screens.supervisor
 
-import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -11,7 +16,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -22,7 +26,7 @@ import cat.dam.mindspeak.model.UserViewModel
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
 @Composable
-fun HomeSupervisorScreen(navController: NavHostController,userViewModel: UserViewModel) {
+fun HomeSupervisorScreen(navController: NavHostController, userViewModel: UserViewModel) {
     val userData by userViewModel.userData.collectAsState()
     LazyColumn(
         modifier = Modifier
@@ -35,7 +39,6 @@ fun HomeSupervisorScreen(navController: NavHostController,userViewModel: UserVie
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = LocalCustomColors.current.text1,
-//                modifier = Modifier.align(Alignment.Start)
             )
 
             Text(
@@ -43,7 +46,6 @@ fun HomeSupervisorScreen(navController: NavHostController,userViewModel: UserVie
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 color = LocalCustomColors.current.text1,
-//                modifier = Modifier.padding(bottom = 24.dp).align(Alignment.Start)
             )
             Spacer(modifier = Modifier.height(30.dp))
         }
@@ -62,9 +64,14 @@ fun HomeSupervisorScreen(navController: NavHostController,userViewModel: UserVie
         item {
             OptionButton(text = stringResource(R.string.add_user), onClick = { navController.navigate("signup") })
         }
+        item {
+            OptionButton(text = stringResource(R.string.manage_users), onClick = { navController.navigate("user_management") })
+        }
+        item {
+            OptionButton(text = stringResource(R.string.assignment_users), onClick = { navController.navigate("user_assignment") })
+        }
     }
 }
-
 
 @Composable
 fun OptionButton(text: String, onClick: () -> Unit) {
