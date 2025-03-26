@@ -11,7 +11,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -20,11 +19,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import cat.dam.mindspeak.model.EmotionRecord
 import cat.dam.mindspeak.model.EmotionViewModel
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
-import cat.dam.mindspeak.utils.SupabaseConfig
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import coil.transform.CircleCropTransformation
 import java.text.SimpleDateFormat
 import java.util.Locale
 

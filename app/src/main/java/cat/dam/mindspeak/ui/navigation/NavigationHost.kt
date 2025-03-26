@@ -5,8 +5,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import cat.dam.mindspeak.firebase.FirebaseManager
 import cat.dam.mindspeak.model.EmotionViewModel
 import cat.dam.mindspeak.model.UserRelationViewModel
@@ -21,6 +23,7 @@ import cat.dam.mindspeak.ui.screens.supervisor.NotificationScreen
 import cat.dam.mindspeak.ui.screens.supervisor.SupervisorManagementScreen
 import cat.dam.mindspeak.ui.screens.supervisor.SupervisorUserAssignmentScreen
 import cat.dam.mindspeak.ui.screens.supervisor.UploadResourceApp
+import cat.dam.mindspeak.ui.screens.supervisor.UserEmotionsScreen
 import cat.dam.mindspeak.ui.screens.user.EmotionHistoryScreen
 import cat.dam.mindspeak.ui.screens.user.EmotionRatingScreen
 import cat.dam.mindspeak.ui.screens.user.Emotions
@@ -53,7 +56,26 @@ fun NavigationHost(
             )
         }
         composable("upload"){ UploadResourceApp() }
-        composable("notis") { NotificationScreen(navController) }
+        composable("notis") {
+            NotificationScreen(
+                navController = navController,
+                firebaseManager = FirebaseManager()
+            )
+        }
+        // New route for user emotions screen
+        composable(
+            route = "user_emotions/{userId}",
+            arguments = listOf(navArgument("userId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId")
+            if (userId != null) {
+                UserEmotionsScreen(
+                    navController = navController,
+                    userId = userId,
+                    firebaseManager = FirebaseManager()
+                )
+            }
+        }
         composable("problemas") { UserProblems(navController) }
         composable("login") {Login(navController = navController, userViewModel = userViewModel, context = LocalContext.current) }
         composable("homeuser") { Inicio(navController,userViewModel) }

@@ -66,13 +66,11 @@ dependencies {
 
     // Firebase
     implementation (libs.firebase.auth)
-    implementation (platform(libs.firebase.bom.v3272))
     implementation (libs.firebase.auth.ktx)
     implementation (libs.firebase.firestore.ktx)
     implementation (libs.firebase.database.ktx)
 
     // Supabase
-    implementation(libs.storage.kt.vversion)
     implementation (libs.io.github.jan.tennert.supabase.postgrest.kt)
     implementation (libs.storage.kt)
     implementation (libs.supabase.kt)
@@ -84,8 +82,6 @@ dependencies {
     // Coil per carregar imatges de manera asíncrona
     implementation(libs.coil.compose)
 
-    // Assegureu-vos que teniu aquestes dependències per l'ActivityResultLauncher
-    implementation (libs.activity.compose.v172)
 
     // Images icons externals
     implementation (libs.androidx.material.icons.extended)
@@ -94,4 +90,7 @@ dependencies {
     implementation (libs.ktor.client.android)  
     implementation (libs.ktor.client.content.negotiation)
     implementation (libs.ktor.serialization.kotlinx.json)
+
+    // Accompanist
+    implementation("com.google.accompanist:accompanist-navigation-animation:0.34.0")
 }
