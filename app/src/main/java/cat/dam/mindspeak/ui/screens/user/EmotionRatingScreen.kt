@@ -281,7 +281,7 @@ fun EmotionRatingScreen(
                     painter = rememberAsyncImagePainter(imageUri),
                     contentDescription = "Imatge seleccionada",
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Fit
                 )
             } else {
                 // Mostrar opciones para añadir una imagen
