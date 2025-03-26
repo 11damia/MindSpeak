@@ -36,58 +36,68 @@ fun HomeSupervisorScreen(navController: NavHostController, userViewModel: UserVi
         item {
             Text(
                 text = stringResource(R.string.welcome),
-                fontSize = 24.sp,
+                fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
                 color = LocalCustomColors.current.text1,
+                modifier = Modifier.padding(bottom = 8.dp)
             )
 
             Text(
                 text = userData.nom ?: "Usuari",
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold,
                 color = LocalCustomColors.current.text1,
+                modifier = Modifier.padding(bottom = 20.dp)
             )
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+        // Applying a modern and clean design to OptionButton
+        item {
+            StyledOptionButton(text = stringResource(R.string.alert), navController, "notis")
         }
         item {
-            OptionButton(text = stringResource(R.string.alert), onClick = { navController.navigate("notis") })
+            StyledOptionButton(text = stringResource(R.string.grafic), navController, "grafic")
         }
         item {
-            OptionButton(text = stringResource(R.string.grafic), onClick = { navController.navigate("grafic") })
+            StyledOptionButton(text = stringResource(R.string.add_activity), navController, "upload")
         }
         item {
-            OptionButton(text = stringResource(R.string.add_activity), onClick = { navController.navigate("upload") })
+            StyledOptionButton(text = stringResource(R.string.configuration), navController, "settings")
         }
         item {
-            OptionButton(text = stringResource(R.string.configuration), onClick = { navController.navigate("settings") })
+            StyledOptionButton(text = stringResource(R.string.add_user), navController, "signup")
         }
         item {
-            OptionButton(text = stringResource(R.string.add_user), onClick = { navController.navigate("signup") })
+            StyledOptionButton(text = stringResource(R.string.manage_users), navController, "user_management")
         }
         item {
-            OptionButton(text = stringResource(R.string.manage_users), onClick = { navController.navigate("user_management") })
-        }
-        item {
-            OptionButton(text = stringResource(R.string.assignment_users), onClick = { navController.navigate("user_assignment") })
+            StyledOptionButton(text = stringResource(R.string.assignment_users), navController, "user_assignment")
         }
     }
 }
 
 @Composable
-fun OptionButton(text: String, onClick: () -> Unit) {
+fun StyledOptionButton(text: String, navController: NavHostController, route: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 10.dp, horizontal = 15.dp)
-            .background(LocalCustomColors.current.third, shape = RoundedCornerShape(8.dp))
-            .clickable(onClick = onClick)
-            .height(100.dp)
-            .padding(16.dp),
+            .background(
+                brush = androidx.compose.ui.graphics.Brush.horizontalGradient(
+                    colors = listOf(
+                        LocalCustomColors.current.secondary,
+                        LocalCustomColors.current.third
+                    )
+                ),
+                shape = RoundedCornerShape(16.dp)
+            )
+            .clickable { navController.navigate(route) }
+            .padding(vertical = 12.dp, horizontal = 16.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = text,
-            fontSize = 28.sp,
+            fontSize = 20.sp,
             fontWeight = FontWeight.Medium,
             color = LocalCustomColors.current.text2
         )

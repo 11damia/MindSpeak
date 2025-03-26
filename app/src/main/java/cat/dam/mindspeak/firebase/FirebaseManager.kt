@@ -2,6 +2,7 @@ package cat.dam.mindspeak.firebase
 
 import android.util.Log
 import androidx.compose.ui.graphics.Color
+import cat.dam.mindspeak.model.AssignedUser
 import cat.dam.mindspeak.model.EmotionItem
 import cat.dam.mindspeak.model.EmotionRecord
 import cat.dam.mindspeak.model.UserData
@@ -168,41 +169,7 @@ class FirebaseManager {
         }
     }
 
-    /*
-    // Obtenir la liste des émotions depuis Firebase
-    suspend fun obtenirEmocions(): List<EmotionItem> {
-        Log.d("FirebaseManager", "Début de la récupération des émotions")
-        try {
-            val snapshot = db.collection("Emocio").get().await()
 
-            return snapshot.documents.map { document ->
-                // Convertir la couleur en format Color
-                val colorHex = document.getString("color") ?: "FFFFFFFF" // Note: no "0x" prefix
-                val color = Color(android.graphics.Color.parseColor("#$colorHex"))
-
-                EmotionItem(
-                    text = document.getString("emocio_nom") ?: "",
-                    color = color,
-                    imageUrl = document.getString("imagen") ?: "",
-                    // Vous pouvez aussi ajouter une ressource locale de secours si nécessaire
-                    imageRes = when(document.getString("emocio_nom")) {
-                        "ENFADADO" -> R.drawable.enfadado
-                        "TRISTE" -> R.drawable.triste
-                        "MIEDO" -> R.drawable.miedoso
-                        "FELIZ" -> R.drawable.feliz
-                        "ANSIOSO" -> R.drawable.ansioso
-                        else -> R.drawable.enfadado // Image par défaut
-                    }
-                )
-            }
-        } catch (e: Exception) {
-            Log.e("FirebaseManager", "Error fetching emotions", e)
-            return emptyList()
-
-        }
-    }
-
-     */
     // Fetch emotion records for the current user
     suspend fun obtenirRegistresEmocions(): List<EmotionRecord> {
         try {
@@ -310,7 +277,7 @@ class FirebaseManager {
         }
     }
 
-    // En FirebaseManager.kt
+
     private suspend fun updateUserField(field: String, value: String) {
         try {
             val userId = auth.currentUser?.uid ?: throw Exception("Usuario no autenticado")
@@ -372,35 +339,7 @@ class FirebaseManager {
         }
     }
 
-    /*
-    suspend fun getUsersByRole(role: String): List<UserData> {
-        try {
-            // Get current user (supervisor) ID
-            val supervisorId = auth.currentUser?.uid
-                ?: return emptyList()
 
-            // Query users with the specified role
-            val snapshot = db.collection("Persona")
-                .whereEqualTo("rol", role)
-                // You might want to add additional filtering for users under this supervisor
-                .get()
-                .await()
-
-            return snapshot.documents.map { document ->
-                UserData(
-                    nom = document.getString("nom"),
-                    cognom = document.getString("cognom"),
-                    email = document.getString("email"),
-                    telefon = document.getString("telefon"),
-                    rol = document.getString("rol")
-                )
-            }
-        } catch (e: Exception) {
-            Log.e("FirebaseManager", "Error fetching users", e)
-            return emptyList()
-        }
-    }
-*/
     suspend fun updateUserInformation(user: UserRelation) {
         try {
             // Find the user document by email
@@ -636,6 +575,68 @@ class FirebaseManager {
             throw e
         }
     }
+
+
+    // New method to get assigned users
+    suspend fun getAssignedUsers(): List<AssignedUser> {
+        try {
+            val currentUserId = auth.currentUser?.uid ?: return emptyList()
+
+            // Check current user's role
+            val userDoc = db.collection("Persona").document(currentUserId).get().await()
+            val currentUserRole = userDoc.getString("rol")
+
+            val query = when (currentUserRole) {
+                "Supervisor" -> db.collection("Persona")
+                    .whereEqualTo("supervisor", currentUserId)
+                "Professor" -> db.collection("Persona")
+                    .whereEqualTo("professor", currentUserId)
+                "Familiar" -> db.collection("Persona")
+                    .whereEqualTo("familiar", currentUserId)
+                else -> return emptyList()
+            }
+
+            val snapshot = query.get().await()
+
+            return snapshot.documents.map { document ->
+                AssignedUser(
+                    userId = document.id,
+                    nom = document.getString("nom") ?: "",
+                    cognom = document.getString("cognom") ?: "",
+                    email = document.getString("email") ?: ""
+                )
+            }
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "Error getting assigned users", e)
+            return emptyList()
+        }
+    }
+    // New method to get emotions for a specific user
+    suspend fun getEmotionsForUser(userId: String): List<EmotionRecord> {
+        try {
+            val snapshot = db.collection("RegistroEmotions")
+                .whereEqualTo("userId", userId)
+                .orderBy("date", Query.Direction.DESCENDING)
+                .get()
+                .await()
+
+            return snapshot.documents.map { document ->
+                EmotionRecord(
+                    id = document.id,
+                    emotionType = document.getString("emotionType") ?: "",
+                    rating = document.getLong("rating")?.toInt() ?: 0,
+                    date = document.getTimestamp("date")?.toDate() ?: Date(),
+                    userId = userId,
+                    comentari = document.getString("comentari") ?: "",
+                    fotoUri = document.getString("fotoUri")
+                )
+            }
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "Error getting user emotions", e)
+            return emptyList()
+        }
+    }
+
 }
     /*
 suspend fun assignUserToProfessor(userId: String, professorId: String) {
@@ -677,3 +678,4 @@ suspend fun assignUserToFamiliar(userId: String, familiarId: String) {
 }
 
  */
+
