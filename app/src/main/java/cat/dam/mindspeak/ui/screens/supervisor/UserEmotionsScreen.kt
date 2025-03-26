@@ -175,7 +175,7 @@ fun LoadingAnimation() {
                 color = MaterialTheme.colorScheme.secondary
             )
             Text(
-                text = "Chargement de vos émotions...",
+                text = "Cargando las emociones...",
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
                 modifier = Modifier.padding(top = 8.dp)
