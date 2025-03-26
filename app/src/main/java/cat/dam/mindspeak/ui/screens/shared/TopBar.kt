@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,6 +14,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -25,6 +28,7 @@ import cat.dam.mindspeak.R
 import cat.dam.mindspeak.model.UserViewModel
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 import cat.dam.mindspeak.ui.theme.MindSpeakTheme
+import coil.compose.AsyncImage
 
 @Composable
 fun TopBar(
@@ -78,27 +82,35 @@ fun TopBar(
                     modifier = Modifier.padding(end = 8.dp)
                 )
             }
+            // Muestra la imagen de perfil si está disponible
+            val profileImageUrl = userData.profileImage
             IconButton(
                 onClick = {
                     navController.navigate("settings")
                 }
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.user_icon),
-                    contentDescription = stringResource(R.string.user_icon),
-                    modifier = Modifier
-                        .size(55.dp)
-                        .padding(end = 20.dp)
-                )
+                if (profileImageUrl.isNullOrEmpty()) {
+                    // Si no hay imagen de perfil, muestra la imagen predeterminada
+                    Image(
+                        painter = painterResource(id = R.drawable.user_icon),
+                        contentDescription = stringResource(R.string.user_icon),
+                        modifier = Modifier
+                            .size(55.dp)
+                            .padding(end = 20.dp)
+                    )
+                } else {
+                    // Si hay imagen de perfil, la muestra
+                    AsyncImage(
+                        model = profileImageUrl,
+                        contentDescription = stringResource(R.string.user_icon),
+                        modifier = Modifier
+                            .size(40.dp)
+                            //.padding(20.dp)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Crop
+                    )
+                }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun TopBarPreview() {
-    MindSpeakTheme {
-        //TopBar()
     }
 }
