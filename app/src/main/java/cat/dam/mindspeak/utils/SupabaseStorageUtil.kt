@@ -73,6 +73,7 @@ object SupabaseStorageUtil {
                 file.delete()
 
                 publicUrl
+
             } catch (e: Exception) {
                 Log.e(TAG, "Error pujant la imatge a Supabase", e)
                 throw e

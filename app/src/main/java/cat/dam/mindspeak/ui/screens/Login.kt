@@ -47,15 +47,17 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
     var contrasenya by remember { mutableStateOf("") }
     var recordarMe by remember { mutableStateOf(false) }
 
-    // Inicializar SharedPreferences
+    var errorEmail by remember { mutableStateOf<String?>(null) }
+    var errorPassword by remember { mutableStateOf<String?>(null) }
+
     val prefs = remember { Prefs(context) }
 
-    // Cargar el correo electrónico y la opción "Recordar usuario" al iniciar la pantalla
     LaunchedEffect(Unit) {
         email = prefs.getEmail() ?: ""
         contrasenya = prefs.getPassword() ?: ""
         recordarMe = prefs.getRememberMe()
     }
+
     val coroutineScope = rememberCoroutineScope()
 
     LazyColumn(
@@ -77,7 +79,10 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
         item {
             OutlinedTextField(
                 value = email,
-                onValueChange = { email = it },
+                onValueChange = {
+                    email = it
+                    errorEmail = null
+                },
                 label = {
                     Text(
                         stringResource(R.string.mail_user),
@@ -85,15 +90,22 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
                     )
                 },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                isError = errorEmail != null
             )
+            errorEmail?.let {
+                Text(text = it, color = androidx.compose.ui.graphics.Color.Red, fontSize = 12.sp)
+            }
             Spacer(modifier = Modifier.height(16.dp))
         }
 
         item {
             OutlinedTextField(
                 value = contrasenya,
-                onValueChange = { contrasenya = it },
+                onValueChange = {
+                    contrasenya = it
+                    errorPassword = null
+                },
                 label = {
                     Text(
                         stringResource(R.string.password),
@@ -102,8 +114,12 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
                 },
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                isError = errorPassword != null
             )
+            errorPassword?.let {
+                Text(text = it, color = androidx.compose.ui.graphics.Color.Red, fontSize = 12.sp)
+            }
             Spacer(modifier = Modifier.height(16.dp))
         }
 
@@ -133,10 +149,14 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(45.dp), // Botón más grande
+                    .height(45.dp),
                 onClick = {
-                    if (email.isEmpty() || contrasenya.isEmpty()) {
-                        println("Ompli tots els camps.")
+                    if (email.isEmpty()) {
+                        errorEmail = "El correo no puede estar vacío."
+                        return@Button
+                    }
+                    if (contrasenya.isEmpty()) {
+                        errorPassword = "La contraseña no puede estar vacía."
                         return@Button
                     }
 
@@ -154,12 +174,9 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
                                         prefs.clear()
                                     }
 
-                                    // Obtener todos los datos del usuario
                                     coroutineScope.launch {
-                                        val userDetails =
-                                            firebaseManager.obtenirDadesUsuari()
+                                        val userDetails = firebaseManager.obtenirDadesUsuari()
 
-                                        // Actualizar ViewModel con todos los datos
                                         userViewModel.updateUserData(
                                             email = email,
                                             nom = userDetails?.nom,
@@ -168,7 +185,6 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
                                             rol = userDetails?.rol ?: "Usuari"
                                         )
 
-                                        // Navegar según el rol
                                         when (userDetails?.rol) {
                                             "Supervisor" -> navController.navigate("homesupervis")
                                             "Familiar" -> navController.navigate("homefamiliar")
@@ -179,7 +195,8 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
                                     }
                                 },
                                 onFailure = { error ->
-                                    println("Error durant l'inici de sessió: $error")
+                                    errorEmail = "Correo o contraseña incorrectos."
+                                    errorPassword = "Correo o contraseña incorrectos."
                                 }
                             )
                         } catch (e: Exception) {
@@ -191,7 +208,7 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel, contex
                 Text(
                     text = stringResource(R.string.login),
                     color = White,
-                    fontSize = 18.sp // Texto un poco más grande
+                    fontSize = 18.sp
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
