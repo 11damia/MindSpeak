@@ -21,8 +21,8 @@ import cat.dam.mindspeak.ui.screens.UserProblems
 import cat.dam.mindspeak.ui.screens.supervisor.HomeSupervisorScreen
 import cat.dam.mindspeak.ui.screens.supervisor.NotificationScreen
 import cat.dam.mindspeak.ui.screens.supervisor.SupervisorManagementScreen
+import cat.dam.mindspeak.ui.screens.supervisor.SupervisorResourceAssignmentScreen
 import cat.dam.mindspeak.ui.screens.supervisor.SupervisorUserAssignmentScreen
-import cat.dam.mindspeak.ui.screens.supervisor.UploadResourceApp
 import cat.dam.mindspeak.ui.screens.supervisor.UserEmotionsScreen
 import cat.dam.mindspeak.ui.screens.user.EmotionHistoryScreen
 import cat.dam.mindspeak.ui.screens.user.EmotionRatingScreen
@@ -55,7 +55,7 @@ fun NavigationHost(
                 currentSupervisorId = currentSupervisorId
             )
         }
-        composable("upload"){ UploadResourceApp() }
+        composable("upload"){ SupervisorResourceAssignmentScreen() }
         composable("notis") {
             NotificationScreen(
                 navController = navController,

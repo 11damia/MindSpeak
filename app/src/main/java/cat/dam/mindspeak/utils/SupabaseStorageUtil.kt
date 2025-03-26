@@ -16,7 +16,7 @@ import java.util.UUID
 object SupabaseStorageUtil {
     private const val TAG = "SupabaseStorageUtil"
 
-    private val supabaseClient = createSupabaseClient(
+    val supabaseClient = createSupabaseClient(
         supabaseUrl = SupabaseConfig.SUPABASE_URL,
         supabaseKey = SupabaseConfig.SUPABASE_KEY
     ) {
