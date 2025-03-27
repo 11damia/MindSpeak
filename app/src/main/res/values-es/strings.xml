@@ -80,4 +80,16 @@
     <string name="delete_img">ELIMINAR IMAGEN</string>
     <string name="uploading">SUBIENDO…</string>
     <string name="save_2">GUARDAR</string>
+    <string name="Emotions">EMOCIONES</string>
+    <string name="loading_emotions">CARGANDO LAS EMOCIONES…</string>
+    <string name="no_emotions_found">NO SE HAN ENCONTRADO REGISTROS DE EMOCIONES.</string>
+    <string name="evaluation_2">Evaluación: %1$s/5</string>
+    <string name="date_2">Fecha: %1$s</string>
+    <string name="close">CERRAR</string>
+    <string name="select_a_user">SELECCIONA UN USUARIO</string>
+    <string name="select_resource_type">SELECCIONA EL TIPO DE RECURSO</string>
+    <string name="img">IMAGEN</string>
+    <string name="vid">VÍDEO</string>
+    <string name="audio">AUDIO</string>
+    <string name="upload_resource">SUBIR RECURSO</string>
 </resources>

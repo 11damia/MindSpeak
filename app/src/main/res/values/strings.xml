@@ -69,8 +69,8 @@
     <string name="valoration">VALORACIÓ: %1$s</string>
     <string name="emotions_history">HISTORIAL D\'EMOCIONS</string>
     <string name="emotion_recorded">NO HI HA EMOCIONS REGISTRADES.</string>
-    <string name="evaluation_history">Evaluación: %1$s/5</string>
-    <string name="date_history">Fecha: %1$s</string>
+    <string name="evaluation_history">EVALUACIÓ: %1$s/5</string>
+    <string name="date_history">DATA: %1$s</string>
     <string name="how_feel">COM ET SENTS?</string>
     <string name="how_feel_2">COM ET SENTS?</string>
     <string name="emotional_state">EXPRESSA EL TEU ESTAT EMOCIONAL…</string>
@@ -80,4 +80,16 @@
     <string name="delete_img">ELIMINAR IMATGE</string>
     <string name="uploading">PUJANT…</string>
     <string name="save_2">GUARDAR</string>
+    <string name="Emotions">EMOCIONS</string>
+    <string name="loading_emotions">CARREGANT LES EMOCIONS…</string>
+    <string name="no_emotions_found">NO S\'HAN TROBAT REGISTRES D\'EMOCIONS.</string>
+    <string name="evaluation_2">Evaluación: %1$s/5</string>
+    <string name="date_2">Fecha: %1$s</string>
+    <string name="close">TANCAR</string>
+    <string name="select_a_user">SELECCIONA UN USUARI</string>
+    <string name="select_resource_type">SELECCIONA EL TIPUS DE RECURS</string>
+    <string name="img">IMATGE</string>
+    <string name="vid">VÍDEO</string>
+    <string name="audio">ÀUDIO</string>
+    <string name="upload_resource">PUJAR RECURS</string>
 </resources>

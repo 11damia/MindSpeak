@@ -80,4 +80,16 @@
     <string name="delete_img">DELETE IMAGE</string>
     <string name="uploading">UPLOADING…</string>
     <string name="save_2">SAVE</string>
+    <string name="Emotions">EMOTIONS</string>
+    <string name="loading_emotions">LOADING EMOTIONS…</string>
+    <string name="no_emotions_found">NO EMOTIONS RECORDS FOUND.</string>
+    <string name="evaluation_2">Evaluation: %1$s/5</string>
+    <string name="date_2">Date: %1$s</string>
+    <string name="close">CLOSE</string>
+    <string name="select_a_user">SELECT A USER</string>
+    <string name="select_resource_type">SELECT RESOURCE TYPE</string>
+    <string name="img">IMAGE</string>
+    <string name="vid">VIDEO</string>
+    <string name="audio">AUDIO</string>
+    <string name="upload_resource">UPLOAD RESOURCE</string>
 </resources>
