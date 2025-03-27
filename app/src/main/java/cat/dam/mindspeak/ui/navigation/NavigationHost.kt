@@ -1,5 +1,6 @@
 package cat.dam.mindspeak.ui.navigation
 
+import cat.dam.mindspeak.ui.screens.EmotionStatsScreen
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
@@ -13,7 +14,6 @@ import cat.dam.mindspeak.firebase.FirebaseManager
 import cat.dam.mindspeak.model.EmotionViewModel
 import cat.dam.mindspeak.model.UserRelationViewModel
 import cat.dam.mindspeak.model.UserViewModel
-import cat.dam.mindspeak.ui.screens.EmotionStatistics
 import cat.dam.mindspeak.ui.screens.Login
 import cat.dam.mindspeak.ui.screens.LogoPage
 import cat.dam.mindspeak.ui.screens.SignUp
@@ -83,7 +83,7 @@ fun NavigationHost(
         composable("exercise") { Exercises(navController) }
         composable("settings") { SettingsUser(LocalCustomColors, navController, userViewModel) }
         composable("history") { EmotionHistoryScreen(viewModel =emotionViewModel) }
-        composable("grafic") { EmotionStatistics() }
+        composable("grafic") { EmotionStatsScreen() }
         composable("emotionRating/{emotionType}") { backStackEntry ->
             val emotionType = backStackEntry.arguments?.getString("emotionType") ?: "UNKNOWN"
             if (emotionType == "UNKNOWN") {

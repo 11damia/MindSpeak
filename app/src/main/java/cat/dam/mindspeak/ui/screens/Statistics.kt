@@ -1,125 +1,94 @@
 package cat.dam.mindspeak.ui.screens
 
-import androidx.compose.foundation.Canvas
+import EmotionStatsViewModel
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import cat.dam.mindspeak.ui.theme.LocalCustomColors
+import androidx.lifecycle.viewmodel.compose.viewModel
+import cat.dam.mindspeak.ui.components.EmotionStatsOverview
+import cat.dam.mindspeak.ui.components.EmotionTimelineChart
+import cat.dam.mindspeak.ui.components.RecentEmotionRecords
+import cat.dam.mindspeak.ui.components.TimeFilterSelector
+import cat.dam.mindspeak.ui.components.UserSelector
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmotionStatistics() {
-    val daysOfWeek = listOf("Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom")
-    val emotions = listOf("Miedo", "Felicidad", "Ansiedad", "Tristeza", "Ira")
-    val colors = listOf(
-        Color(0xFF9B59B6),
-        Color(0xFFFFEB3B),
-        Color(0xFFFF9800),
-        Color(0xFF2196F3),
-        Color(0xFFF44336)
-    )
-    val values = listOf(
-        listOf(2, 5, 1, 3, 2),
-        listOf(1, 10, 3, 6, 4),
-        listOf(2, 4, 3, 2, 5),
-        listOf(7, 3, 2, 1, 2),
-        listOf(4, 6, 2, 3, 1),
-        listOf(3, 5, 12, 2, 4),
-        listOf(2, 14, 4, 1, 3)
-    )
+fun EmotionStatsScreen(
+    viewModel: EmotionStatsViewModel = viewModel()
+) {
+    val assignedUsers by viewModel.assignedUsers.collectAsState()
+    val selectedUser by viewModel.selectedUser.collectAsState()
+    val emotionRecords by viewModel.emotionRecords.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+    val errorMessage by viewModel.errorMessage.collectAsState()
+    val stats by viewModel.emotionStats.collectAsState()
+    val timeFilter by viewModel.currentTimeFilter.collectAsState()
 
-    // Obtener el color de fondo dentro del contexto composable
-    val backgroundColor = LocalCustomColors.current.background.toArgb()
-    val textColor = LocalCustomColors.current.text1.toArgb()
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState())
-    ) {
-        Canvas(
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = { Text("Estadísticas de Emociones") },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors()
+            )
+        }
+    ) { padding ->
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(400.dp)
+                .fillMaxSize()
+                .padding(padding)
+                .verticalScroll(rememberScrollState())
         ) {
-            val canvasWidth = size.width
-            val canvasHeight = size.height
-            val barHeight = canvasHeight / (daysOfWeek.size * 1.5f)
-            val maxValue = 15f
-            val scaleX = (canvasWidth - 100f) / maxValue
+            UserSelector(
+                users = assignedUsers,
+                selectedUser = selectedUser,
+                onUserSelected = { viewModel.selectUser(it) },
+                isLoading = isLoading
+            )
 
-            // Dibujar números en la parte inferior
-            for (i in 1..15 step 2) {
-                val x = 100f + (i * scaleX)
-                drawIntoCanvas { canvas ->
-                    val paint = android.graphics.Paint().apply {
-                        color = backgroundColor  // Se usa el color de fondo pre-obtenido
-                        textSize = 24f
-                        textAlign = android.graphics.Paint.Align.CENTER
-                        color = textColor
-                    }
-                    canvas.nativeCanvas.drawText(i.toString(), x, canvasHeight - 10f, paint)
-                }
+            Spacer(modifier = Modifier.height(16.dp))
+
+            if (selectedUser != null) {
+                EmotionStatsOverview(stats)
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                TimeFilterSelector(
+                    currentFilter = timeFilter,
+                    onFilterSelected = { viewModel.setTimeFilter(it) }
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                EmotionTimelineChart(
+                    records = emotionRecords,
+                    timeFilter = timeFilter,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                RecentEmotionRecords(emotionRecords.take(5))
+            } else {
+                Text(
+                    text = "Selecciona un usuario para ver sus estadísticas",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyMedium
+                )
             }
 
-            daysOfWeek.forEachIndexed { dayIndex, day ->
-                val y = dayIndex * barHeight * 1.5f + barHeight / 2
-                drawIntoCanvas { canvas ->
-                    val paint = android.graphics.Paint().apply {
-                        color = android.graphics.Color.BLACK
-                        textSize = 30f
-                        textAlign = android.graphics.Paint.Align.RIGHT
-                    }
-                    canvas.nativeCanvas.drawText(day, 40f, y + 10f, paint)
-                }
-
-                var xOffset = 100f
-                values[dayIndex].forEachIndexed { emotionIndex, value ->
-                    drawRect(
-                        color = colors[emotionIndex],
-                        topLeft = Offset(xOffset, y),
-                        size = Size(value * scaleX, barHeight * 0.8f)
-                    )
-                    xOffset += value * scaleX + 5f
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Leyenda con nombres y colores
-        Column(modifier = Modifier.fillMaxWidth()) {
-            emotions.forEachIndexed { index, emotion ->
-                Row(modifier = Modifier.padding(4.dp)) {
-                    Canvas(modifier = Modifier.size(20.dp)) {
-                        drawCircle(color = colors[index])
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = emotion, fontSize = 16.sp, color = LocalCustomColors.current.text1
-                    )
-                }
+            errorMessage?.let { message ->
+                Text(
+                    text = message,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(16.dp)
+                )
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewEmotionStatistics() {
-    MaterialTheme {
-        EmotionStatistics()
     }
 }
