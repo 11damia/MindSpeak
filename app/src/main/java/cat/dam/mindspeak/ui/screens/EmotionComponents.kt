@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cat.dam.mindspeak.model.EmotionRecord
 import cat.dam.mindspeak.model.AssignedUser
+import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,6 +29,7 @@ fun UserSelector(
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = "Usuario a analizar",
+                    color = LocalCustomColors.current.text1,
                     style = MaterialTheme.typography.labelMedium,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )

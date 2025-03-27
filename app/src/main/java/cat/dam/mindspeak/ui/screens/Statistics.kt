@@ -1,6 +1,7 @@
 package cat.dam.mindspeak.ui.screens
 
 import EmotionStatsViewModel
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -10,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,11 +30,14 @@ fun EmotionStatsScreen(
                 title = { Text("Estadísticas de Emociones") },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors()
             )
-        }
+        },
+        containerColor = LocalCustomColors.current.background
+
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(LocalCustomColors.current.background)
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
         ) {
@@ -57,6 +62,7 @@ fun EmotionStatsScreen(
                     text = "Selecciona un usuario para ver sus estadísticas",
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
+                    color = LocalCustomColors.current.text1,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
