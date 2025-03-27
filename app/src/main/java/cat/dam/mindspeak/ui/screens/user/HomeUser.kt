@@ -144,7 +144,7 @@ fun Inicio(navController: NavHostController, userViewModel: UserViewModel) {
                     Spacer(modifier = Modifier.height(90.dp))
                     Button(
                         onClick = {
-                            navController.navigate("exercise")
+                            navController.navigate("exerciselist")
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = LocalCustomColors.current.secondary // Accès direct
