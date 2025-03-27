@@ -46,4 +46,17 @@
     <string name="user_icon">ICONA D\'USUARI</string>
     <string name="manage_users">GESTIONAR USUARIS</string>
     <string name="assignment_users">ASSIGNAR USUARIS</string>
+    <string name="error_upload_icon">ERROR EN PUJAR LA IMATGE</string>
+    <string name="update_succes">ACTUALITZACIÓ EXITOSA</string>
+    <string name="text_update_good">LES DADES S\'HAN ACTUALITZAT CORRECTAMENT</string>
+    <string name="profile_pic">FOTO DE PERFIL</string>
+    <string name="description_img">IMATGE DE PERFIL PER DEFECTE</string>
+    <string name="name_settings">NOM</string>
+    <string name="surname_settings">COGNOM</string>
+    <string name="no_available">NO DISPONIBLE</string>
+    <string name="contact_info">* PER CANVIAR EL CORREU, CONTACTA AMB SUPORT</string>
+    <string name="telephone">TELÈFON</string>
+    <string name="confirm">CONFIRMAR</string>
+    <string name="cancel">CANCEL·LAR</string>
+    <string name="edit">EDITAR</string>
 </resources>

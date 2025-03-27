@@ -46,4 +46,17 @@
     <string name="user_icon">USER ICON</string>
     <string name="manage_users">MANAGE USERS</string>
     <string name="assignment_users">ASSIGN USERS</string>
+    <string name="error_upload_icon">ERROR UPLOADING IMAGE</string>
+    <string name="update_succes">SUCCESSFUL UPDATE</string>
+    <string name="text_update_good">DATA HAS BEEN UPDATED SUCCESSFULLY</string>
+    <string name="profile_pic">PROFILE PICTURE</string>
+    <string name="description_img">DEFAULT PROFILE IMAGE</string>
+    <string name="name_settings">NAME</string>
+    <string name="surname_settings">SURNAME</string>
+    <string name="no_available">NOT AVAILABLE</string>
+    <string name="contact_info">* TO CHANGE THE EMAIL, CONTACT SUPPORT</string>
+    <string name="telephone">PHONE</string>
+    <string name="confirm">CONFIRM</string>
+    <string name="cancel">CANCEL</string>
+    <string name="edit">EDIT</string>
 </resources>

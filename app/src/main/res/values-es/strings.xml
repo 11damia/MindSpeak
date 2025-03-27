@@ -46,4 +46,17 @@
     <string name="user_icon">ICONO DE USUARIO</string>
     <string name="manage_users">GESTIONAR USUARIOS</string>
     <string name="assignment_users">ASIGNAR USUARIOS</string>
+    <string name="error_upload_icon">ERROR AL SUBIR LA IMAGEN</string>
+    <string name="update_succes">ACTUALIZACIÓN EXITOSA</string>
+    <string name="text_update_good">LOS DATOS SE HAN ACTUALIZADO CORRECTAMENTE</string>
+    <string name="profile_pic">FOTO DE PERFIL</string>
+    <string name="description_img">IMAGEN DE PERFIL POR DEFECTO</string>
+    <string name="name_settings">NOMBRE</string>
+    <string name="surname_settings">APELLIDO</string>
+    <string name="no_available">NO DISPONIBLE</string>
+    <string name="contact_info">* PARA CAMBIAR EL CORREO, CONTACTA CON SOPORTE</string>
+    <string name="telephone">TELÉFONO</string>
+    <string name="confirm">CONFIRMAR</string>
+    <string name="cancel">CANCELAR</string>
+    <string name="edit">EDITAR</string>
 </resources>

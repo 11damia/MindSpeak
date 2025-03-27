@@ -79,7 +79,8 @@ fun SettingsUser(
 
                     showUpdateSuccess = true
                 } catch (e: Exception) {
-                    Toast.makeText(context, "Error al subir la imagen", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,
+                        context.getString(R.string.error_upload_icon), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -88,8 +89,8 @@ fun SettingsUser(
     if (showUpdateSuccess) {
         AlertDialog(
             onDismissRequest = { showUpdateSuccess = false },
-            title = { Text("Actualización exitosa") },
-            text = { Text("Los datos se han actualizado correctamente") },
+            title = { Text(stringResource(R.string.update_succes)) },
+            text = { Text(stringResource(R.string.text_update_good)) },
             confirmButton = {
                 Button(onClick = { showUpdateSuccess = false }) {
                     Text("OK")
@@ -128,7 +129,7 @@ fun SettingsUser(
                     if (profileImageUrl.isNotEmpty()) {
                         AsyncImage(
                             model = profileImageUrl,
-                            contentDescription = "Foto de perfil",
+                            contentDescription = stringResource(R.string.profile_pic),
                             modifier = Modifier
                                 .size(150.dp)
                                 .clip(CircleShape), // Redondear la imagen
@@ -137,7 +138,7 @@ fun SettingsUser(
                     } else {
                         Image(
                             painter = painterResource(id = R.drawable.user_icon),
-                            contentDescription = "Imagen de perfil por defecto",
+                            contentDescription = stringResource(R.string.description_img),
                             modifier = Modifier
                                 .size(150.dp)
                                 .clip(CircleShape), // Redondear la imagen
@@ -155,7 +156,7 @@ fun SettingsUser(
                     Spacer(modifier = Modifier.height(40.dp))
 
                     SettingItem(
-                        label = "Nombre",
+                        label = stringResource(R.string.name_settings),
                         initialValue = userData.nom ?: "",
                         localCustomColors = localCustomColors,
                         onUpdate = { newValue ->
@@ -168,7 +169,7 @@ fun SettingsUser(
                     Spacer(modifier = Modifier.height(5.dp))
 
                     SettingItem(
-                        label = "Apellido",
+                        label = stringResource(R.string.surname_settings),
                         initialValue = userData.cognom ?: "",
                         localCustomColors = localCustomColors,
                         onUpdate = { newValue ->
@@ -184,7 +185,7 @@ fun SettingsUser(
                         .fillMaxWidth()
                         .padding(vertical = 15.dp)) {
                         Text(
-                            "Correo Electrónico",
+                            text = stringResource(R.string.mail_user),
                             style = TextStyle(
                                 fontSize = 25.sp,
                                 fontWeight = FontWeight.Bold,
@@ -193,7 +194,7 @@ fun SettingsUser(
                         )
 
                         Text(
-                            userData.email ?: "No disponible",
+                            userData.email ?: stringResource(R.string.no_available),
                             style = TextStyle(
                                 color = localCustomColors.current.text1,
                                 fontSize = 25.sp
@@ -202,7 +203,7 @@ fun SettingsUser(
                         )
 
                         Text(
-                            "* Para cambiar el correo, contacta con soporte",
+                            stringResource(R.string.contact_info),
                             style = TextStyle(
                                 color = localCustomColors.current.text2,
                                 fontSize = 14.sp,
@@ -215,7 +216,7 @@ fun SettingsUser(
                     Spacer(modifier = Modifier.height(5.dp))
 
                     SettingItem(
-                        label = "Teléfono",
+                        label = stringResource(R.string.telephone),
                         initialValue = userData.telefon ?: "",
                         localCustomColors = localCustomColors,
                         onUpdate = { newValue ->
@@ -312,7 +313,7 @@ fun SettingItem(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Check,
-                        contentDescription = "Confirmar",
+                        contentDescription = stringResource(R.string.confirm),
                         tint = Color.Green,
                         modifier = Modifier.size(30.dp)
                     )
@@ -327,14 +328,14 @@ fun SettingItem(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Cancelar",
+                        contentDescription = stringResource(R.string.cancel),
                         tint = Color.Red,
                         modifier = Modifier.size(30.dp)
                     )
                 }
             } else {
                 Text(
-                    currentValue.ifEmpty { "No disponible" },
+                    currentValue.ifEmpty { stringResource(R.string.no_available) },
                     style = TextStyle(
                         color = localCustomColors.current.text1,
                         fontSize = 25.sp
@@ -348,7 +349,7 @@ fun SettingItem(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Edit,
-                        contentDescription = "Editar",
+                        contentDescription = stringResource(R.string.edit),
                         tint = localCustomColors.current.text1,
                         modifier = Modifier.size(30.dp)
                     )
