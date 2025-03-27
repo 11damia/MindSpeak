@@ -23,6 +23,7 @@ val SecondaryColor = Color(0xFF0C99FF)
 val ThirdColorLight = Color(0xFFD8EEFF)
 val DarkGray = Color(0xFF434343)
 val Black = Color(0xFF000000)
+val Orange = Color(0xFFFFA500)
 //Dark theme
 val BackgroundDark = Color(0xFF272727)
 val BottomBarDark = Color(0xFF1B1B1B)
@@ -58,6 +59,7 @@ data class CustomColors(
     val text2: Color,
     val text3: Color,
     val text4: Color,
+    val Orange: Color
 )
 
 val LightCustomColors = CustomColors(
@@ -68,7 +70,9 @@ val LightCustomColors = CustomColors(
     text1 = Black,
     text2 = DarkGray,
     text3 = Black,
-    text4 = White
+    text4 = White,
+    Orange = Orange
+
 )
 val DarkCustomColors = CustomColors(
     background = BackgroundDark,
@@ -78,7 +82,8 @@ val DarkCustomColors = CustomColors(
     text1 = White,
     text2 = White,
     text3 = Black,
-    text4 = White
+    text4 = White,
+    Orange = Orange
 )
 
 val LocalCustomColors = staticCompositionLocalOf { LightCustomColors }

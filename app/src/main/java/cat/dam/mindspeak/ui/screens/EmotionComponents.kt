@@ -18,8 +18,9 @@ fun UserSelector(
     users: List<AssignedUser>,
     selectedUser: AssignedUser?,
     onUserSelected: (AssignedUser) -> Unit,
-    isLoading: Boolean
-) {
+    isLoading: Boolean,
+    modifier: Modifier = Modifier,
+    ) {
     var expanded by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxWidth()) {
@@ -207,7 +208,7 @@ fun EmotionRecordItem(record: EmotionRecord) {
                 style = MaterialTheme.typography.bodyLarge,
                 color = when (record.rating) {
                     in 0..2 -> Color.Red
-                    in 3..4 -> Color.Yellow
+                    in 3..4 -> LocalCustomColors.current.Orange
                     else -> Color.Green
                 }
             )
