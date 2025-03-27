@@ -41,6 +41,8 @@ android {
 }
 
 dependencies {
+    implementation (libs.patrykandpatrick.compose)
+    implementation (libs.compose.m3)
     implementation(libs.coil.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -93,4 +95,5 @@ dependencies {
 
     // Accompanist
     implementation("com.google.accompanist:accompanist-navigation-animation:0.34.0")
+    implementation ("com.google.accompanist:accompanist-permissions:0.28.0")
 }

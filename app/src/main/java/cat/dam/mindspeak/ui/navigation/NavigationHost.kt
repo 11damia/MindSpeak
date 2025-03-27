@@ -1,5 +1,6 @@
 package cat.dam.mindspeak.ui.navigation
 
+import cat.dam.mindspeak.ui.screens.EmotionStatsScreen
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
@@ -13,7 +14,6 @@ import cat.dam.mindspeak.firebase.FirebaseManager
 import cat.dam.mindspeak.model.EmotionViewModel
 import cat.dam.mindspeak.model.UserRelationViewModel
 import cat.dam.mindspeak.model.UserViewModel
-import cat.dam.mindspeak.ui.screens.EmotionStatistics
 import cat.dam.mindspeak.ui.screens.Login
 import cat.dam.mindspeak.ui.screens.LogoPage
 import cat.dam.mindspeak.ui.screens.SignUp
@@ -21,8 +21,8 @@ import cat.dam.mindspeak.ui.screens.UserProblems
 import cat.dam.mindspeak.ui.screens.supervisor.HomeSupervisorScreen
 import cat.dam.mindspeak.ui.screens.supervisor.NotificationScreen
 import cat.dam.mindspeak.ui.screens.supervisor.SupervisorManagementScreen
+import cat.dam.mindspeak.ui.screens.supervisor.SupervisorResourceAssignmentScreen
 import cat.dam.mindspeak.ui.screens.supervisor.SupervisorUserAssignmentScreen
-import cat.dam.mindspeak.ui.screens.supervisor.UploadResourceApp
 import cat.dam.mindspeak.ui.screens.supervisor.UserEmotionsScreen
 import cat.dam.mindspeak.ui.screens.user.EmotionHistoryScreen
 import cat.dam.mindspeak.ui.screens.user.EmotionRatingScreen
@@ -56,7 +56,7 @@ fun NavigationHost(
                 currentSupervisorId = currentSupervisorId
             )
         }
-        composable("upload"){ UploadResourceApp() }
+        composable("upload"){ SupervisorResourceAssignmentScreen() }
         composable("notis") {
             NotificationScreen(
                 navController = navController,
@@ -85,7 +85,7 @@ fun NavigationHost(
         composable("exercise") { Exercises(navController) }
         composable("settings") { SettingsUser(LocalCustomColors, navController, userViewModel) }
         composable("history") { EmotionHistoryScreen(viewModel =emotionViewModel) }
-        composable("grafic") { EmotionStatistics() }
+        composable("grafic") { EmotionStatsScreen() }
         composable("emotionRating/{emotionType}") { backStackEntry ->
             val emotionType = backStackEntry.arguments?.getString("emotionType") ?: "UNKNOWN"
             if (emotionType == "UNKNOWN") {

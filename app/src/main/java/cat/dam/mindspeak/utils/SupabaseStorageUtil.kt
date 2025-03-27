@@ -16,7 +16,7 @@ import java.util.UUID
 object SupabaseStorageUtil {
     private const val TAG = "SupabaseStorageUtil"
 
-    private val supabaseClient = createSupabaseClient(
+    val supabaseClient = createSupabaseClient(
         supabaseUrl = SupabaseConfig.SUPABASE_URL,
         supabaseKey = SupabaseConfig.SUPABASE_KEY
     ) {
@@ -79,5 +79,29 @@ object SupabaseStorageUtil {
                 throw e
             }
         }
+    }
+
+    private suspend fun uploadResource(
+        context: Context,
+        resourceUri: Uri,
+        resourceType: String
+    ): String = withContext(Dispatchers.IO) {
+        val supabase = SupabaseStorageUtil.supabaseClient
+        val fileExtension = when (resourceType) {
+            "image" -> "jpg"
+            "video" -> "mp4"
+            "audio" -> "mp3"
+            else -> "dat"
+        }
+
+        val fileName = "${UUID.randomUUID()}.$fileExtension"
+        val inputStream = context.contentResolver.openInputStream(resourceUri)
+        val bytes = inputStream?.readBytes() ?: throw IllegalStateException("Empty file")
+
+        supabase.storage.from(SupabaseConfig.BUCKET_NAME)
+            .upload(fileName, bytes, upsert = true)
+
+        supabase.storage.from(SupabaseConfig.BUCKET_NAME)
+            .publicUrl(fileName)
     }
 }

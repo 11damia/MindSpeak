@@ -22,7 +22,7 @@ import java.util.Date
 
 class FirebaseManager {
     val auth = FirebaseAuth.getInstance()
-    private val db = FirebaseFirestore.getInstance()
+    val db = FirebaseFirestore.getInstance()
 
     companion object {
         fun logoutUser() {
