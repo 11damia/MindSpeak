@@ -98,7 +98,8 @@ fun SupervisorResourceAssignmentScreen() {
     val audioUri = remember {
         FileProvider.getUriForFile(
             context,
-            "${context.packageName}.provider",
+//            "${context.packageName}.provider",
+            "cat.dam.mindspeak.fileprovider",
             createAudioFile(context)
         )
     }
@@ -480,7 +481,7 @@ private fun createImageUri(context: Context): Uri {
     )
     return FileProvider.getUriForFile(
         context,
-        "${context.packageName}.provider",
+        "cat.dam.mindspeak.fileprovider",
         file
     )
 }
@@ -493,7 +494,7 @@ private fun createVideoUri(context: Context): Uri {
     )
     return FileProvider.getUriForFile(
         context,
-        "${context.packageName}.provider",
+        "cat.dam.mindspeak.fileprovider",
         file
     )
 }

@@ -122,7 +122,7 @@ fun EmotionRatingScreen(
     val tempImageUri = remember {
         FileProvider.getUriForFile(
             context,
-            "${context.packageName}.fileprovider",
+            "cat.dam.mindspeak.fileprovider",
             tempImageFile
         )
     }
