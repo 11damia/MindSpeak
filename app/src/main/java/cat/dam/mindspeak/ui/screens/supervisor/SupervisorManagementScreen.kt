@@ -1,5 +1,6 @@
 package cat.dam.mindspeak.ui.screens.supervisor
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -39,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import cat.dam.mindspeak.firebase.FirebaseManager
 import cat.dam.mindspeak.model.UserRelation
+import cat.dam.mindspeak.ui.theme.LocalCustomColors
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -75,12 +78,16 @@ fun SupervisorManagementScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Gestió d'Usuaris Assignats") }
+                title = { Text("Gestió d'Usuaris Assignats", color = LocalCustomColors.current.text1) }, // Cambiar color del texto
+                colors = TopAppBarDefaults.mediumTopAppBarColors(
+                    containerColor = LocalCustomColors.current.background // Color de fondo del TopAppBar
+                )
             )
         }
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
+                .background(LocalCustomColors.current.background) // Fondo de la pantalla
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
@@ -184,6 +191,7 @@ fun SupervisorManagementScreen(
         }
     }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
