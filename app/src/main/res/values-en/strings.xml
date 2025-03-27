@@ -59,4 +59,12 @@
     <string name="confirm">CONFIRM</string>
     <string name="cancel">CANCEL</string>
     <string name="edit">EDIT</string>
+    <string name="stats_title">EMOTION STATISTICS</string>
+    <string name="select_user">SELECT A USER TO VIEW THEIR STATISTICS</string>
+    <string name="user_analyze">USER TO ANALYZE</string>
+    <string name="emotion_distribution">EMOTION DISTRIBUTION</string>
+    <string name="legend">LEGEND:</string>
+    <string name="recent_records">RECENT RECORDS</string>
+    <string name="no_recent_records">NO RECENT RECORDS</string>
+    <string name="valoration">RATING: %1$s</string>
 </resources>

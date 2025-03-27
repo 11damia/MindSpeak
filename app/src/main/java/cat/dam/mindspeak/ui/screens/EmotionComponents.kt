@@ -7,7 +7,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import cat.dam.mindspeak.R
 import cat.dam.mindspeak.model.EmotionRecord
 import cat.dam.mindspeak.model.AssignedUser
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
@@ -29,7 +31,7 @@ fun UserSelector(
         } else {
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "Usuario a analizar",
+                    text = stringResource(R.string.user_analyze),
                     color = LocalCustomColors.current.text1,
                     style = MaterialTheme.typography.labelMedium,
                     modifier = Modifier.padding(bottom = 4.dp)
@@ -89,7 +91,7 @@ fun SimpleEmotionBarChart(records: List<EmotionRecord>) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Distribución de Emociones",
+                text = stringResource(R.string.emotion_distribution),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
@@ -122,7 +124,6 @@ fun SimpleEmotionBarChart(records: List<EmotionRecord>) {
                             style = MaterialTheme.typography.labelSmall,
                             modifier = Modifier.padding(top = 4.dp)
                         )
-                        // Eliminamos el Text que mostraba las 3 letras de la emoción
                     }
                 }
             }
@@ -130,7 +131,7 @@ fun SimpleEmotionBarChart(records: List<EmotionRecord>) {
             // Leyenda de colores
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Leyenda:",
+                text = stringResource(R.string.legend),
                 style = MaterialTheme.typography.labelMedium,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
@@ -163,13 +164,13 @@ fun RecentEmotionRecords(records: List<EmotionRecord>) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Registros Recientes",
+                text = stringResource(R.string.recent_records),
                 style = MaterialTheme.typography.titleMedium
             )
 
             if (records.isEmpty()) {
                 Text(
-                    text = "No hay registros recientes",
+                    text = stringResource(R.string.no_recent_records),
                     style = MaterialTheme.typography.bodyMedium
                 )
             } else {
@@ -204,7 +205,7 @@ fun EmotionRecordItem(record: EmotionRecord) {
                 }
             }
             Text(
-                text = "Valoración: ${record.rating}",
+                text = stringResource(R.string.valoration, record.rating),
                 style = MaterialTheme.typography.bodyLarge,
                 color = when (record.rating) {
                     in 0..2 -> Color.Red

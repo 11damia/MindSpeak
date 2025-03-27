@@ -12,8 +12,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.viewmodel.compose.viewModel
+import cat.dam.mindspeak.R
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,7 +34,7 @@ fun EmotionStatsScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Estadísticas de Emociones",
+                        text = stringResource(R.string.stats_title),
                         color = LocalCustomColors.current.secondary,
                         fontWeight = FontWeight.Bold
                     )
@@ -87,7 +89,7 @@ fun EmotionStatsScreen(
                 } else {
                     // Mensaje de selección de usuario
                     Text(
-                        text = "Selecciona un usuario para ver sus estadísticas",
+                        text = stringResource(R.string.select_user),
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
                         color = LocalCustomColors.current.text1,

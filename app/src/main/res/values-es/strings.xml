@@ -59,4 +59,13 @@
     <string name="confirm">CONFIRMAR</string>
     <string name="cancel">CANCELAR</string>
     <string name="edit">EDITAR</string>
+    <string name="stats_title">ESTADÍSTICAS DE EMOCIONES</string>
+    <string name="select_user">SELECCIONA UN USUARIO PARA VER SUS ESTADÍSTICAS</string>
+    <string name="user_analyze">USUARIO A ANALIZAR</string>
+    <string name="emotion_distribution">DISTRIBUCIÓN DE EMOCIONES</string>
+    <string name="legend">LEYENDA:</string>
+    <string name="recent_records">REGISTROS RECIENTES</string>
+    <string name="no_recent_records">NO HAY REGISTROS RECIENTES</string>
+    <string name="valoration">VALORACIÓN: %1$s</string>
+
 </resources>
