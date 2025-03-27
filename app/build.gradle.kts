@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.androidx.storage)
     implementation(libs.androidx.room.common)
     implementation(libs.androidx.media3.common.ktx)
+    implementation(libs.androidx.appcompat)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -96,4 +97,13 @@ dependencies {
     // Accompanist
     implementation("com.google.accompanist:accompanist-navigation-animation:0.34.0")
     implementation ("com.google.accompanist:accompanist-permissions:0.28.0")
+
+    // ExoPlayer
+
+    implementation ("androidx.media3:media3-exoplayer:1.6.0")
+    implementation ("androidx.media3:media3-ui:1.6.0")
+
+    // Glide for image loading
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
 }
