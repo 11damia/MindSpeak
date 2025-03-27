@@ -93,4 +93,5 @@ dependencies {
 
     // Accompanist
     implementation("com.google.accompanist:accompanist-navigation-animation:0.34.0")
+    implementation ("com.google.accompanist:accompanist-permissions:0.28.0")
 }
