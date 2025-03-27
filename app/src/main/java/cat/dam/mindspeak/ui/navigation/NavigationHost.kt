@@ -27,6 +27,7 @@ import cat.dam.mindspeak.ui.screens.supervisor.UserEmotionsScreen
 import cat.dam.mindspeak.ui.screens.user.EmotionHistoryScreen
 import cat.dam.mindspeak.ui.screens.user.EmotionRatingScreen
 import cat.dam.mindspeak.ui.screens.user.Emotions
+import cat.dam.mindspeak.ui.screens.user.ExerciceList
 import cat.dam.mindspeak.ui.screens.user.Exercises
 import cat.dam.mindspeak.ui.screens.user.Inicio
 import cat.dam.mindspeak.ui.screens.user.SettingsUser
@@ -79,6 +80,7 @@ fun NavigationHost(
         composable("problemas") { UserProblems(navController) }
         composable("login") {Login(navController = navController, userViewModel = userViewModel, context = LocalContext.current) }
         composable("homeuser") { Inicio(navController,userViewModel) }
+        composable("exerciselist") { ExerciceList(navController,userViewModel) }
         composable("emotions") { Emotions(navController) }
         composable("exercise") { Exercises(navController) }
         composable("settings") { SettingsUser(LocalCustomColors, navController, userViewModel) }

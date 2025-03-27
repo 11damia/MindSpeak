@@ -86,11 +86,11 @@ fun EmotionRatingScreen(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    // État pour stocker les données de l'émotion
+    // Estado de almacenamiento de los datos sobre las emociones
     var emotionItem by remember { mutableStateOf<EmotionItem?>(null) }
     var isLoading by remember { mutableStateOf(true) }
 
-    // Charger les détails de l'émotion sélectionnée
+    // Cargar los detalles de la emoción seleccionada
     LaunchedEffect(emotionType) {
         try {
             val repository = EmotionRepository()
@@ -107,7 +107,7 @@ fun EmotionRatingScreen(
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     var isUploading by remember { mutableStateOf(false) }
 
-    // Créer un fichier temporaire pour la photo
+    // Crear un archivo temporal para la foto
     val tempImageFile = remember {
         File.createTempFile(
             "JPEG_${SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())}_",
@@ -118,7 +118,7 @@ fun EmotionRatingScreen(
         }
     }
 
-    // URI pour l'image capturée par la caméra
+    // URI de la imagen capturada por la cámara
     val tempImageUri = remember {
         FileProvider.getUriForFile(
             context,
@@ -127,7 +127,7 @@ fun EmotionRatingScreen(
         )
     }
 
-    // Define takePhotoLauncher first
+    // Definir primero takePhotoLauncher
     val takePhotoLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
     ) { success ->
@@ -136,14 +136,14 @@ fun EmotionRatingScreen(
         }
     }
 
-    // Define pickImageLauncher first
+    // Definir primero pickImageLauncher
     val pickImageLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
         imageUri = uri
     }
 
-    // Now define the permission launchers that use the above launchers
+    // Ahora define los lanzadores de permisos que utilizan los lanzadores anteriores
     val requestCameraPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->
@@ -172,7 +172,7 @@ fun EmotionRatingScreen(
         }
     }
 
-    // Obtenir l'ID d'utilisateur actuel
+    // Obtener el ID de usuario actual
     val currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
 
     Column(
@@ -183,7 +183,7 @@ fun EmotionRatingScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Carte d'émotion avec image depuis Firebase
+        // Mapa de emociones con imagen de Firebase
         Card(
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier.padding(16.dp),
@@ -192,7 +192,7 @@ fun EmotionRatingScreen(
             )
         ) {
             if (isLoading) {
-                // Afficher un indicateur de chargement
+                // Mostrar un indicador de carga
                 Box(
                     modifier = Modifier
                         .padding(16.dp)
@@ -217,7 +217,7 @@ fun EmotionRatingScreen(
                     )
                     Spacer(modifier = Modifier.width(16.dp))
 
-                    // Utiliser AsyncImage pour charger l'image depuis l'URL
+                    // Utiliza AsyncImage para cargar la imagen desde la URL
                     if (emotionItem?.imageUrl?.isNotEmpty() == true) {
                         AsyncImage(
                             model = ImageRequest.Builder(context)
@@ -229,7 +229,7 @@ fun EmotionRatingScreen(
                             modifier = Modifier.size(80.dp)
                         )
                     } else {
-                        // Fallback à une image locale si nécessaire
+                        // Volver a una imagen local si es necesario
                         Image(
                             painter = painterResource(id = getEmotionImage(emotionType)),
                             contentDescription = null,
@@ -242,7 +242,7 @@ fun EmotionRatingScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Zone de texte pour les commentaires émotionnels
+        // Cuadro de texto para comentarios emocionales
         OutlinedTextField(
             value = comentariEmocional,
             onValueChange = { comentariEmocional = it },
@@ -252,15 +252,21 @@ fun EmotionRatingScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = Color.Black,
-                focusedContainerColor = Color.Black
+                unfocusedContainerColor = LocalCustomColors.current.background,
+                focusedContainerColor = LocalCustomColors.current.background,
+                unfocusedTextColor = LocalCustomColors.current.text1,
+                focusedTextColor = LocalCustomColors.current.text1,
+                unfocusedLabelColor = LocalCustomColors.current.text1,
+                focusedLabelColor = LocalCustomColors.current.text1,
+                unfocusedPlaceholderColor = LocalCustomColors.current.text2,
+                focusedPlaceholderColor = LocalCustomColors.current.text2
             ),
             minLines = 3
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Section pour l'image
+        // Sección de imágenes
         Card(
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier
@@ -270,15 +276,15 @@ fun EmotionRatingScreen(
             colors = CardDefaults.cardColors(containerColor = Color.LightGray.copy(alpha = 0.3f))
         ) {
             if (imageUri != null) {
-                // Montrer l'image sélectionnée
+                // Mostrar imagen seleccionada
                 Image(
                     painter = rememberAsyncImagePainter(imageUri),
                     contentDescription = "Imatge seleccionada",
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Fit
                 )
             } else {
-                // Montrer les options pour ajouter une image
+                // Mostrar opciones para añadir una imagen
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Center,
@@ -357,7 +363,7 @@ fun EmotionRatingScreen(
             }
         }
 
-        // Button pour supprimer l'image si une est sélectionnée
+        // Botón para borrar la imagen si hay una seleccionada
         if (imageUri != null) {
             Button(
                 onClick = { imageUri = null },
@@ -370,7 +376,7 @@ fun EmotionRatingScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Étoiles pour la notation
+        // Estrellas de clasificación
         Row(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()
@@ -379,7 +385,7 @@ fun EmotionRatingScreen(
                 Icon(
                     imageVector = Icons.Filled.Star,
                     contentDescription = null,
-                    tint = if (index < rating) Color.Yellow else Color.Gray,
+                    tint = if (index < rating) emotionItem?.color ?: getEmotionColor(emotionType) else Color.Gray,
                     modifier = Modifier
                         .size(40.dp)
                         .clickable { rating = index + 1 }
@@ -389,7 +395,7 @@ fun EmotionRatingScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Bouton Sauvegarder
+        // Botón Guardar
         Button(
             onClick = {
                 if (imageUri != null) {
@@ -417,7 +423,7 @@ fun EmotionRatingScreen(
                             )
 
 
-                            // Sauvegarder dans Firestore
+                            // Ahorrar en Firestore
                             viewModel.addEmotionRecord(emotionRecord)
                             isUploading = false
                             navController.popBackStack()
@@ -434,7 +440,7 @@ fun EmotionRatingScreen(
                         }
                     }
                 } else {
-                    // Sans image
+                    // Sin imagen
                     val emotionRecord = EmotionRecord(
                         emotionType = emotionType,
                         rating = rating,
@@ -466,7 +472,7 @@ fun EmotionRatingScreen(
     }
 }
 
-// Fonction auxiliaire pour obtenir une couleur d'émotion par défaut si nécessaire
+// Función auxiliar para obtener un color de emoción por defecto si es necesario
 fun getEmotionColor(emotionType: String): Color {
     return when (emotionType.uppercase()) {
         "FELIZ" -> Color(0xFF4CAF50)
@@ -478,8 +484,8 @@ fun getEmotionColor(emotionType: String): Color {
     }
 }
 
-// Fonction auxiliaire pour obtenir une image locale par défaut si nécessaire
+// Función auxiliar para obtener una imagen local por defecto en caso necesario
 fun getEmotionImage(emotionType: String): Int {
-    // Remplacez ces valeurs par vos ressources réelles
+    // Sustituya estos valores por sus recursos reales
     return R.drawable.ic_launcher_foreground
 }
