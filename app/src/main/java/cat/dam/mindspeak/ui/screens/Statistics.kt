@@ -10,7 +10,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.viewmodel.compose.viewModel
+import cat.dam.mindspeak.R
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,53 +32,89 @@ fun EmotionStatsScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Estadísticas de Emociones") },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors()
+                title = {
+                    Text(
+                        text = stringResource(R.string.stats_title),
+                        color = LocalCustomColors.current.secondary,
+                        fontWeight = FontWeight.Bold
+                    )
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = LocalCustomColors.current.background,
+                    titleContentColor = LocalCustomColors.current.text1
+                ),
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .background(LocalCustomColors.current.background)
             )
         },
-        containerColor = LocalCustomColors.current.background
-
     ) { padding ->
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(LocalCustomColors.current.background)
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
         ) {
-            UserSelector(
-                users = assignedUsers,
-                selectedUser = selectedUser,
-                onUserSelected = { viewModel.selectUser(it) },
-                isLoading = isLoading
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            if (selectedUser != null) {
-                // Añadimos el gráfico de barras aquí
-                SimpleEmotionBarChart(emotionRecords)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp) // Añadir padding horizontal a toda la columna
+            ) {
+                UserSelector(
+                    users = assignedUsers,
+                    selectedUser = selectedUser,
+                    onUserSelected = { viewModel.selectUser(it) },
+                    isLoading = isLoading,
+                    modifier = Modifier.fillMaxWidth()
+                )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                RecentEmotionRecords(emotionRecords.take(5))
-            } else {
-                Text(
-                    text = "Selecciona un usuario para ver sus estadísticas",
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    color = LocalCustomColors.current.text1,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
+                if (selectedUser != null) {
+                    // Gráfico de barras
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = 200.dp) // Garantiza que el gráfico no se distorsione
+                    ) {
+                        SimpleEmotionBarChart(emotionRecords)
+                    }
 
-            errorMessage?.let { message ->
-                Text(
-                    text = message,
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.padding(16.dp)
-                )
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Registros recientes
+                    RecentEmotionRecords(emotionRecords.take(5))
+
+                } else {
+                    // Mensaje de selección de usuario
+                    Text(
+                        text = stringResource(R.string.select_user),
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        color = LocalCustomColors.current.text1,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+
+                // Mostrar mensaje de error si existe
+                errorMessage?.let { message ->
+                    Text(
+                        text = message,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+                    )
+                }
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewEmotionStatsScreen() {
+    EmotionStatsScreen(viewModel = EmotionStatsViewModel())
 }

@@ -73,6 +73,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.res.stringResource
 import cat.dam.mindspeak.firebase.EmotionRepository
 
 @Composable
@@ -122,7 +123,7 @@ fun EmotionRatingScreen(
     val tempImageUri = remember {
         FileProvider.getUriForFile(
             context,
-            "${context.packageName}.fileprovider",
+            "cat.dam.mindspeak.fileprovider",
             tempImageFile
         )
     }
@@ -246,8 +247,8 @@ fun EmotionRatingScreen(
         OutlinedTextField(
             value = comentariEmocional,
             onValueChange = { comentariEmocional = it },
-            label = { Text("Com et sents?") },
-            placeholder = { Text("Expressa el teu estat emocional...") },
+            label = { Text(stringResource(R.string.how_feel_2)) },
+            placeholder = { Text(stringResource(R.string.emotional_state)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
@@ -291,7 +292,7 @@ fun EmotionRatingScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        "Afegir una imatge",
+                        stringResource(R.string.add_img),
                         fontSize = 16.sp,
                         textAlign = TextAlign.Center
                     )
@@ -324,7 +325,7 @@ fun EmotionRatingScreen(
                                 contentDescription = "Fer una foto"
                             )
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text("Càmera")
+                            Text(stringResource(R.string.cam))
                         }
 
                         Spacer(modifier = Modifier.width(16.dp))
@@ -356,7 +357,7 @@ fun EmotionRatingScreen(
                                 contentDescription = "Seleccionar una imatge"
                             )
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text("Galeria")
+                            Text(stringResource(R.string.gallery))
                         }
                     }
                 }
@@ -370,7 +371,7 @@ fun EmotionRatingScreen(
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Red.copy(alpha = 0.7f)),
                 modifier = Modifier.padding(vertical = 8.dp)
             ) {
-                Text("Eliminar imatge", color = Color.White)
+                Text(stringResource(R.string.delete_img), color = Color.White)
             }
         }
 
@@ -464,9 +465,9 @@ fun EmotionRatingScreen(
                     strokeWidth = 2.dp
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Pujant...", color = LocalCustomColors.current.text1)
+                Text(stringResource(R.string.uploading), color = LocalCustomColors.current.text1)
             } else {
-                Text("Guardar", color = LocalCustomColors.current.text1, fontSize = 16.sp)
+                Text(stringResource(R.string.save_2), color = LocalCustomColors.current.text1, fontSize = 16.sp)
             }
         }
     }

@@ -29,6 +29,25 @@ class FirebaseManager {
             FirebaseAuth.getInstance().signOut()
         }
     }
+    suspend fun updateProfileImage(profileImageUrl: String) {
+        try {
+            val userId = auth.currentUser?.uid ?: throw Exception("Usuario no autenticado")
+
+            db.collection("Persona")
+                .document(userId)
+                .update("profileImage", profileImageUrl)
+                .await()
+        } catch (e: Exception) {
+            Log.e("FirebaseManager", "Error al actualizar imagen de perfil", e)
+            throw e
+        }
+    }
+    suspend fun getProfileImage(): String {
+        val userId = auth.currentUser?.uid ?: return ""
+        val docRef = db.collection("Persona").document(userId)
+        val snapshot = docRef.get().await()
+        return snapshot.getString("profileImage") ?: ""
+    }
 
     suspend fun registrarUsuari(
         email: String,

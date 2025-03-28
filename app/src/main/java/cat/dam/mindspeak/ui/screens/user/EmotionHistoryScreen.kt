@@ -14,8 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import cat.dam.mindspeak.R
 import cat.dam.mindspeak.model.EmotionRecord
 import cat.dam.mindspeak.model.EmotionViewModel
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
@@ -30,7 +32,7 @@ fun EmotionHistoryScreen(viewModel: EmotionViewModel = viewModel()) {
 
     Column(modifier = Modifier.padding(16.dp)) {
         Text(
-            text = "Historial de emociones",
+            text = stringResource(R.string.emotions_history),
             style = MaterialTheme.typography.headlineMedium,
             color = LocalCustomColors.current.text1,
             modifier = Modifier.padding(bottom = 16.dp)
@@ -38,7 +40,7 @@ fun EmotionHistoryScreen(viewModel: EmotionViewModel = viewModel()) {
 
         if (emotionRecords.isEmpty()) {
             Text(
-                text = "No hay emociones registradas.",
+                text = stringResource(R.string.emotion_recorded),
                 color = LocalCustomColors.current.text1,
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -91,12 +93,12 @@ fun EmotionHistoryItem(emotion: EmotionRecord) {
                     Spacer(modifier = Modifier.height(4.dp))
                 }
                 Text(
-                    text = "Evaluación: ${emotion.rating}/5",
+                    text = stringResource(R.string.evaluation_history, emotion.rating),
                     style = MaterialTheme.typography.bodyMedium,
                     color = LocalCustomColors.current.text1
                 )
                 Text(
-                    text = "Fecha: ${dateFormat.format(emotion.date)}",
+                    text = stringResource(R.string.date_history, dateFormat.format(emotion.date)),
                     style = MaterialTheme.typography.bodySmall,
                     color = LocalCustomColors.current.text1.copy(alpha = 0.7f)
                 )

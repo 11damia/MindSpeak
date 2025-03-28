@@ -49,9 +49,11 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import cat.dam.mindspeak.R
 import cat.dam.mindspeak.firebase.FirebaseManager
 import cat.dam.mindspeak.model.EmotionRecord
 import cat.dam.mindspeak.ui.screens.user.getEmotionColor
@@ -100,7 +102,7 @@ fun UserEmotionsScreen(
         ) {
             // Titre stylisé
             Text(
-                text = "Emocions",
+                text = stringResource(R.string.Emotions),
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
@@ -175,7 +177,7 @@ fun LoadingAnimation() {
                 color = MaterialTheme.colorScheme.secondary
             )
             Text(
-                text = "Cargando las emociones...",
+                text = stringResource(R.string.loading_emotions),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
                 modifier = Modifier.padding(top = 8.dp)
@@ -201,7 +203,7 @@ fun EmptyStateView() {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Aucun enregistrement d'émotion trouvé",
+                text = stringResource(R.string.no_emotions_found),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
                 textAlign = TextAlign.Center
@@ -249,12 +251,12 @@ fun EmotionRecordItem(record: EmotionRecord) {
                     Spacer(modifier = Modifier.height(4.dp))
                 }
                 Text(
-                    text = "Evaluación: ${record.rating}/5",
+                    text = stringResource(R.string.evaluation_2, record.rating),
                     style = MaterialTheme.typography.bodyMedium,
                     color = LocalCustomColors.current.text1
                 )
                 Text(
-                    text = "Fecha: ${dateFormat.format(record.date)}",
+                    text = stringResource(R.string.date_2, dateFormat.format(record.date)),
                     style = MaterialTheme.typography.bodySmall,
                     color = LocalCustomColors.current.text1.copy(alpha = 0.7f)
                 )
@@ -323,7 +325,7 @@ fun EmotionRecordItem(record: EmotionRecord) {
             },
             confirmButton = {
                 Text(
-                    text = "Tancar",
+                    text = stringResource(R.string.close),
                     modifier = Modifier
                         .clickable { showDialog = false }
                         .padding(16.dp),

@@ -1,17 +1,28 @@
 package cat.dam.mindspeak.ui.screens.user
 
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -25,6 +36,10 @@ import cat.dam.mindspeak.R
 import cat.dam.mindspeak.firebase.FirebaseManager
 import cat.dam.mindspeak.model.UserViewModel
 import cat.dam.mindspeak.ui.theme.CustomColors
+import cat.dam.mindspeak.utils.SupabaseStorageProfileUtil
+import cat.dam.mindspeak.utils.SupabaseStorageUtil
+import coil.compose.AsyncImage
+import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsUser(
@@ -34,13 +49,48 @@ fun SettingsUser(
 ) {
     val userData by userViewModel.userData.collectAsState()
     val firebaseManager = remember { FirebaseManager() }
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
+    // State for profile image URL and upload success message
+    var profileImageUrl by remember { mutableStateOf(userData.profileImage ?: "") }
     var showUpdateSuccess by remember { mutableStateOf(false) }
+
+    // Load profile image from Firebase on initial launch
+    LaunchedEffect(Unit) {
+        val storedProfileImage = firebaseManager.getProfileImage() // Fetch the profile image URL
+        if (storedProfileImage.isNotEmpty()) {
+            profileImageUrl = storedProfileImage
+        }
+    }
+
+    // Image picker launcher to select image from gallery
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let {
+            scope.launch {
+                try {
+                    val uploadedProfileUrl = SupabaseStorageProfileUtil.uploadProfileImage(context, it)
+                    profileImageUrl = uploadedProfileUrl
+
+                    userViewModel.updateUserData(profileImage = uploadedProfileUrl)
+                    firebaseManager.updateUserFieldFromComposable("profileImage", uploadedProfileUrl)
+
+                    showUpdateSuccess = true
+                } catch (e: Exception) {
+                    Toast.makeText(context,
+                        context.getString(R.string.error_upload_icon), Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
     if (showUpdateSuccess) {
         AlertDialog(
             onDismissRequest = { showUpdateSuccess = false },
-            title = { Text("Actualización exitosa") },
-            text = { Text("Los datos se han actualizado correctamente") },
+            title = { Text(stringResource(R.string.update_succes)) },
+            text = { Text(stringResource(R.string.text_update_good)) },
             confirmButton = {
                 Button(onClick = { showUpdateSuccess = false }) {
                     Text("OK")
@@ -48,6 +98,7 @@ fun SettingsUser(
             }
         )
     }
+
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item {
@@ -55,20 +106,18 @@ fun SettingsUser(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
+                        .padding(horizontal = 20.dp),
+                    horizontalArrangement = Arrangement.End
                 ) {
-                    Box(modifier = Modifier.fillMaxWidth()) {
-                        Image(
-                            painter = painterResource(id = R.drawable.lapiz_icon),
-                            contentDescription = null,
-                            colorFilter = ColorFilter.tint(localCustomColors.current.text1),
-                            modifier = Modifier
-                                .size(30.dp)
-                                .align(Alignment.TopEnd)
-                                .clickable { /* Lógica para editar foto de perfil */ },
-                            contentScale = ContentScale.Fit
-                        )
-                    }
+                    Image(
+                        painter = painterResource(id = R.drawable.lapiz_icon),
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(localCustomColors.current.text1),
+                        modifier = Modifier
+                            .size(30.dp)
+                            .clickable { imagePickerLauncher.launch("image/*") },
+                        contentScale = ContentScale.Fit
+                    )
                 }
             }
             item {
@@ -77,12 +126,25 @@ fun SettingsUser(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.user_icon),
-                        contentDescription = null,
-                        modifier = Modifier.size(150.dp),
-                        contentScale = ContentScale.Fit
-                    )
+                    if (profileImageUrl.isNotEmpty()) {
+                        AsyncImage(
+                            model = profileImageUrl,
+                            contentDescription = stringResource(R.string.profile_pic),
+                            modifier = Modifier
+                                .size(150.dp)
+                                .clip(CircleShape), // Redondear la imagen
+                            contentScale = ContentScale.Crop
+                        )
+                    } else {
+                        Image(
+                            painter = painterResource(id = R.drawable.user_icon),
+                            contentDescription = stringResource(R.string.description_img),
+                            modifier = Modifier
+                                .size(150.dp)
+                                .clip(CircleShape), // Redondear la imagen
+                            contentScale = ContentScale.Fit
+                        )
+                    }
                 }
             }
             item {
@@ -94,7 +156,7 @@ fun SettingsUser(
                     Spacer(modifier = Modifier.height(40.dp))
 
                     SettingItem(
-                        label = "Nombre",
+                        label = stringResource(R.string.name_settings),
                         initialValue = userData.nom ?: "",
                         localCustomColors = localCustomColors,
                         onUpdate = { newValue ->
@@ -107,7 +169,7 @@ fun SettingsUser(
                     Spacer(modifier = Modifier.height(5.dp))
 
                     SettingItem(
-                        label = "Apellido",
+                        label = stringResource(R.string.surname_settings),
                         initialValue = userData.cognom ?: "",
                         localCustomColors = localCustomColors,
                         onUpdate = { newValue ->
@@ -123,7 +185,7 @@ fun SettingsUser(
                         .fillMaxWidth()
                         .padding(vertical = 15.dp)) {
                         Text(
-                            "Correo Electrónico",
+                            text = stringResource(R.string.mail_user),
                             style = TextStyle(
                                 fontSize = 25.sp,
                                 fontWeight = FontWeight.Bold,
@@ -132,7 +194,7 @@ fun SettingsUser(
                         )
 
                         Text(
-                            userData.email ?: "No disponible",
+                            userData.email ?: stringResource(R.string.no_available),
                             style = TextStyle(
                                 color = localCustomColors.current.text1,
                                 fontSize = 25.sp
@@ -141,7 +203,7 @@ fun SettingsUser(
                         )
 
                         Text(
-                            "* Para cambiar el correo, contacta con soporte",
+                            stringResource(R.string.contact_info),
                             style = TextStyle(
                                 color = localCustomColors.current.text2,
                                 fontSize = 14.sp,
@@ -154,7 +216,7 @@ fun SettingsUser(
                     Spacer(modifier = Modifier.height(5.dp))
 
                     SettingItem(
-                        label = "Teléfono",
+                        label = stringResource(R.string.telephone),
                         initialValue = userData.telefon ?: "",
                         localCustomColors = localCustomColors,
                         onUpdate = { newValue ->
@@ -183,6 +245,7 @@ fun SettingsUser(
                         Text(stringResource(R.string.logout))
                     }
                 }
+
                 Image(
                     painter = painterResource(id = R.drawable.persona_settings_user),
                     contentDescription = null,
@@ -211,49 +274,35 @@ fun SettingItem(
         currentValue = initialValue
     }
 
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .padding(vertical = 15.dp)) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            Text(
-                label,
-                style = TextStyle(
-                    fontSize = 25.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = localCustomColors.current.text1
-                )
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 15.dp)
+    ) {
+        Text(
+            label,
+            style = TextStyle(
+                fontSize = 25.sp,
+                fontWeight = FontWeight.Bold,
+                color = localCustomColors.current.text1
             )
+        )
 
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             if (isEditing) {
                 OutlinedTextField(
                     value = currentValue,
                     onValueChange = { currentValue = it },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp)
+                    modifier = Modifier.weight(1f)
                 )
-            } else {
-                Text(
-                    currentValue.ifEmpty { "No disponible" },
-                    style = TextStyle(
-                        color = localCustomColors.current.text1,
-                        fontSize = 25.sp
-                    ),
-                    modifier = Modifier.padding(top = 10.dp)
-                )
-            }
-        }
 
-        // Mover los botones de edición al mismo nivel que el texto
-        Row(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .offset(y = 10.dp), // Ajuste fino para alinear verticalmente
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            if (isEditing) {
-                // Botón de confirmar (usando el mismo ícono de lápiz pero rotado)
+                // Botón de confirmar (Check verde)
                 IconButton(
                     onClick = {
                         if (currentValue != initialValue) {
@@ -262,48 +311,47 @@ fun SettingItem(
                         isEditing = false
                     }
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.lapiz_icon),
-                        contentDescription = "Confirmar",
-                        colorFilter = ColorFilter.tint(Color.Green),
-                        modifier = Modifier
-                            .size(24.dp)
-                            .rotate(45f)
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = stringResource(R.string.confirm),
+                        tint = Color.Green,
+                        modifier = Modifier.size(30.dp)
                     )
                 }
-                // Botón de cancelar (usando el mismo ícono pero con X)
+
+                // Botón de cancelar (X roja)
                 IconButton(
                     onClick = {
                         currentValue = initialValue
                         isEditing = false
                     }
                 ) {
-                    Box(modifier = Modifier.size(24.dp)) {
-                        Image(
-                            painter = painterResource(id = R.drawable.lapiz_icon),
-                            contentDescription = "Cancelar",
-                            colorFilter = ColorFilter.tint(Color.Red),
-                            modifier = Modifier.size(12.dp)
-                        )
-                        Image(
-                            painter = painterResource(id = R.drawable.lapiz_icon),
-                            contentDescription = null,
-                            colorFilter = ColorFilter.tint(Color.Red),
-                            modifier = Modifier
-                                .size(12.dp)
-                                .rotate(90f)
-                        )
-                    }
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = stringResource(R.string.cancel),
+                        tint = Color.Red,
+                        modifier = Modifier.size(30.dp)
+                    )
                 }
             } else {
+                Text(
+                    currentValue.ifEmpty { stringResource(R.string.no_available) },
+                    style = TextStyle(
+                        color = localCustomColors.current.text1,
+                        fontSize = 25.sp
+                    ),
+                    modifier = Modifier.weight(1f)
+                )
+
+                // Botón de edición (Lápiz)
                 IconButton(
                     onClick = { isEditing = true }
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.lapiz_icon),
-                        contentDescription = "Editar",
-                        colorFilter = ColorFilter.tint(localCustomColors.current.text1),
-                        modifier = Modifier.size(24.dp)
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = stringResource(R.string.edit),
+                        tint = localCustomColors.current.text1,
+                        modifier = Modifier.size(30.dp)
                     )
                 }
             }

@@ -44,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
@@ -98,7 +99,8 @@ fun SupervisorResourceAssignmentScreen() {
     val audioUri = remember {
         FileProvider.getUriForFile(
             context,
-            "${context.packageName}.provider",
+//            "${context.packageName}.provider",
+            "cat.dam.mindspeak.fileprovider",
             createAudioFile(context)
         )
     }
@@ -344,7 +346,7 @@ private fun UserSelectionDropdown(
         onExpandedChange = { expanded = !expanded }
     ) {
         TextField(
-            value = selectedUser?.let { "${it.nom} ${it.cognom}" } ?: "Select a user",
+            value = selectedUser?.let { "${it.nom} ${it.cognom}" } ?: stringResource(R.string.select_a_user),
             onValueChange = {},
             readOnly = true,
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
@@ -377,7 +379,7 @@ private fun ResourceTypeSelector(
     onAudioSelected: () -> Unit
 ) {
     Column {
-        Text("Select Resource Type", style = MaterialTheme.typography.titleMedium)
+        Text(stringResource(R.string.select_resource_type), style = MaterialTheme.typography.titleMedium)
         Spacer(modifier = Modifier.height(8.dp))
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -385,17 +387,17 @@ private fun ResourceTypeSelector(
         ) {
             ResourceTypeButton(
                 icon = R.drawable.cam,
-                label = "Image",
+                label = stringResource(R.string.img),
                 onClick = onImageSelected
             )
             ResourceTypeButton(
                 icon = R.drawable.video,
-                label = "Video",
+                label = stringResource(R.string.vid),
                 onClick = onVideoSelected
             )
             ResourceTypeButton(
                 icon = R.drawable.audio,
-                label = "Audio",
+                label = stringResource(R.string.audio),
                 onClick = onAudioSelected
             )
         }
@@ -449,7 +451,7 @@ private fun MediaSelectionDialog(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.cancel))
             }
         }
     )
@@ -472,7 +474,7 @@ private fun UploadButton(
                 color = MaterialTheme.colorScheme.onPrimary
             )
         } else {
-            Text("Upload Resource")
+            Text(stringResource(R.string.upload_resource))
         }
     }
 }
@@ -494,7 +496,7 @@ private fun createImageUri(context: Context): Uri {
     )
     return FileProvider.getUriForFile(
         context,
-        "${context.packageName}.provider",
+        "cat.dam.mindspeak.fileprovider",
         file
     )
 }
@@ -507,7 +509,7 @@ private fun createVideoUri(context: Context): Uri {
     )
     return FileProvider.getUriForFile(
         context,
-        "${context.packageName}.provider",
+        "cat.dam.mindspeak.fileprovider",
         file
     )
 }
