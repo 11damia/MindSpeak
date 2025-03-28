@@ -42,6 +42,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -51,6 +52,7 @@ import androidx.core.content.FileProvider
 import cat.dam.mindspeak.R
 import cat.dam.mindspeak.firebase.FirebaseManager
 import cat.dam.mindspeak.model.UserRelation
+import cat.dam.mindspeak.ui.theme.LocalCustomColors
 import cat.dam.mindspeak.utils.SupabaseConfig
 import cat.dam.mindspeak.utils.SupabaseStorageUtil
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -416,6 +418,7 @@ private fun ResourceTypeButton(
     ) {
         Image(
             painter = painterResource(icon),
+            colorFilter = ColorFilter.tint(LocalCustomColors.current.text1),
             contentDescription = label,
             modifier = Modifier.size(48.dp)
         )
