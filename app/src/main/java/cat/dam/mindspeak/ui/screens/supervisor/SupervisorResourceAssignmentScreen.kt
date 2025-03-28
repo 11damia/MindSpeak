@@ -177,6 +177,7 @@ fun SupervisorResourceAssignmentScreen() {
             errorMessage = "Audio recording permission denied"
         }
     }
+    var resourceTitle by remember { mutableStateOf("") }
 
     // Chargement initial des utilisateurs
     LaunchedEffect(Unit) {
@@ -211,7 +212,15 @@ fun SupervisorResourceAssignmentScreen() {
                 selectedUser = selectedUser,
                 onUserSelected = { selectedUser = it }
             )
-
+            Spacer(modifier = Modifier.height(24.dp))
+            TextField(
+                value = resourceTitle,
+                onValueChange = { resourceTitle = it },
+                label = { Text("Resource Title") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp)
+            )
             Spacer(modifier = Modifier.height(24.dp))
 
             // Sélection du type de ressource
@@ -246,7 +255,10 @@ fun SupervisorResourceAssignmentScreen() {
             // Bouton d'upload
             UploadButton(
                 isLoading = isLoading,
-                enabled = selectedUser != null && resourceType.isNotEmpty() && selectedFileUri != null,
+                enabled = selectedUser != null &&
+                        resourceType.isNotEmpty() &&
+                        selectedFileUri != null &&
+                        resourceTitle.isNotBlank(),
                 onUpload = {
                     coroutineScope.launch {
                         try {
@@ -262,7 +274,8 @@ fun SupervisorResourceAssignmentScreen() {
                                 supervisorId = firebaseManager.auth.currentUser?.uid ?: "",
                                 resourceType = resourceType,
                                 resourceUri = uploadedUrl,
-                                originalFileName = selectedFileUri!!.lastPathSegment
+                                originalFileName = selectedFileUri!!.lastPathSegment,
+                                title = resourceTitle
                             )
 
                             errorMessage = "Upload successful!"
@@ -272,6 +285,7 @@ fun SupervisorResourceAssignmentScreen() {
                             isLoading = false
                             selectedFileUri = null
                             resourceType = ""
+                            resourceTitle = ""
                         }
                     }
                 }
@@ -524,12 +538,14 @@ private suspend fun uploadResourceToSupabase(
         .publicUrl(fileName)
 }
 
+
 private suspend fun saveResourceToFirebase(
     userId: String,
     supervisorId: String,
     resourceType: String,
     resourceUri: String,
-    originalFileName: String?
+    originalFileName: String?,
+    title: String? = null
 ) {
     FirebaseManager().db.collection("Recurs").add(
         mapOf(
@@ -538,6 +554,7 @@ private suspend fun saveResourceToFirebase(
             "type" to resourceType,
             "uri" to resourceUri,
             "fileName" to originalFileName,
+            "title" to title,
             "timestamp" to com.google.firebase.Timestamp.now()
         )
     ).await()

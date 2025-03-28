@@ -1,6 +1,5 @@
 package cat.dam.mindspeak.ui.navigation
 
-import cat.dam.mindspeak.ui.screens.EmotionStatsScreen
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
@@ -14,6 +13,7 @@ import cat.dam.mindspeak.firebase.FirebaseManager
 import cat.dam.mindspeak.model.EmotionViewModel
 import cat.dam.mindspeak.model.UserRelationViewModel
 import cat.dam.mindspeak.model.UserViewModel
+import cat.dam.mindspeak.ui.screens.EmotionStatsScreen
 import cat.dam.mindspeak.ui.screens.Login
 import cat.dam.mindspeak.ui.screens.LogoPage
 import cat.dam.mindspeak.ui.screens.SignUp
@@ -30,6 +30,7 @@ import cat.dam.mindspeak.ui.screens.user.Emotions
 import cat.dam.mindspeak.ui.screens.user.ExerciceList
 import cat.dam.mindspeak.ui.screens.user.Exercises
 import cat.dam.mindspeak.ui.screens.user.Inicio
+import cat.dam.mindspeak.ui.screens.user.ResourceViewScreen
 import cat.dam.mindspeak.ui.screens.user.SettingsUser
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
@@ -81,6 +82,10 @@ fun NavigationHost(
         composable("login") {Login(navController = navController, userViewModel = userViewModel, context = LocalContext.current) }
         composable("homeuser") { Inicio(navController,userViewModel) }
         composable("exerciselist") { ExerciceList(navController,userViewModel) }
+        composable("resource_view/{resourceId}") { backStackEntry ->
+            val resourceId = backStackEntry.arguments?.getString("resourceId")
+            ResourceViewScreen(navController, resourceId!!)
+        }
         composable("emotions") { Emotions(navController) }
         composable("exercise") { Exercises(navController) }
         composable("settings") { SettingsUser(LocalCustomColors, navController, userViewModel) }
