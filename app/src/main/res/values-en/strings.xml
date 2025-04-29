@@ -100,4 +100,11 @@
     <string name="emotion_fear">FEAR</string>
     <string name="emotion_sad">SAD</string>
     <string name="emotion_anxious">ANXIOUS</string>
+    <string name="welcome2">Welcome %1$s</string>
+    <string name="no_resource_dispo">No resources available at the moment</string>
+    <string name="resource_type">Resource type: %1$s</string>
+    <string name="watch_res">VIEW RESOURCE</string>
+    <string name="resource_image">Image</string>
+    <string name="resource_audio">Audio</string>
+    <string name="resource_video">Video</string>
 </resources>
