@@ -92,4 +92,7 @@
     <string name="vid">VIDEO</string>
     <string name="audio">AUDIO</string>
     <string name="upload_resource">UPLOAD RESOURCE</string>
+    <string name="inhale">Inhale&#10;3 seconds</string>
+    <string name="hold">Hold&#10;7 seconds</string>
+    <string name="exhale">Exhale&#10;8 seconds</string>
 </resources>
