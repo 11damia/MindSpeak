@@ -92,4 +92,19 @@
     <string name="vid">VÍDEO</string>
     <string name="audio">ÀUDIO</string>
     <string name="upload_resource">PUJAR RECURS</string>
+    <string name="inhale">INHALA&#10;3 SEGONS</string>
+    <string name="hold">AGUANTA&#10;7 SEGONS</string>
+    <string name="exhale">EXHALA&#10;8 SEGONS</string>
+    <string name="emotion_angry">ENFADAT</string>
+    <string name="emotion_happy">FELIÇ</string>
+    <string name="emotion_fear">POR</string>
+    <string name="emotion_sad">TRIST</string>
+    <string name="emotion_anxious">ANSIÓS</string>
+    <string name="welcome2">Benvingut/da %1$s</string>
+    <string name="no_resource_dispo">Cap recurs disponible de moment</string>
+    <string name="resource_type">Tipus de recurs: %1$s</string>
+    <string name="watch_res">VEURE EL RECURS</string>
+    <string name="resource_image">Imatge</string>
+    <string name="resource_audio">Àudio</string>
+    <string name="resource_video">Vídeo</string>
 </resources>

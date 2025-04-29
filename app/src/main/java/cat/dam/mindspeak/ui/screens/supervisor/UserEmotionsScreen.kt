@@ -58,6 +58,7 @@ import cat.dam.mindspeak.firebase.FirebaseManager
 import cat.dam.mindspeak.model.EmotionRecord
 import cat.dam.mindspeak.ui.screens.user.getEmotionColor
 import cat.dam.mindspeak.ui.screens.user.getEmotionImage
+import cat.dam.mindspeak.ui.screens.user.getTranslatedEmotion
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -237,7 +238,7 @@ fun EmotionRecordItem(record: EmotionRecord) {
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = record.emotionType.uppercase(),
+                    text = getTranslatedEmotion(record.emotionType.uppercase()),
                     style = MaterialTheme.typography.titleMedium,
                     color = LocalCustomColors.current.text1
                 )

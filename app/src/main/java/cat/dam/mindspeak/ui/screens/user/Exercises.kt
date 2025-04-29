@@ -24,10 +24,11 @@ import cat.dam.mindspeak.R
 @Composable
 fun Exercises(navController: NavHostController) {
     val exercises = listOf(
-        "Inhala\n3 segundos" to R.drawable.inspirar,
-        "Aguanta\n7 segundos" to R.drawable.aguantar,
-        "Exhala\n8 segundos" to R.drawable.expirar
+        stringResource(R.string.inhale) to R.drawable.inspirar,
+        stringResource(R.string.hold) to R.drawable.aguantar,
+        stringResource(R.string.exhale) to R.drawable.expirar
     )
+
 
     Column(
         modifier = Modifier
