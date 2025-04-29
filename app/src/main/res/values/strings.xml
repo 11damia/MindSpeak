@@ -92,7 +92,12 @@
     <string name="vid">VÍDEO</string>
     <string name="audio">ÀUDIO</string>
     <string name="upload_resource">PUJAR RECURS</string>
-    <string name="inhale">Inhala&#10;3 segons</string>
-    <string name="hold">Aguanta&#10;7 segons</string>
-    <string name="exhale">Exhala&#10;8 segons</string>
+    <string name="inhale">INHALA&#10;3 SEGONS</string>
+    <string name="hold">AGUANTA&#10;7 SEGONS</string>
+    <string name="exhale">EXHALA&#10;8 SEGONS</string>
+    <string name="emotion_angry">ENFADAT</string>
+    <string name="emotion_happy">FELIÇ</string>
+    <string name="emotion_fear">POR</string>
+    <string name="emotion_sad">TRIST</string>
+    <string name="emotion_anxious">ANSIÓS</string>
 </resources>

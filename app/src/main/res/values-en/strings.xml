@@ -92,7 +92,12 @@
     <string name="vid">VIDEO</string>
     <string name="audio">AUDIO</string>
     <string name="upload_resource">UPLOAD RESOURCE</string>
-    <string name="inhale">Inhale&#10;3 seconds</string>
-    <string name="hold">Hold&#10;7 seconds</string>
-    <string name="exhale">Exhale&#10;8 seconds</string>
+    <string name="inhale">INHALE&#10;3 SECONDS</string>
+    <string name="hold">HOLD&#10;7 SECONDS</string>
+    <string name="exhale">EXHALE&#10;8 SECONDS</string>
+    <string name="emotion_angry">ANGRY</string>
+    <string name="emotion_happy">HAPPY</string>
+    <string name="emotion_fear">FEAR</string>
+    <string name="emotion_sad">SAD</string>
+    <string name="emotion_anxious">ANXIOUS</string>
 </resources>
