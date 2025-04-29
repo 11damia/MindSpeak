@@ -25,16 +25,19 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import cat.dam.mindspeak.R
 import cat.dam.mindspeak.firebase.FirebaseManager
 import cat.dam.mindspeak.model.UserViewModel
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 import cat.dam.mindspeak.ui.theme.White
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.util.Locale
 
 data class SupervisorResource(
     val id: String = "",
@@ -54,7 +57,6 @@ fun ExerciceList(navController: NavHostController, userViewModel: UserViewModel)
     var isLoading by remember { mutableStateOf(true) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
-    // Charger les ressources du superviseur
     LaunchedEffect(userData) {
         coroutineScope.launch {
             try {
@@ -99,7 +101,7 @@ fun ExerciceList(navController: NavHostController, userViewModel: UserViewModel)
     ) {
         item {
             Text(
-                text = "Benvingut/da ${userData.nom ?: "Usuari"}",
+                text = stringResource(R.string.welcome2, userData.nom ?: "Usuari"),
                 fontWeight = FontWeight.Bold,
                 color = LocalCustomColors.current.text1,
                 fontSize = 24.sp
@@ -151,7 +153,7 @@ fun ExerciceList(navController: NavHostController, userViewModel: UserViewModel)
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Cap recurs disponible de moment",
+                        text = stringResource(R.string.no_resource_dispo),
                         color = LocalCustomColors.current.text2,
                         modifier = Modifier.padding(vertical = 16.dp)
                     )
@@ -184,8 +186,26 @@ fun SupervisorResourceItem(
                 fontSize = 30.sp
             )
             Spacer(modifier = Modifier.height(8.dp))
+            val resourceLabel = when (resource.type.lowercase()) {
+                "image" -> stringResource(R.string.resource_image)
+                "audio" -> stringResource(R.string.resource_audio)
+                "video" -> stringResource(R.string.resource_video)
+                else -> resource.type
+            }
+
             Text(
-                text = "Tipus de recurs: ${resource.type.capitalize()}",
+                text = resourceLabel,
+                color = LocalCustomColors.current.text2,
+                fontWeight = FontWeight.Normal,
+                fontSize = 17.sp
+            )
+
+            Text(
+                text = stringResource(R.string.resource_type, resourceLabel.replaceFirstChar {
+                    if (it.isLowerCase()) it.titlecase(
+                        Locale.ROOT
+                    ) else it.toString()
+                }),
                 color = LocalCustomColors.current.text2,
                 fontWeight = FontWeight.Normal,
                 fontSize = 17.sp
@@ -199,7 +219,7 @@ fun SupervisorResourceItem(
                 )
             ) {
                 Text(
-                    text = "VEURE EL RECURS",
+                    text = stringResource(R.string.watch_res),
                     fontSize = 15.sp,
                     color = White
                 )

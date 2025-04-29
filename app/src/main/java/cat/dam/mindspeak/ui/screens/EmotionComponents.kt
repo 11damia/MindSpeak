@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import cat.dam.mindspeak.R
 import cat.dam.mindspeak.model.EmotionRecord
 import cat.dam.mindspeak.model.AssignedUser
+import cat.dam.mindspeak.ui.screens.user.getTranslatedEmotion
 import cat.dam.mindspeak.ui.theme.LocalCustomColors
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -149,7 +150,7 @@ fun SimpleEmotionBarChart(records: List<EmotionRecord>) {
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = emotion.lowercase().replaceFirstChar { it.uppercase() },
+                            text = getTranslatedEmotion(emotion),
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
@@ -194,7 +195,7 @@ fun EmotionRecordItem(record: EmotionRecord) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = record.emotionType, style = MaterialTheme.typography.bodyLarge)
+                Text(text = getTranslatedEmotion(record.emotionType), style = MaterialTheme.typography.bodyLarge)
                 Text(text = record.date.toString(), style = MaterialTheme.typography.bodySmall)
                 if (record.comentari.isNotEmpty()) {
                     Text(

@@ -140,7 +140,7 @@ fun EmotionCard(emotionItem: EmotionItem, navController: NavHostController) {
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 Text(
-                    text = emotionItem.text,
+                    text = getTranslatedEmotion(emotionItem.text),
                     fontSize = 18.sp,
                     color = LocalCustomColors.current.text4
                 )
@@ -159,6 +159,17 @@ fun EmotionCard(emotionItem: EmotionItem, navController: NavHostController) {
                     )
             }
         }
+    }
+}
+@Composable
+fun getTranslatedEmotion(emotionKey: String): String {
+    return when (emotionKey.uppercase()) {
+        "ENFADADO" -> stringResource(R.string.emotion_angry)
+        "FELIZ" -> stringResource(R.string.emotion_happy)
+        "MIEDO" -> stringResource(R.string.emotion_fear)
+        "TRISTE" -> stringResource(R.string.emotion_sad)
+        "ANSIOSO" -> stringResource(R.string.emotion_anxious)
+        else -> emotionKey // fallback si no está definido
     }
 }
 

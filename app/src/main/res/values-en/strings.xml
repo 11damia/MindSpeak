@@ -92,4 +92,19 @@
     <string name="vid">VIDEO</string>
     <string name="audio">AUDIO</string>
     <string name="upload_resource">UPLOAD RESOURCE</string>
+    <string name="inhale">INHALE&#10;3 SECONDS</string>
+    <string name="hold">HOLD&#10;7 SECONDS</string>
+    <string name="exhale">EXHALE&#10;8 SECONDS</string>
+    <string name="emotion_angry">ANGRY</string>
+    <string name="emotion_happy">HAPPY</string>
+    <string name="emotion_fear">FEAR</string>
+    <string name="emotion_sad">SAD</string>
+    <string name="emotion_anxious">ANXIOUS</string>
+    <string name="welcome2">Welcome %1$s</string>
+    <string name="no_resource_dispo">No resources available at the moment</string>
+    <string name="resource_type">Resource type: %1$s</string>
+    <string name="watch_res">VIEW RESOURCE</string>
+    <string name="resource_image">Image</string>
+    <string name="resource_audio">Audio</string>
+    <string name="resource_video">Video</string>
 </resources>
