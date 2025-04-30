@@ -212,7 +212,7 @@ fun EmotionRatingScreen(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = emotionType.uppercase(),
+                        text = getTranslatedEmotion(emotionType),
                         fontSize = 24.sp,
                         color = Color.White
                     )
