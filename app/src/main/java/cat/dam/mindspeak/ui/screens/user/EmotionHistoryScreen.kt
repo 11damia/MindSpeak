@@ -79,12 +79,12 @@ fun EmotionHistoryItem(emotion: EmotionRecord) {
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = emotion.emotionType.uppercase(),
+                    text = getTranslatedEmotion(emotion.emotionType),
                     style = MaterialTheme.typography.titleMedium,
                     color = LocalCustomColors.current.text1
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                if (!emotion.comentari.isNullOrBlank()) {
+                if (emotion.comentari.isNotBlank()) {
                     Text(
                         text = emotion.comentari,
                         style = MaterialTheme.typography.bodyMedium,
